@@ -1,0 +1,229 @@
+/* ===========================
+     RESET GENERAL  
+=========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(140deg, #0a0a0a, #1b0017, #0a0015);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* ===========================
+     MENÚ SUPERIOR
+=========================== */
+.menu {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(20, 0, 30, 0.7);
+    backdrop-filter: blur(14px);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 0, 120, 0.2);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff0088, #ffdd00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: #eee;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* BOTÓN PREMIUM */
+.premium-btn {
+    background: linear-gradient(45deg, #ff0088, #ffcc00);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: black !important;
+    box-shadow: 0 0 12px rgba(255, 0, 120, 0.6);
+    animation: neon 2s infinite alternate;
+}
+
+@keyframes neon {
+    from { box-shadow: 0 0 10px #ff0088; }
+    to { box-shadow: 0 0 18px #ffd000; }
+}
+
+/* ===========================
+     HEADER
+=========================== */
+.header {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #ff4da6;
+    text-shadow: 0 0 12px #ff0080;
+}
+
+.header p {
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+/* ===========================
+     TITULOS DE SECCION
+=========================== */
+.titulo-seccion {
+    text-align: center;
+    font-size: 34px;
+    margin: 40px 0 20px;
+    color: #ff4da6;
+    text-shadow: 0 0 10px #ff0066;
+}
+
+/* ===========================
+     GALERÍA TIPO TARJETAS
+=========================== */
+.gallery {
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 0, 120, 0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 18px rgba(255, 0, 180, 0.4);
+}
+
+.card img {
+    width: 100%;
+    height: 260px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+/* ===========================
+     VIDEOS ESTILO TIKTOK
+=========================== */
+.videos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 50px;
+}
+
+.tiktok-container {
+    width: 320px;
+    height: 570px;
+    border-radius: 30px;
+    overflow: hidden;
+    background: black;
+    border: 2px solid #ff0080;
+    box-shadow: 0 0 20px rgba(255, 0, 150, 0.5);
+    transition: 0.3s;
+}
+
+.tiktok-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===========================
+     SECCIÓN PREMIUM
+=========================== */
+.premium-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 0, 120, 0.1);
+    margin-top: 40px;
+}
+
+.premium-section h2 {
+    font-size: 38px;
+    color: #ff4da6;
+}
+
+.btn-premium {
+    margin-top: 15px;
+    display: inline-block;
+    padding: 14px 26px;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff0088, #ffcc00);
+    color: black;
+    border-radius: 14px;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(255, 0, 140, 0.6);
+    transition: 0.3s;
+}
+
+.btn-premium:hover {
+    transform: scale(1.05);
+}
+
+/* ===========================
+     LIGHTBOX (AMPLIAR FOTOS)
+=========================== */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.lightbox img {
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #ff0080;
+    animation: zoom 0.3s ease;
+}
+
+@keyframes zoom {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

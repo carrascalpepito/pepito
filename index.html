@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nadie Es Más Perra Que Yo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- 🌟 Fondo Animado -->
+<div class="bg-animation"></div>
+
+<!-- 🌟 MENÚ SUPERIOR -->
+<nav class="menu">
+    <div class="">
+        <img src="" alt="">
+        <h2>🔥 Mi Contenido 🔥</h2>
+    </div>
+    <ul>
+        <li><a href="#fotos">Fotos</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#premium">Premium 💎</a></li>
+    </ul>
+</nav>
+
+<!-- 🌟 ENCABEZADO -->
+<header class="header neon-text">
+    <h1>Me Encanta la Verga</h1>
+    <p>Compra mi contenido, haré lo que me pidas</p>
+</header>
+
+<!-- 🌟 SECCIÓN FOTOS -->
+<h2 id="fotos" class="titulo-seccion neon-title">Soy Tu Perra</h2>
+
+<section class="gallery">
+
+    <!-- 10 imágenes con lightbox -->
+    <div class="card"><img src="img/foto1.jpeg" onclick="openLightbox(this.src)"><h3>Foto #1</h3></div>
+    <div class="card"><img src="img/foto2.jpeg" onclick="openLightbox(this.src)"><h3>Foto #2</h3></div>
+    <div class="card"><img src="img/foto3.jpeg" onclick="openLightbox(this.src)"><h3>Foto #3</h3></div>
+    <div class="card"><img src="img/foto4.jpeg" onclick="openLightbox(this.src)"><h3>Foto #4</h3></div>
+    <div class="card"><img src="img/foto5.jpeg" onclick="openLightbox(this.src)"><h3>Foto #5</h3></div>
+    <div class="card"><img src="img/foto6.jpeg" onclick="openLightbox(this.src)"><h3>Foto #6</h3></div>
+    <div class="card"><img src="img/foto7.jpeg" onclick="openLightbox(this.src)"><h3>Foto #7</h3></div>
+    <div class="card"><img src="img/foto8.jpeg" onclick="openLightbox(this.src)"><h3>Foto #8</h3></div>
+    <div class="card"><img src="img/foto9.jpeg" onclick="openLightbox(this.src)"><h3>Foto #9</h3></div>
+    <div class="card"><img src="img/foto10.jpeg" onclick="openLightbox(this.src)"><h3>Foto #10</h3></div>
+
+</section>
+
+<!-- 🌟 SECCIÓN VIDEOS -->
+<h2 id="videos" class="titulo-seccion neon-title">Videos Exclusivos</h2>
+
+<section class="videos">
+    <div class="tiktok-container"><video src="videos/video1.mp4" controls></video></div>
+    <div class="tiktok-container"><video src="videos/video2.mp4" controls></video></div>
+</section>
+
+<!-- 🌟 PAQUETES PREMIUM -->
+<h2 id="premium" class="titulo-seccion neon-title">Paquetes Premium 💎</h2>
+
+<section class="premium-plans">
+
+    <div class="plan-card">
+        <h3 class="plan-title">🔥 Básico</h3>
+        <p>20 fotos exclusivas</p>
+        <p>5 videos</p>
+        <h2 class="price">$10 USD</h2>
+        <a href="payment.html?plan=basico" class="btn-premium">Comprar</a>
+    </div>
+
+    <div class="plan-card destacado">
+        <h3 class="plan-title">💎 VIP</h3>
+        <p>Todo el contenido</p>
+        <p>Videos diarios</p>
+        <p>Chat privado</p>
+        <h2 class="price">$25 USD</h2>
+        <a href="payment.html?plan=vip" class="btn-premium">Comprar</a>
+    </div>
+
+    <div class="plan-card">
+        <h3 class="plan-title">👑 Ultra</h3>
+        <p>Contenido ilimitado</p>
+        <p>Videos personalizados</p>
+        <p>Llamadas privadas</p>
+        <h2 class="price">$60 USD</h2>
+        <a href="payment.html?plan=ultra" class="btn-premium">Comprar</a>
+    </div>
+
+</section>
+
+<!-- 🌟 LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img">
+</div>
+
+<!-- SCRIPT -->
+<script>
+function openLightbox(src) {
+    document.getElementById("lightbox-img").src = src;
+    document.getElementById("lightbox").style.display = "flex";
+}
+function closeLightbox() {
+    document.getElementById("lightbox").style.display = "none";
+}
+</script>
+
+</body>
+</html>
