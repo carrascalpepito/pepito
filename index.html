@@ -5,70 +5,210 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nadie Es Más Perra Que Yo</title>
     <link rel="stylesheet" href="css/style.css">
-</head>
 
+    <style>
+/* =========================
+   BASE Y PALETA (mejorada)
+   ========================= */
+:root{
+    --bg-1: #0b0010;
+    --pink-1: #ff0099;
+    --pink-2: #ff4fc3;
+    --glass-1: rgba(255,255,255,0.06);
+    --muted: #d9c4db;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:linear-gradient(135deg,var(--bg-1), #120018);-webkit-font-smoothing:antialiased}
+
+/* fondo animado sutil */
+.bg-animation{
+    position:fixed; inset:0; z-index:-1;
+    background:
+        radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%),
+        radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%),
+        linear-gradient(180deg,#080006,#160018);
+    filter: blur(60px);
+}
+
+/* contenedor central ancho */
+.container{width:100%; max-width:1180px; margin:0 auto; padding:18px}
+
+/* =========================
+   MENU SUPERIOR (mejor)
+   ========================= */
+nav.menu{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:12px 18px;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter: blur(8px);
+    border-radius:14px;
+    margin: 12px;
+    border: 1px solid rgba(255,0,150,0.08);
+    box-shadow: 0 6px 30px rgba(255,0,150,0.04);
+}
+
+.menu h2{margin:0;font-size:18px;color:var(--pink-2)}
+.menu ul{list-style:none;display:flex;gap:14px;margin:0;padding:0;align-items:center}
+.menu a{color:#ffd6f0;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:10px;transition:0.18s}
+.menu a:hover{color:#fff;background:linear-gradient(90deg,var(--pink-1),var(--pink-2));box-shadow:0 6px 22px rgba(255,0,150,0.12)}
+
+/* botón whatsapp top */
+.btn-whatsapp-header{
+    display:inline-block;padding:10px 18px;border-radius:12px;
+    background:linear-gradient(135deg,#25D366,#1ebe5d);color:white;text-decoration:none;font-weight:700;
+    box-shadow:0 6px 30px rgba(37,211,102,0.08);
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.header{ text-align:center;padding:40px 6px 10px 6px }
+.header h1{font-size:40px;margin:6px 0;color:var(--pink-1);text-shadow:0 0 18px rgba(255,0,150,0.12)}
+.header p{color:var(--muted);margin:0 0 12px 0}
+
+/* =========================
+   SECCIONES: TITULOS Y GRID
+   ========================= */
+.titulo-seccion{ text-align:center;font-size:26px;margin-top:30px;color:var(--pink-2); text-shadow:0 0 10px rgba(255,79,195,0.08)}
+
+.gallery{ display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:16px; padding:18px; max-width:1180px; margin: 10px auto }
+.card{ background: rgba(255,255,255,0.03); padding:10px; border-radius:12px; text-align:center; transition:0.25s; border:1px solid rgba(255,0,150,0.04) }
+.card:hover{ transform: translateY(-6px); box-shadow:0 14px 40px rgba(255,0,150,0.06) }
+.card img{ width:100%; height:160px; object-fit:cover; border-radius:10px; cursor:pointer }
+
+/* videos grid */
+.videos{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; padding:18px; max-width:1180px; margin:auto }
+.videos video{ width:100%; border-radius:12px; box-shadow:0 12px 36px rgba(0,0,0,0.5) }
+
+/* premium plans */
+.premium-plans{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; padding:18px; margin: 10px auto; max-width:1180px }
+.plan-card{ width:260px; padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,0,150,0.04); text-align:center; box-shadow:0 8px 30px rgba(255,0,150,0.03) }
+.btn-premium{ display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; color:white; font-weight:800; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); box-shadow:0 12px 30px rgba(255,0,150,0.08) }
+
+/* =========================
+   FORMULARIOS
+   ========================= */
+form{ width:90%; max-width:720px; margin:18px auto; background: rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,0,150,0.03) }
+form label{ display:block; margin-bottom:8px; color:var(--muted); font-weight:600 }
+form input[type="text"], form textarea{ width:100%; padding:12px; border-radius:10px; border:2px solid rgba(255,0,150,0.08); background: rgba(255,255,255,0.02); color:white; outline:none; font-size:15px }
+form textarea{ min-height:120px; resize:vertical }
+form .btn-premium{ margin-top:8px }
+
+/* =========================
+   CHAT
+   ========================= */
+.chat-box{
+    width:90%; max-width:720px; margin:18px auto; background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,0,150,0.28); border-radius:18px; padding:18px; height:360px; overflow-y:auto; backdrop-filter: blur(8px);
+    box-shadow: 0 12px 36px rgba(255,0,150,0.06);
+}
+
+.message-wrapper{ display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; animation: fadeIn .28s ease }
+.avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); display:flex;align-items:center;justify-content:center;font-weight:800; color:white; box-shadow:0 8px 30px rgba(255,0,150,0.08) }
+
+.bubble{ padding:12px 14px; border-radius:14px; max-width:72%; font-size:15px; line-height:1.35; box-shadow:0 10px 30px rgba(0,0,0,0.25) }
+.mine{ margin-left:auto; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); color:white; border-bottom-right-radius:6px }
+.others{ background: rgba(255,255,255,0.96); color:#222; border-bottom-left-radius:6px }
+
+/* improved input area */
+.chat-input-container{ width:90%; max-width:720px; margin:12px auto 40px auto; display:flex; gap:12px; align-items:center }
+.chat-input{ flex:1; padding:14px 18px; border-radius:12px; background:var(--glass-1); border:1px solid rgba(255,255,255,0.06); color:white; outline:none; font-size:16px; transition: .18s; box-shadow: 0 6px 20px rgba(255,0,150,0.04) }
+.chat-input:focus{ box-shadow:0 12px 40px rgba(255,0,150,0.12); transform: translateY(-2px) }
+
+.btn-chat{ padding:12px 18px; border-radius:12px; background: linear-gradient(135deg,var(--pink-1),var(--pink-2)); color:white; border:none; font-weight:800; cursor:pointer; box-shadow: 0 10px 30px rgba(255,0,150,0.12) }
+.btn-chat:hover{ transform:scale(1.03) }
+
+/* smooth scroll behavior */
+html { scroll-behavior: smooth; }
+
+/* lightbox */
+.lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); z-index:9999 }
+#lightbox-img{ max-width:92%; max-height:92%; border-radius:12px }
+
+/* whatsapp float */
+.whatsapp-float{ position:fixed; right:18px; bottom:18px; width:56px; height:56px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; font-size:22px; color:white; box-shadow:0 10px 40px rgba(37,211,102,0.14); text-decoration:none; z-index:50 }
+
+/* responsive */
+@media (max-width:720px){
+    .header h1{ font-size:28px }
+    .gallery .card img{ height:140px }
+    .chat-box{ height:320px }
+    .menu{ padding:8px; margin:8px }
+}
+    </style>
+</head>
 <body>
 
-<!-- 🌟 Fondo Animado -->
 <div class="bg-animation"></div>
 
-<!-- 🌟 MENÚ SUPERIOR -->
+<!-- MENÚ SUPERIOR -->
 <nav class="menu">
-    <div class="">
-        <img src="" alt="">
-        <h2>🔥 Mi Contenido 🔥</h2>
-    </div>
+    <h2>🔥 Mi Contenido 🔥</h2>
     <ul>
         <li><a href="#fotos">Fotos</a></li>
         <li><a href="#videos">Videos</a></li>
         <li><a href="#premium">Premium 💎</a></li>
+        <li><a href="#chat">Chat</a></li>
+        <li><a href="#rutina">Ejercitando a la Perra</a></li>
+        <li><a class="whatsapp-top" href="https://wa.me/16124601102" target="_blank">WhatsApp 📞</a></li>
     </ul>
 </nav>
 
-<!-- 🌟 ENCABEZADO -->
-<header class="header neon-text">
+<!-- ENCABEZADO -->
+<header class="header">
     <h1>Me Encanta la Verga</h1>
     <p>Compra mi contenido, haré lo que me pidas</p>
+
+    <a class="btn-whatsapp-header" href="https://wa.me/16124601102" target="_blank">
+        📞 Contactarme por WhatsApp
+    </a>
 </header>
 
-<!-- 🌟 SECCIÓN FOTOS -->
-<h2 id="fotos" class="titulo-seccion neon-title">Soy Tu Perra</h2>
+<!-- SECCIÓN FOTOS -->
+<h2 id="fotos" class="titulo-seccion">Soy Tu Perra</h2>
 
-<section class="gallery">
-
-    <!-- 10 imágenes con lightbox -->
-    <div class="card"><img src="img/foto1.jpeg" onclick="openLightbox(this.src)"><h3>Foto #1</h3></div>
-    <div class="card"><img src="img/foto2.jpeg" onclick="openLightbox(this.src)"><h3>Foto #2</h3></div>
-    <div class="card"><img src="img/foto3.jpeg" onclick="openLightbox(this.src)"><h3>Foto #3</h3></div>
-    <div class="card"><img src="img/foto4.jpeg" onclick="openLightbox(this.src)"><h3>Foto #4</h3></div>
-    <div class="card"><img src="img/foto5.jpeg" onclick="openLightbox(this.src)"><h3>Foto #5</h3></div>
-    <div class="card"><img src="img/foto6.jpeg" onclick="openLightbox(this.src)"><h3>Foto #6</h3></div>
-    <div class="card"><img src="img/foto7.jpeg" onclick="openLightbox(this.src)"><h3>Foto #7</h3></div>
-    <div class="card"><img src="img/foto8.jpeg" onclick="openLightbox(this.src)"><h3>Foto #8</h3></div>
-    <div class="card"><img src="img/foto9.jpeg" onclick="openLightbox(this.src)"><h3>Foto #9</h3></div>
-    <div class="card"><img src="img/foto10.jpeg" onclick="openLightbox(this.src)"><h3>Foto #10</h3></div>
-
+<section class="gallery" id="gallery">
+    <div class="card"><img src="img/foto1.jpeg" alt="Foto 1" onclick="openLightbox(this.src)"><h3>Foto #1</h3></div>
+    <div class="card"><img src="img/foto2.jpeg" alt="Foto 2" onclick="openLightbox(this.src)"><h3>Foto #2</h3></div>
+    <div class="card"><img src="img/foto3.jpeg" alt="Foto 3" onclick="openLightbox(this.src)"><h3>Foto #3</h3></div>
+    <div class="card"><img src="img/foto4.jpeg" alt="Foto 4" onclick="openLightbox(this.src)"><h3>Foto #4</h3></div>
+    <div class="card"><img src="img/foto5.jpeg" alt="Foto 5" onclick="openLightbox(this.src)"><h3>Foto #5</h3></div>
+    <div class="card"><img src="img/foto6.jpeg" alt="Foto 6" onclick="openLightbox(this.src)"><h3>Foto #6</h3></div>
+    <div class="card"><img src="img/foto7.jpeg" alt="Foto 7" onclick="openLightbox(this.src)"><h3>Foto #7</h3></div>
+    <div class="card"><img src="img/foto8.jpeg" alt="Foto 8" onclick="openLightbox(this.src)"><h3>Foto #8</h3></div>
+    <div class="card"><img src="img/foto9.jpeg" alt="Foto 9" onclick="openLightbox(this.src)"><h3>Foto #9</h3></div>
+    <div class="card"><img src="img/foto10.jpeg" alt="Foto 10" onclick="openLightbox(this.src)"><h3>Foto #10</h3></div>
 </section>
 
-<!-- 🌟 SECCIÓN VIDEOS -->
-<h2 id="videos" class="titulo-seccion neon-title">Videos Exclusivos</h2>
+<!-- SECCIÓN VIDEOS -->
+<h2 id="videos" class="titulo-seccion">Videos Exclusivos</h2>
 
 <section class="videos">
     <div class="tiktok-container"><video src="videos/video1.mp4" controls></video></div>
     <div class="tiktok-container"><video src="videos/video2.mp4" controls></video></div>
 </section>
 
-<!-- 🌟 PAQUETES PREMIUM -->
-<h2 id="premium" class="titulo-seccion neon-title">Paquetes Premium 💎</h2>
+<!-- PAQUETES PREMIUM -->
+<h2 id="premium" class="titulo-seccion">Paquetes Premium 💎</h2>
 
 <section class="premium-plans">
-
     <div class="plan-card">
         <h3 class="plan-title">🔥 Básico</h3>
         <p>20 fotos exclusivas</p>
         <p>5 videos</p>
         <h2 class="price">$10 USD</h2>
-        <a href="payment.html?plan=basico" class="btn-premium">Comprar</a>
+
+        <!-- BOTÓN A WHATSAPP -->
+        <a 
+            class="btn-premium" 
+            href="https://wa.me/16124601102?text=Hola%20quiero%20comprar%20el%20paquete%20Básico%20🔥" 
+            target="_blank">
+            Comprar
+        </a>
     </div>
 
     <div class="plan-card destacado">
@@ -77,7 +217,14 @@
         <p>Videos diarios</p>
         <p>Chat privado</p>
         <h2 class="price">$25 USD</h2>
-        <a href="payment.html?plan=vip" class="btn-premium">Comprar</a>
+
+        <!-- BOTÓN A WHATSAPP -->
+        <a 
+            class="btn-premium" 
+            href="https://wa.me/16124601102?text=Hola%20quiero%20comprar%20el%20paquete%20VIP%20💎🔥" 
+            target="_blank">
+            Comprar
+        </a>
     </div>
 
     <div class="plan-card">
@@ -86,25 +233,191 @@
         <p>Videos personalizados</p>
         <p>Llamadas privadas</p>
         <h2 class="price">$60 USD</h2>
-        <a href="payment.html?plan=ultra" class="btn-premium">Comprar</a>
-    </div>
 
+        <!-- BOTÓN A WHATSAPP -->
+        <a 
+            class="btn-premium" 
+            href="https://wa.me/16124601102?text=Hola%20quiero%20comprar%20el%20paquete%20ULTRA%20👑🔥" 
+            target="_blank">
+            Comprar
+        </a>
+    </div>
 </section>
 
-<!-- 🌟 LIGHTBOX -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img">
+<!-- PAGOS EXTRA -->
+<section>
+    <h2 class="titulo-seccion">Sesión en Vivo 🔥</h2>
+
+    <!-- BOTÓN CENTRADO Y A WHATSAPP -->
+    <div style="text-align:center; margin-bottom:18px;">
+        <a 
+           class="btn-premium" 
+           href="https://wa.me/16124601102?text=Hola%20quiero%20pagar%20una%20Sesión%20en%20Vivo%20🔥" 
+           target="_blank">
+           Pagar Sesión en Vivo
+        </a>
+    </div>
+
+    <h2 class="titulo-seccion">Conócela en Bogotá ✈️</h2>
+    <p style="text-align:center;color:var(--muted)">Disponible solo por WhatsApp</p>
+    <div style="text-align:center;margin-bottom:18px;">
+        <a class="btn-premium" href="https://wa.me/16124601102" target="_blank">Consultar Precio</a>
+    </div>
+</section>
+
+<!-- ENCUESTAS -->
+<section>
+    <h2 class="titulo-seccion">Participa en su Tatuaje 🖋</h2>
+    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputTatuaje')">
+        <label>¿Qué tatuaje debería hacerse?</label>
+        <input id="inputTatuaje" type="text" placeholder="Escribe tu idea">
+        <button type="submit" class="btn-premium">Enviar Idea</button>
+    </form>
+
+    <h2 class="titulo-seccion">¿Dónde debería hacerse un piercing? 💍</h2>
+    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputPiercing')">
+        <label>Tu sugerencia:</label>
+        <input id="inputPiercing" type="text" placeholder="Escribe tu idea">
+        <button type="submit" class="btn-premium">Enviar</button>
+    </form>
+</section>
+
+<!-- CHAT -->
+<h2 id="chat" class="titulo-seccion">Chat de Usuarios 💬</h2>
+
+<div id="chatBox" class="chat-box" aria-live="polite" aria-atomic="false"></div>
+
+<div class="chat-input-container">
+    <input id="chatInput" class="chat-input" placeholder="Dime algo rico..." aria-label="Escribir mensaje">
+    <button id="sendBtn" class="btn-chat" aria-label="Enviar mensaje">Enviar 💋</button>
 </div>
 
-<!-- SCRIPT -->
+<!-- RUTINA -->
+<h2 id="rutina" class="titulo-seccion">Ejercitando a la Perra 💦</h2>
+
+<p style="text-align:center;color:var(--muted)">Escribe la rutina que quieres que haga, pronto la subiremos a la página:</p>
+
+<form onsubmit="event.preventDefault(); sendIdeaFromForm('inputRutina')">
+    <textarea id="inputRutina" placeholder="Escribe tu rutina aquí..." class="textarea"></textarea>
+    <div style="text-align:center;margin-top:8px;">
+        <button type="submit" class="btn-premium">Enviar Rutina</button>
+    </div>
+</form>
+
+<!-- BOTÓN FLOTANTE WHATSAPP -->
+<a href="https://wa.me/16124601102" target="_blank" class="whatsapp-float" rel="noopener">💬</a>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" alt="Imagen ampliada">
+</div>
+
+<!-- SCRIPTS -->
 <script>
+/* Lightbox */
 function openLightbox(src) {
-    document.getElementById("lightbox-img").src = src;
-    document.getElementById("lightbox").style.display = "flex";
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    document.getElementById('lightbox').style.display = 'flex';
 }
 function closeLightbox() {
-    document.getElementById("lightbox").style.display = "none";
+    document.getElementById('lightbox').style.display = 'none';
 }
+
+/* Helper trim */
+function safeTrim(v){ return (v||'').toString().trim(); }
+
+/* Send idea from forms (tatuaje/piercing/rutina) */
+function sendIdeaFromForm(inputId){
+    const input = document.getElementById(inputId);
+    const text = safeTrim(input.value);
+    if(!text) {
+        input.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}], {duration:300});
+        return;
+    }
+    const numero = '16124601102';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+    showEphemeralMessage(text);
+    input.value = '';
+}
+
+/* ephemeral bubbles */
+function showEphemeralMessage(text){
+    const box = document.getElementById('chatBox');
+    const wrapper = document.createElement('div');
+    wrapper.className = 'message-wrapper';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.textContent = 'T';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble mine';
+    bubble.textContent = text;
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+    box.appendChild(wrapper);
+    box.scrollTop = box.scrollHeight;
+
+    setTimeout(()=> {
+        wrapper.animate([{opacity:1, transform:'translateY(0)'}, {opacity:0, transform:'translateY(-10px)'}], {duration:300});
+        setTimeout(()=> wrapper.remove(), 320);
+    }, 1400);
+}
+
+/* Chat send */
+(function attachChat(){
+    const input = document.getElementById('chatInput');
+    const btn = document.getElementById('sendBtn');
+    const box = document.getElementById('chatBox');
+
+    function sendMessage(){
+        const text = safeTrim(input.value);
+        if(!text){
+            input.animate([{transform:'translateY(-2px)'},{transform:'translateY(0)'}], {duration:160});
+            return;
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'message-wrapper';
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        avatar.textContent = 'T';
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble mine';
+        bubble.textContent = text;
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+        box.appendChild(wrapper);
+
+        box.scrollTop = box.scrollHeight;
+
+        const numero = '16124601102';
+        const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+
+        input.value = '';
+    }
+
+    btn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' && !e.shiftKey){
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+})();
+
+/* Enter for other forms */
+['inputTatuaje','inputPiercing','inputRutina'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' && !e.shiftKey){
+            e.preventDefault();
+            sendIdeaFromForm(id);
+        }
+    });
+});
 </script>
 
 </body>
