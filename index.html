@@ -1,465 +1,1080 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nadie Es Más Perra Que Yo</title>
 
     <style>
-/* =========================
-   BASE Y PALETA (mejorada)
-   ========================= */
-:root{
-    --bg-1: #0b0010;
-    --pink-1: #ff0099;
-    --pink-2: #ff4fc3;
-    --glass-1: rgba(255,255,255,0.06);
-    --muted: #d9c4db;
-}
+        /* =========================
+           BASE Y PALETA (mejorada)
+           ========================= */
+        :root {
+            --bg-1: #0b0010;
+            --pink-1: #ff0099;
+            --pink-2: #ff4fc3;
+            --glass-1: rgba(255,255,255,0.06);
+            --muted: #d9c4db;
+        }
 
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#fff;background:linear-gradient(135deg,var(--bg-1), #120018);-webkit-font-smoothing:antialiased}
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html,body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: #fff; background: linear-gradient(135deg, var(--bg-1), #120018); -webkit-font-smoothing: antialiased; -webkit-font-smoothing: antialiased; }
 
-/* fondo animado sutil */
-.bg-animation{
-    position:fixed; inset:0; z-index:-1;
-    background:
-        radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%),
-        radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%),
-        linear-gradient(180deg,#080006,#160018);
-    filter: blur(60px);
-}
+        /* fondo animado sutil */
+        .bg-animation {
+            position: fixed; inset: 0; z-index: -1;
+            background:
+                radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%),
+                radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%),
+                linear-gradient(180deg, #080006, #160018);
+            filter: blur(60px);
+        }
 
-/* contenedor central ancho */
-.container{width:100%; max-width:1180px; margin:0 auto; padding:18px}
+        /* contenedor central ancho */
+        .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 18px }
 
-/* =========================
-   MENU SUPERIOR (mejor y responsive)
-   ========================= */
-nav.menu{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:12px 14px;
-    background:rgba(0,0,0,0.45);
-    backdrop-filter: blur(8px);
-    border-radius:14px;
-    margin: 12px;
-    border: 1px solid rgba(255,0,150,0.08);
-    box-shadow: 0 6px 30px rgba(255,0,150,0.04);
-    flex-wrap: wrap;
-}
+        /* =========================
+           MENU SUPERIOR (mejor y responsive)
+           ========================= */
+        nav.menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            margin: 12px;
+            border: 1px solid rgba(255,0,150,0.08);
+            box-shadow: 0 6px 30px rgba(255,0,150,0.04);
+            flex-wrap: wrap;
+        }
 
-.menu h2{margin:0;font-size:18px;color:var(--pink-2); flex-shrink:0}
-.menu ul{list-style:none;display:flex;gap:10px;margin:0;padding:0;align-items:center; flex-wrap:wrap; justify-content:center}
-.menu a{color:#ffd6f0;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:10px;transition:0.18s; font-size:14px; white-space:nowrap}
-.menu a:hover{color:#fff;background:linear-gradient(90deg,var(--pink-1),var(--pink-2));box-shadow:0 6px 22px rgba(255,0,150,0.12)}
+        .menu h2 { margin: 0; font-size: 18px; color: var(--pink-2); flex-shrink: 0 }
+        .menu ul { list-style: none; display: flex; gap: 10px; margin: 0; padding: 0; align-items: center; flex-wrap: wrap; justify-content: center }
+        .menu a { color: #ffd6f0; text-decoration: none; font-weight: 600; padding: 8px 10px; border-radius: 10px; transition: 0.18s; font-size: 14px; white-space: nowrap }
+        .menu a:hover { color: #fff; background: linear-gradient(90deg, var(--pink-1), var(--pink-2)); box-shadow: 0 6px 22px rgba(255,0,150,0.12) }
 
-/* botón whatsapp top */
-.btn-whatsapp-header{
-    display:inline-block;padding:10px 18px;border-radius:12px;
-    background:linear-gradient(135deg,#25D366,#1ebe5d);color:white;text-decoration:none;font-weight:700;
-    box-shadow:0 6px 30px rgba(37,211,102,0.08);
-    font-size:16px;
-}
+        /* botón whatsapp top */
+        .btn-whatsapp-header {
+            display: inline-block; padding: 10px 18px; border-radius: 12px;
+            background: linear-gradient(135deg, #25D366, #1ebe5d); color: white; text-decoration: none; font-weight: 700;
+            box-shadow: 0 6px 30px rgba(37,211,102,0.08);
+            font-size: 16px;
+        }
 
-/* =========================
-   HEADER
-   ========================= */
-.header{ text-align:center;padding:40px 16px 10px 16px }
-.header h1{font-size:40px;margin:6px 0;color:var(--pink-1);text-shadow:0 0 18px rgba(255,0,150,0.12); line-height:1.2}
-.header p{color:var(--muted);margin:0 0 16px 0; font-size:16px}
+        /* =========================
+           AUDIO OCULTO (reproducción automática)
+           ========================= */
+        #audioPlayer {
+            display: none;
+        }
 
-/* =========================
-   SECCIONES: TITULOS Y GRID
-   ========================= */
-.titulo-seccion{ text-align:center;font-size:26px;margin-top:30px;color:var(--pink-2); text-shadow:0 0 10px rgba(255,79,195,0.08); padding:0 16px}
+        /* =========================
+           CONTADOR REGRESIVO FLOTANTE Y DRAGGABLE
+           ========================= */
+        .promo-banner {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            width: 320px;
+            /* Mantener color pero permitiremos transparencia dinámica via JS al hacer scroll */
+            background: linear-gradient(135deg, rgba(255,0,150,0.95), rgba(125,0,255,0.95));
+            border: 2px solid var(--pink-1);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 14px 40px rgba(255,0,150,0.3);
+            animation: pulse 2s infinite;
+            z-index: 1000;
+            cursor: move;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.28s ease, left 0.12s ease, top 0.12s ease;
+            opacity: 1; /* valor por defecto, JS ajustará a 0.5 cuando el usuario comience a bajar la página */
+        }
 
-.gallery{ display:grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap:14px; padding:16px; max-width:1180px; margin: 10px auto }
-.card{ background: rgba(255,255,255,0.03); padding:10px; border-radius:12px; text-align:center; transition:0.25s; border:1px solid rgba(255,0,150,0.04) }
-.card:hover{ transform: translateY(-6px); box-shadow:0 14px 40px rgba(255,0,150,0.06) }
-.card img{ width:100%; height:160px; object-fit:cover; border-radius:10px; cursor:pointer }
-.card h3{font-size:14px; margin:8px 0 0 0}
+        .promo-banner h2 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(0,0,0,0.5);
+            line-height: 1.2;
+        }
 
-/* videos grid */
-.videos{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; padding:16px; max-width:1180px; margin:auto }
-.videos video{ width:100%; border-radius:12px; box-shadow:0 12px 36px rgba(0,0,0,0.5) }
+        .promo-banner p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #fff;
+        }
 
-/* premium plans */
-.premium-plans{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; padding:16px; margin: 10px auto; max-width:1180px }
-.plan-card{ width:100%; max-width:280px; padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,0,150,0.04); text-align:center; box-shadow:0 8px 30px rgba(255,0,150,0.03) }
-.plan-title{font-size:20px; margin:0 0 12px 0}
-.price{font-size:28px; color:var(--pink-2); margin:12px 0}
-.btn-premium{ display:inline-block; padding:10px 20px; border-radius:12px; text-decoration:none; color:white; font-weight:800; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); box-shadow:0 12px 30px rgba(255,0,150,0.08); font-size:16px }
+        .countdown { display: flex; justify-content: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
 
-/* =========================
-   FORMULARIOS
-   ========================= */
-form{ width:calc(100% - 32px); max-width:720px; margin:18px auto; background: rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,0,150,0.03) }
-form label{ display:block; margin-bottom:8px; color:var(--muted); font-weight:600; font-size:15px }
-form input[type="text"], form textarea{ width:100%; padding:12px; border-radius:10px; border:2px solid rgba(255,0,150,0.08); background: rgba(255,255,255,0.02); color:white; outline:none; font-size:15px }
-form textarea{ min-height:120px; resize:vertical }
-form .btn-premium{ margin-top:8px }
-form button{ width:100%; max-width:200px }
+        .countdown-item {
+            background: rgba(0,0,0,0.4);
+            padding: 12px 14px;
+            border-radius: 10px;
+            min-width: 60px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background .18s;
+        }
 
-/* =========================
-   CHAT
-   ========================= */
-.chat-box{
-    width:calc(100% - 32px); max-width:720px; margin:18px auto; background: rgba(255,255,255,0.04);
-    border: 2px solid rgba(255,0,150,0.28); border-radius:18px; padding:16px; height:360px; overflow-y:auto; backdrop-filter: blur(8px);
-    box-shadow: 0 12px 36px rgba(255,0,150,0.06);
-}
+        .countdown-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            display: block;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
 
-.message-wrapper{ display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; animation: fadeIn .28s ease }
-.avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); display:flex;align-items:center;justify-content:center;font-weight:800; color:white; box-shadow:0 8px 30px rgba(255,0,150,0.08); flex-shrink:0 }
+        .countdown-label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.9);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
 
-.bubble{ padding:12px 14px; border-radius:14px; max-width:70%; font-size:15px; line-height:1.35; box-shadow:0 10px 30px rgba(0,0,0,0.25); word-wrap:break-word }
-.mine{ margin-left:auto; background:linear-gradient(135deg,var(--pink-1),var(--pink-2)); color:white; border-bottom-right-radius:6px }
-.others{ background: rgba(255,255,255,0.96); color:#222; border-bottom-left-radius:6px }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 14px 40px rgba(255,0,150,0.3) }
+            50% { box-shadow: 0 14px 50px rgba(255,0,150,0.5) }
+        }
 
-/* improved input area */
-.chat-input-container{ width:calc(100% - 32px); max-width:720px; margin:12px auto 40px auto; display:flex; gap:12px; align-items:center }
-.chat-input{ flex:1; padding:14px 18px; border-radius:12px; background:var(--glass-1); border:1px solid rgba(255,255,255,0.06); color:white; outline:none; font-size:16px; transition: .18s; box-shadow: 0 6px 20px rgba(255,0,150,0.04); min-width:0 }
-.chat-input:focus{ box-shadow:0 12px 40px rgba(255,0,150,0.12); transform: translateY(-2px) }
+        /* =========================
+           HEADER
+           ========================= */
+        .header { text-align: center; padding: 40px 16px 10px 16px }
+        .header h1 { font-size: 40px; margin: 6px 0; color: var(--pink-1); text-shadow: 0 0 18px rgba(255,0,150,0.12); line-height: 1.2 }
+        .header p { color: var(--muted); margin: 0 0 16px 0; font-size: 16px }
 
-.btn-chat{ padding:12px 18px; border-radius:12px; background: linear-gradient(135deg,var(--pink-1),var(--pink-2)); color:white; border:none; font-weight:800; cursor:pointer; box-shadow: 0 10px 30px rgba(255,0,150,0.12); white-space:nowrap }
-.btn-chat:hover{ transform:scale(1.03) }
+        /* =========================
+           SECCIONES: TITULOS Y GRID
+           ========================= */
+        .titulo-seccion { text-align: center; font-size: 26px; margin-top: 30px; color: var(--pink-2); text-shadow: 0 0 10px rgba(255,79,195,0.08); padding: 0 16px }
 
-/* smooth scroll behavior */
-html { scroll-behavior: smooth; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; padding: 16px; max-width: 1180px; margin: 10px auto }
+        .card { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; text-align: center; transition: 0.25s; border: 1px solid rgba(255,0,150,0.04); position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(255,0,150,0.06) }
+        .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; cursor: pointer; display:block; }
+        .card h3 { font-size: 14px; margin: 8px 0 0 0; color:var(--muted) }
 
-/* lightbox */
-.lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); z-index:9999; padding:16px }
-#lightbox-img{ max-width:100%; max-height:100%; border-radius:12px; object-fit:contain }
+        /* Overlay info for tiktok-like appearance on mobile */
+        .card .overlay {
+            position: absolute;
+            left: 12px;
+            bottom: 18px;
+            right: 12px;
+            color: #fff;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .card .overlay .title { font-weight: 800; font-size: 16px; pointer-events: none; }
+        .card .overlay .meta { font-size: 12px; color: rgba(255,255,255,0.85); pointer-events: none; }
 
-/* whatsapp float */
-.whatsapp-float{ position:fixed; right:18px; bottom:18px; width:56px; height:56px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; font-size:22px; color:white; box-shadow:0 10px 40px rgba(37,211,102,0.14); text-decoration:none; z-index:50 }
+        /* FOTOS BLOQUEADAS */
+        .card.locked img { filter: blur(12px) brightness(0.4) }
+        .card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            pointer-events: none;
+        }
+        .card.locked:hover { cursor: not-allowed }
 
-/* responsive */
-@media (max-width:768px){
-    .header h1{ font-size:32px }
-    .header p{ font-size:15px }
-    .titulo-seccion{ font-size:22px; margin-top:24px }
-    .gallery{ grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap:12px; padding:12px }
-    .card img{ height:140px }
-    .card h3{font-size:13px}
-    .videos{ grid-template-columns: 1fr; gap:14px; padding:12px }
-    .chat-box{ height:300px; padding:12px }
-    .chat-input-container{ gap:8px }
-    .btn-chat{ padding:12px 14px; font-size:14px }
-    .menu{ padding:10px 12px; margin:8px; gap:8px }
-    .menu h2{ font-size:16px; width:100%; text-align:center }
-    .menu ul{ width:100%; gap:8px; font-size:13px }
-    .menu a{ padding:6px 8px; font-size:13px }
-    .btn-whatsapp-header{ padding:10px 16px; font-size:15px }
-    .premium-plans{ gap:14px; padding:12px }
-    .plan-card{ padding:16px; max-width:100% }
-    form{ padding:14px }
-    .whatsapp-float{ width:52px; height:52px; font-size:20px; right:14px; bottom:14px }
-}
+        /* videos grid */
+        .videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 16px; max-width: 1180px; margin: auto }
+        .videos .tiktok-container { position: relative; overflow: hidden; border-radius: 12px; background: #000; }
+        .videos video { width: 100%; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); display:block; object-fit: cover; max-height: 480px; }
 
-@media (max-width:480px){
-    .header h1{ font-size:28px }
-    .header{ padding:30px 12px 8px 12px }
-    .titulo-seccion{ font-size:20px }
-    .gallery{ grid-template-columns: repeat(2, 1fr); gap:10px }
-    .card{ padding:8px }
-    .card img{ height:120px }
-    .chat-input{ padding:12px 14px; font-size:15px }
-    .btn-chat{ padding:10px 12px }
-    .menu a{ font-size:12px; padding:6px 7px }
-    .avatar{ width:38px; height:38px; font-size:14px }
-    .bubble{ font-size:14px; padding:10px 12px }
-    .plan-title{ font-size:18px }
-    .price{ font-size:24px }
-}
+        /* Small overlay for each video (like, share, title) */
+        .videos .tiktok-container .v-overlay {
+            position: absolute;
+            left: 12px;
+            bottom: 16px;
+            color: #fff;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+            pointer-events: none;
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+        }
+        .v-overlay .v-title { font-size: 16px; font-weight:800 }
+        .v-overlay .v-desc { font-size: 12px; opacity: .92 }
 
-@keyframes fadeIn{
-    from{ opacity:0; transform:translateY(10px) }
-    to{ opacity:1; transform:translateY(0) }
-}
+        /* Controls area (on hover show) */
+        .tiktok-controls {
+            position:absolute;
+            right: 12px;
+            bottom: 16px;
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            align-items:center;
+        }
+        .tiktok-controls button {
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            cursor:pointer;
+            font-weight:800;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* premium plans */
+        .premium-plans { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; padding: 16px; margin: 10px auto; max-width: 1180px }
+        .plan-card { width: 100%; max-width: 280px; padding: 18px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,0,150,0.04); text-align: center; box-shadow: 0 8px 30px rgba(255,0,150,0.03) }
+        .plan-title { font-size: 20px; margin: 0 0 12px 0 }
+        .price { font-size: 28px; color: var(--pink-2); margin: 12px 0 }
+        .btn-premium { display: inline-block; padding: 10px 20px; border-radius: 12px; text-decoration: none; color: white; font-weight: 800; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); box-shadow: 0 12px 30px rgba(255,0,150,0.08); font-size: 16px }
+
+        /* =========================
+           FORMULARIOS
+           ========================= */
+        form { width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,0,150,0.03) }
+        form label { display: block; margin-bottom: 8px; color: var(--muted); font-weight: 600; font-size: 15px }
+        form input[type="text"], form textarea { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid rgba(255,0,150,0.08); background: rgba(255,255,255,0.02); color: white; outline: none; font-size: 15px }
+        form textarea { min-height: 120px; resize: vertical }
+        form .btn-premium { margin-top: 8px }
+        form button { width: 100%; max-width: 200px }
+
+        /* =========================
+           CHAT
+           ========================= */
+        .chat-box {
+            width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,0,150,0.28); border-radius: 18px; padding: 16px; height: 360px; overflow-y: auto; backdrop-filter: blur(8px);
+            box-shadow: 0 12px 36px rgba(255,0,150,0.06);
+        }
+
+        .message-wrapper { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; animation: fadeIn .28s ease }
+        .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; box-shadow: 0 8px 30px rgba(255,0,150,0.08); flex-shrink: 0 }
+
+        .bubble { padding: 12px 14px; border-radius: 14px; max-width: 70%; font-size: 15px; line-height: 1.35; box-shadow: 0 10px 30px rgba(0,0,0,0.25); word-wrap: break-word }
+        .mine { margin-left: auto; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: white; border-bottom-right-radius: 6px }
+        .others { background: rgba(255,255,255,0.96); color: #222; border-bottom-left-radius: 6px }
+
+        /* improved input area */
+        .chat-input-container { width: calc(100% - 32px); max-width: 720px; margin: 12px auto 40px auto; display: flex; gap: 12px; align-items: center }
+        .chat-input { flex: 1; padding: 14px 18px; border-radius: 12px; background: var(--glass-1); border: 1px solid rgba(255,255,255,0.06); color: white; outline: none; font-size: 16px; transition: .18s; box-shadow: 0 6px 20px rgba(255,0,150,0.04); min-width: 0 }
+        .chat-input:focus { box-shadow: 0 12px 40px rgba(255,0,150,0.12); transform: translateY(-2px) }
+
+        .btn-chat { padding: 12px 18px; border-radius: 12px; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: white; border: none; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(255,0,150,0.12); white-space: nowrap }
+        .btn-chat:hover { transform: scale(1.03) }
+
+        /* smooth scroll behavior */
+        html { scroll-behavior: smooth; }
+
+        /* lightbox */
+        .lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); z-index: 9999; padding: 16px }
+        #lightbox-img { max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain }
+
+        /* whatsapp float */
+        .whatsapp-float { position: fixed; right: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; box-shadow: 0 10px 40px rgba(37,211,102,0.14); text-decoration: none; z-index: 50 }
+
+        /* responsive: estilos para dispositivos móviles estilo "TikTok" */
+        @media (max-width: 768px) {
+            /* ajustar encabezado */
+            .header h1 { font-size: 28px; margin-top:12px }
+            .header p { font-size: 14px; padding: 0 12px; }
+
+            /* Hacemos que la galería y la sección de videos puedan comportarse como un feed vertical
+               con snap scrolling, cada item ocupa la pantalla para dar sensación tipo TikTok */
+            .gallery, .videos {
+                /* Usaremos el alto total de la ventana para el contenedor (menos el header) */
+                height: calc(100vh - 120px); /* header + posible navegacion */
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+                overflow-y: auto;
+                scroll-snap-type: y mandatory; /* habilita snap vertical */
+            }
+
+            /* Cada card / video se comportará como un "slide" de la app vertical */
+            .gallery .card, .videos .tiktok-container {
+                min-height: calc(100vh - 120px);
+                height: calc(100vh - 120px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                scroll-snap-align: start;
+                margin: 0;
+                border-radius: 0;
+                padding: 0;
+            }
+
+            /* Imagenes se escalan para cubrir y verse como fondo de pantalla */
+            .gallery .card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 0;
+            }
+
+            /* superposición de info (título/descripción) visible sobre la imagen/video */
+            .card .overlay { display:flex; flex-direction:column; align-items:flex-start; padding-left: 14px; padding-right: 14px; }
+            .card h3 { display:none; } /* ocultamos el h3 normal en móvil porque usamos overlay */
+            .card .overlay .title { font-size: 18px; line-height:1.1 }
+            .card .overlay .meta { font-size: 13px; opacity: .95 }
+
+            /* Videos a pantalla completa estilo tiktok */
+            .videos .tiktok-container { width: 100%; height: calc(100vh - 120px); display:block; background:#000; border-radius:0; }
+            .videos video { width: 100%; height: 100%; object-fit: cover; border-radius: 0; max-height: unset; }
+
+            /* Overlays para videos (titulo y controles) */
+            .v-overlay { left: 14px; bottom: 18px; }
+            .tiktok-controls { right: 14px; bottom: 18px; }
+
+            /* Aumentar tamaño botones interactivos */
+            .tiktok-controls button { padding: 12px; border-radius: 14px; font-size: 14px; }
+
+            /* Ajustes generales para que todo se vea bien en pantallas pequeñas */
+            .menu { padding: 8px 10px; margin: 6px }
+            .menu h2 { font-size: 16px }
+            .menu a { font-size: 13px; padding: 6px 8px }
+            .chat-box { height: 220px; padding: 10px }
+            .chat-input-container { gap: 8px; padding: 0 12px }
+            .btn-chat { padding: 10px 12px; font-size: 14px }
+            .promo-banner { width: 260px; top: 80px; right: 8px }
+        }
+
+        /* pequeños ajustes para móviles muy pequeños */
+        @media (max-width: 420px) {
+            .header h1 { font-size: 24px }
+            .card .overlay .title { font-size: 16px }
+            .v-overlay .v-title { font-size: 15px }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
     </style>
 </head>
 <body>
 
-<div class="bg-animation"></div>
+    <div class="bg-animation"></div>
 
-<!-- MENÚ SUPERIOR -->
-<nav class="menu">
-    <h2>🔥 Mi Contenido 🔥</h2>
-    <ul>
-        <li><a href="#fotos">Fotos</a></li>
-        <li><a href="#videos">Videos</a></li>
-        <li><a href="#premium">Premium 💎</a></li>
-        <li><a href="#chat">Chat</a></li>
-        <li><a href="#rutina">Ejercitando a la Perra</a></li>
-        <li><a class="whatsapp-top" href="https://wa.me/573202768182" target="_blank">WhatsApp 📞</a></li>
-    </ul>
-</nav>
+    <!-- AUDIO OCULTO CON AUTOPLAY
+         Notas:
+         - El elemento sigue oculto para no interferir con el diseño.
+         - Intentamos reproducir inmediatamente al cargar la página usando varias técnicas.
+         - Debido a políticas de navegadores, el autoplay con sonido puede bloquearse; se intenta reanudar
+           el AudioContext y también se realiza un intento directo con audio.play().
+         - Archivo proporcionado por el usuario: videos/musica.mpeg
+    -->
+    <audio id="audioPlayer" autoplay loop playsinline>
+        <source src="videos/musica.mpeg" type="audio/mpeg" />
+    </audio>
 
-<!-- ENCABEZADO -->
-<header class="header">
-    <h1>Me Encanta la Verga</h1>
-    <p>Compra mi contenido, haré lo que me pidas</p>
+    <!-- MENÚ SUPERIOR -->
+    <nav class="menu">
+        <h2>🔥 Mi Contenido 🔥</h2>
+        <ul>
+            <li><a href="#fotos">Fotos</a></li>
+            <li><a href="#videos">Videos</a></li>
+            <li><a href="#premium">Premium 💎</a></li>
+            <li><a href="#chat">Chat</a></li>
+            <li><a href="#rutina">Ejercitando a la Perra</a></li>
+            <li><a class="whatsapp-top" href="https://wa.me/016122323100" target="_blank" rel="noopener">WhatsApp 📞</a></li>
+        </ul>
+    </nav>
 
-    <a class="btn-whatsapp-header" href="https://wa.me/573202768182" target="_blank">
-        📞 Contactarme por WhatsApp
-    </a>
-</header>
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <h1>Me Encanta la Verga</h1>
+        <p>Perra sumisa en celo, ofreciéndose para complacerlo sin límites para ser usada y maltratada dispuesta a cumplir órdenes y volver una realidad sus más oscuras fantasías, dese un gusto y déjeme servirle</p>
 
-<!-- SECCIÓN FOTOS -->
-<h2 id="fotos" class="titulo-seccion">Soy Tu Perra</h2>
-
-<section class="gallery" id="gallery">
-    <div class="card"><img src="img/foto1.jpeg" alt="Foto 1" onclick="openLightbox(this.src)"><h3>Foto #1</h3></div>
-    <div class="card"><img src="img/foto2.jpeg" alt="Foto 2" onclick="openLightbox(this.src)"><h3>Foto #2</h3></div>
-    <div class="card"><img src="img/foto3.jpeg" alt="Foto 3" onclick="openLightbox(this.src)"><h3>Foto #3</h3></div>
-    <div class="card"><img src="img/foto4.jpeg" alt="Foto 4" onclick="openLightbox(this.src)"><h3>Foto #4</h3></div>
-    <div class="card"><img src="img/foto5.jpeg" alt="Foto 5" onclick="openLightbox(this.src)"><h3>Foto #5</h3></div>
-    <div class="card"><img src="img/foto6.jpeg" alt="Foto 6" onclick="openLightbox(this.src)"><h3>Foto #6</h3></div>
-    <div class="card"><img src="img/foto7.jpeg" alt="Foto 7" onclick="openLightbox(this.src)"><h3>Foto #7</h3></div>
-    <div class="card"><img src="img/foto8.jpeg" alt="Foto 8" onclick="openLightbox(this.src)"><h3>Foto #8</h3></div>
-    <div class="card"><img src="img/foto9.jpeg" alt="Foto 9" onclick="openLightbox(this.src)"><h3>Foto #9</h3></div>
-    <div class="card"><img src="img/foto10.jpeg" alt="Foto 10" onclick="openLightbox(this.src)"><h3>Foto #10</h3></div>
-</section>
-
-<!-- SECCIÓN VIDEOS -->
-<h2 id="videos" class="titulo-seccion">Videos Exclusivos</h2>
-
-<section class="videos">
-    <div class="tiktok-container"><video src="videos/video1.mp4" controls></video></div>
-    <div class="tiktok-container"><video src="videos/video2.mp4" controls></video></div>
-</section>
-
-<!-- PAQUETES PREMIUM -->
-<h2 id="premium" class="titulo-seccion">Paquetes Premium 💎</h2>
-
-<section class="premium-plans">
-    <div class="plan-card">
-        <h3 class="plan-title">🔥 Básico</h3>
-        <p>20 fotos exclusivas</p>
-        <p>5 videos</p>
-        <h2 class="price">$10 USD</h2>
-
-        <!-- BOTÓN A WHATSAPP -->
-        <a 
-            class="btn-premium" 
-            href="https://wa.me/573202768182?text=Hola%20quiero%20comprar%20el%20paquete%20Básico%20🔥" 
-            target="_blank">
-            Comprar
+        <a class="btn-whatsapp-header" href="https://wa.me/016122323100" target="_blank" rel="noopener">
+            📞 Contactarme por WhatsApp
         </a>
+    </header>
+
+    <!-- CONTADOR REGRESIVO FLOTANTE Y MOVIBLE -->
+    <div class="promo-banner" id="promoBanner">
+        <h2>🔥 ¡LA PERRA VIENE DE ESTADOS UNIDOS! 🔥</h2>
+        <p>Preparate porque llega con todo</p>
+        <div class="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="dias">00</span>
+                <span class="countdown-label">Días</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="horas">00</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutos">00</span>
+                <span class="countdown-label">Minutos</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="segundos">00</span>
+                <span class="countdown-label">Segundos</span>
+            </div>
+        </div>
     </div>
 
-    <div class="plan-card destacado">
-        <h3 class="plan-title">💎 VIP</h3>
-        <p>Todo el contenido</p>
-        <p>Videos diarios</p>
-        <p>Chat privado</p>
-        <h2 class="price">$25 USD</h2>
+    <!-- SECCIÓN FOTOS -->
+    <h2 id="fotos" class="titulo-seccion">Soy Tu Perra</h2>
 
-        <!-- BOTÓN A WHATSAPP -->
-        <a 
-            class="btn-premium" 
-            href="https://wa.me/573202768182?text=Hola%20quiero%20comprar%20el%20paquete%20VIP%20💎🔥" 
-            target="_blank">
-            Comprar
-        </a>
+    <section class="gallery" id="gallery">
+        <!-- Fotos libres (1-6) -->
+        <div class="card">
+            <img src="img/foto11.jpeg" alt="Foto 1" onclick="openLightbox(this.src)">
+            <!-- overlay para estilo tiktok (información) -->
+            <div class="overlay">
+                <div class="title">Foto #1</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <div class="card">
+            <img src="img/foto12.jpeg" alt="Foto 2" onclick="openLightbox(this.src)">
+            <div class="overlay">
+                <div class="title">Foto #2</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <div class="card">
+            <img src="img/foto13.jpeg" alt="Foto 3" onclick="openLightbox(this.src)">
+            <div class="overlay">
+                <div class="title">Foto #3</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <div class="card">
+            <img src="img/foto14.jpeg" alt="Foto 4" onclick="openLightbox(this.src)">
+            <div class="overlay">
+                <div class="title">Foto #4</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <div class="card">
+            <img src="img/foto15.jpeg" alt="Foto 5" onclick="openLightbox(this.src)">
+            <div class="overlay">
+                <div class="title">Foto #5</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <div class="card">
+            <img src="img/foto16.jpeg" alt="Foto 6" onclick="openLightbox(this.src)">
+            <div class="overlay">
+                <div class="title">Foto #6</div>
+                <div class="meta">Galería • Gratis</div>
+            </div>
+            <h3>.</h3>
+        </div>
+
+        <!-- Fotos bloqueadas (7-10) -->
+        <div class="card locked" onclick="solicitarPago()">
+            <img src="img/foto17.jpeg" alt="Foto 7">
+            <div class="overlay">
+                <div class="title">Foto #7</div>
+                <div class="meta">Premium • 🔒</div>
+            </div>
+            <h3>. 🔒</h3>
+        </div>
+
+        <div class="card locked" onclick="solicitarPago()">
+            <img src="img/foto18.jpeg" alt="Foto 8">
+            <div class="overlay">
+                <div class="title">Foto #8</div>
+                <div class="meta">Premium • 🔒</div>
+            </div>
+            <h3>. 🔒</h3>
+        </div>
+
+        <div class="card locked" onclick="solicitarPago()">
+            <img src="img/foto19.jpeg" alt="Foto 9">
+            <div class="overlay">
+                <div class="title">Foto #9</div>
+                <div class="meta">Premium • 🔒</div>
+            </div>
+            <h3>. 🔒</h3>
+        </div>
+
+        <div class="card locked" onclick="solicitarPago()">
+            <img src="img/foto20.jpeg" alt="Foto 10">
+            <div class="overlay">
+                <div class="title">Foto #10</div>
+                <div class="meta">Premium • 🔒</div>
+            </div>
+            <h3>. 🔒</h3>
+        </div>
+    </section>
+
+    <!-- SECCIÓN VIDEOS -->
+    <h2 id="videos" class="titulo-seccion">Videos Exclusivos</h2>
+
+    <section class="videos" id="videosSection">
+        <!-- Videos existentes -->
+        <div class="tiktok-container">
+            <video src="videos/video1.mp4" controls muted playsinline preload="metadata"></video>
+            <div class="v-overlay">
+                <div class="v-title">Video 1</div>
+                <div class="v-desc">Descripción breve • Gratis</div>
+            </div>
+            <div class="tiktok-controls" aria-hidden="true">
+                <button onclick="toggleMute(event)">🔊</button>
+                <button onclick="shareVideo(event, 'videos/video1.mp4')">📤</button>
+            </div>
+        </div>
+
+        <div class="tiktok-container">
+            <video src="videos/video2.mp4" controls muted playsinline preload="metadata"></video>
+            <div class="v-overlay">
+                <div class="v-title">Video 2</div>
+                <div class="v-desc">Descripción breve • Gratis</div>
+            </div>
+            <div class="tiktok-controls" aria-hidden="true">
+                <button onclick="toggleMute(event)">🔊</button>
+                <button onclick="shareVideo(event, 'videos/video2.mp4')">📤</button>
+            </div>
+        </div>
+
+        <!-- NUEVOS VIDEOS AGREGADOS (no se borró nada, solo se añadieron más entradas) -->
+        <div class="tiktok-container">
+            <video src="videos/video3.mp4" controls muted playsinline preload="metadata"></video>
+            <div class="v-overlay">
+                <div class="v-title">Video 3</div>
+                <div class="v-desc">Contenido exclusivo</div>
+            </div>
+            <div class="tiktok-controls" aria-hidden="true">
+                <button onclick="toggleMute(event)">🔊</button>
+                <button onclick="shareVideo(event, 'videos/video3.mp4')">📤</button>
+            </div>
+        </div>
+
+        <div class="tiktok-container">
+            <video src="videos/video4.mp4" controls muted playsinline preload="metadata"></video>
+            <div class="v-overlay">
+                <div class="v-title">Video 4</div>
+                <div class="v-desc">Contenido exclusivo</div>
+            </div>
+            <div class="tiktok-controls" aria-hidden="true">
+                <button onclick="toggleMute(event)">🔊</button>
+                <button onclick="shareVideo(event, 'videos/video4.mp4')">📤</button>
+            </div>
+        </div>
+
+        <div class="tiktok-container">
+            <video src="videos/video5.mp4" controls muted playsinline preload="metadata"></video>
+            <div class="v-overlay">
+                <div class="v-title">Video 5</div>
+                <div class="v-desc">Contenido exclusivo</div>
+            </div>
+            <div class="tiktok-controls" aria-hidden="true">
+                <button onclick="toggleMute(event)">🔊</button>
+                <button onclick="shareVideo(event, 'videos/video5.mp4')">📤</button>
+            </div>
+        </div>
+
+        <!-- Puedes agregar más <video> con la misma estructura: <video src="videos/videoX.mp4" controls muted playsinline></video> -->
+    </section>
+
+    <!-- PAQUETES PREMIUM CON PRECIOS EN PESOS COLOMBIANOS -->
+    <h2 id="premium" class="titulo-seccion">Paquetes Premium 💎</h2>
+
+    <section class="premium-plans">
+        <div class="plan-card">
+            <h3 class="plan-title">🔥 Básico</h3>
+            <p>20 fotos exclusivas</p>
+            <p>5 videos</p>
+            <h2 class="price">$5.000 COP</h2>
+
+            <a
+                class="btn-premium"
+                href="https://wa.me/016122323100?text=Hola%20quiero%20comprar%20el%20paquete%20Básico%20🔥%20de%20$5.000%20COP"
+                target="_blank" rel="noopener">
+                Comprar
+            </a>
+        </div>
+
+        <div class="plan-card destacado">
+            <h3 class="plan-title">💎 VIP</h3>
+            <p>Todo el contenido</p>
+            <p>Videos diarios</p>
+            <p>Chat privado</p>
+            <h2 class="price">$10.000 COP</h2>
+
+            <a
+                class="btn-premium"
+                href="https://wa.me/016122323100?text=Hola%20quiero%20comprar%20el%20paquete%20VIP%20💎🔥%20de%20$10.000%20COP"
+                target="_blank" rel="noopener">
+                Comprar
+            </a>
+        </div>
+
+        <div class="plan-card">
+            <h3 class="plan-title">👑 Ultra</h3>
+            <p>Contenido ilimitado</p>
+            <p>Videos personalizados</p>
+            <p>Llamadas privadas</p>
+            <h2 class="price">$20.000 COP</h2>
+
+            <a
+                class="btn-premium"
+                href="https://wa.me/016122323100?text=Hola%20quiero%20comprar%20el%20paquete%20ULTRA%20👑🔥%20de%20$20.000%20COP"
+                target="_blank" rel="noopener">
+                Comprar
+            </a>
+        </div>
+    </section>
+
+    <!-- PAGOS EXTRA -->
+    <section>
+        <h2 class="titulo-seccion">Sesión en Vivo 🔥</h2>
+
+        <div style="text-align:center; margin-bottom:18px; padding:0 16px">
+            <a
+               class="btn-premium"
+               href="https://wa.me/016122323100?text=Hola%20quiero%20pagar%20una%20Sesión%20en%20Vivo%20🔥"
+               target="_blank" rel="noopener">
+               Pagar Sesión en Vivo
+            </a>
+        </div>
+
+        <h2 class="titulo-seccion">Conócela en Bogotá ✈️</h2>
+        <p style="text-align:center;color:var(--muted); padding:0 16px">Disponible solo por WhatsApp</p>
+        <div style="text-align:center;margin-bottom:18px; padding:0 16px">
+            <a class="btn-premium" href="https://wa.me/016122323100" target="_blank" rel="noopener">Consultar Precio</a>
+        </div>
+    </section>
+
+    <!-- ENCUESTAS -->
+    <section>
+        <h2 class="titulo-seccion">Participa en su Tatuaje 🖋</h2>
+        <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputTatuaje')">
+            <label>¿Qué tatuaje debería hacerse?</label>
+            <input id="inputTatuaje" type="text" placeholder="Escribe tu idea" />
+            <button type="submit" class="btn-premium">Enviar Idea</button>
+        </form>
+
+        <h2 class="titulo-seccion">¿Dónde debería hacerse un piercing? 💍</h2>
+        <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputPiercing')">
+            <label>Tu sugerencia:</label>
+            <input id="inputPiercing" type="text" placeholder="Escribe tu idea" />
+            <button type="submit" class="btn-premium">Enviar</button>
+        </form>
+    </section>
+
+    <!-- CHAT -->
+    <h2 id="chat" class="titulo-seccion">Chat de Usuarios 💬</h2>
+
+    <div id="chatBox" class="chat-box" aria-live="polite" aria-atomic="false"></div>
+
+    <div class="chat-input-container">
+        <input id="chatInput" class="chat-input" placeholder="Dime algo rico..." aria-label="Escribir mensaje" />
+        <button id="sendBtn" class="btn-chat" aria-label="Enviar mensaje">Enviar 💋</button>
     </div>
 
-    <div class="plan-card">
-        <h3 class="plan-title">👑 Ultra</h3>
-        <p>Contenido ilimitado</p>
-        <p>Videos personalizados</p>
-        <p>Llamadas privadas</p>
-        <h2 class="price">$60 USD</h2>
+    <!-- RUTINA -->
+    <h2 id="rutina" class="titulo-seccion">Ejercitando a la Perra 💦</h2>
 
-        <!-- BOTÓN A WHATSAPP -->
-        <a 
-            class="btn-premium" 
-            href="https://wa.me/573202768182?text=Hola%20quiero%20comprar%20el%20paquete%20ULTRA%20👑🔥" 
-            target="_blank">
-            Comprar
-        </a>
-    </div>
-</section>
+    <p style="text-align:center;color:var(--muted); padding:0 16px">Escribe la rutina que quieres que haga, pronto la subiremos a la página:</p>
 
-<!-- PAGOS EXTRA -->
-<section>
-    <h2 class="titulo-seccion">Sesión en Vivo 🔥</h2>
-
-    <!-- BOTÓN CENTRADO Y A WHATSAPP -->
-    <div style="text-align:center; margin-bottom:18px; padding:0 16px">
-        <a 
-           class="btn-premium" 
-           href="https://wa.me/573202768182?text=Hola%20quiero%20pagar%20una%20Sesión%20en%20Vivo%20🔥" 
-           target="_blank">
-           Pagar Sesión en Vivo
-        </a>
-    </div>
-
-    <h2 class="titulo-seccion">Conócela en Bogotá ✈️</h2>
-    <p style="text-align:center;color:var(--muted); padding:0 16px">Disponible solo por WhatsApp</p>
-    <div style="text-align:center;margin-bottom:18px; padding:0 16px">
-        <a class="btn-premium" href="https://wa.me/573202768182" target="_blank">Consultar Precio</a>
-    </div>
-</section>
-
-<!-- ENCUESTAS -->
-<section>
-    <h2 class="titulo-seccion">Participa en su Tatuaje 🖋</h2>
-    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputTatuaje')">
-        <label>¿Qué tatuaje debería hacerse?</label>
-        <input id="inputTatuaje" type="text" placeholder="Escribe tu idea">
-        <button type="submit" class="btn-premium">Enviar Idea</button>
+    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputRutina')">
+        <textarea id="inputRutina" placeholder="Escribe tu rutina aquí..." class="textarea"></textarea>
+        <div style="text-align:center;margin-top:8px;">
+            <button type="submit" class="btn-premium">Enviar Rutina</button>
+        </div>
     </form>
 
-    <h2 class="titulo-seccion">¿Dónde debería hacerse un piercing? 💍</h2>
-    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputPiercing')">
-        <label>Tu sugerencia:</label>
-        <input id="inputPiercing" type="text" placeholder="Escribe tu idea">
-        <button type="submit" class="btn-premium">Enviar</button>
-    </form>
-</section>
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <a href="https://wa.me/016122323100" target="_blank" class="whatsapp-float" rel="noopener">💬</a>
 
-<!-- CHAT -->
-<h2 id="chat" class="titulo-seccion">Chat de Usuarios 💬</h2>
-
-<div id="chatBox" class="chat-box" aria-live="polite" aria-atomic="false"></div>
-
-<div class="chat-input-container">
-    <input id="chatInput" class="chat-input" placeholder="Dime algo rico..." aria-label="Escribir mensaje">
-    <button id="sendBtn" class="btn-chat" aria-label="Enviar mensaje">Enviar 💋</button>
-</div>
-
-<!-- RUTINA -->
-<h2 id="rutina" class="titulo-seccion">Ejercitando a la Perra 💦</h2>
-
-<p style="text-align:center;color:var(--muted); padding:0 16px">Escribe la rutina que quieres que haga, pronto la subiremos a la página:</p>
-
-<form onsubmit="event.preventDefault(); sendIdeaFromForm('inputRutina')">
-    <textarea id="inputRutina" placeholder="Escribe tu rutina aquí..." class="textarea"></textarea>
-    <div style="text-align:center;margin-top:8px;">
-        <button type="submit" class="btn-premium">Enviar Rutina</button>
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" alt="Imagen ampliada" />
     </div>
-</form>
 
-<!-- BOTÓN FLOTANTE WHATSAPP -->
-<a href="https://wa.me/573202768182" target="_blank" class="whatsapp-float" rel="noopener">💬</a>
+    <!-- SCRIPTS -->
+    <script>
+        /* ==================
+           AUTO-REPRODUCIR AUDIO OCULTO
+           ==================
+           Objetivo: intentar que la canción suene apenas abran la página.
+           NOTA: Los navegadores modernos pueden bloquear autoplay con sonido. Se hacen varios intentos:
+           1) intento directo con audio.play()
+           2) crear/resumir un AudioContext y conectar el elemento de audio
+           3) si todo falla, se mantiene el fallback original: reproducir tras la primera interacción
+        */
+        window.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('audioPlayer');
 
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" alt="Imagen ampliada">
-</div>
+            // Intento directo de reproducir (primera estrategia)
+            function tryDirectPlay() {
+                if (!audio) return Promise.reject('audio no encontrado');
+                try {
+                    // Intentamos reproducir con volumen por si acaso
+                    audio.volume = 1;
+                    return audio.play();
+                } catch (err) {
+                    return Promise.reject(err);
+                }
+            }
 
-<!-- SCRIPTS -->
-<script>
-/* Lightbox */
-function openLightbox(src) {
-    const img = document.getElementById('lightbox-img');
-    img.src = src;
-    document.getElementById('lightbox').style.display = 'flex';
-}
-function closeLightbox() {
-    document.getElementById('lightbox').style.display = 'none';
-}
+            // Estrategia con WebAudio API: crear AudioContext y conectar el elemento.
+            // A veces reanudar AudioContext permite reproducir sonido inmediatamente.
+            function tryWebAudioFallback() {
+                if (!audio) return Promise.reject('audio no encontrado');
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return Promise.reject('WebAudio no disponible');
 
-/* Helper trim */
-function safeTrim(v){ return (v||'').toString().trim(); }
+                    const ctx = new AudioContext();
+                    // Crear fuente del elemento y conectar al destino
+                    const source = ctx.createMediaElementSource(audio);
+                    source.connect(ctx.destination);
 
-/* Send idea from forms (tatuaje/piercing/rutina) */
-function sendIdeaFromForm(inputId){
-    const input = document.getElementById(inputId);
-    const text = safeTrim(input.value);
-    if(!text) {
-        input.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}], {duration:300});
-        return;
-    }
-    const numero = '573202768182';
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
-    showEphemeralMessage(text);
-    input.value = '';
-}
+                    // Intentar reanudar el contexto y reproducir
+                    return ctx.resume()
+                        .then(() => audio.play())
+                        .catch((err) => Promise.reject(err));
+                } catch (err) {
+                    return Promise.reject(err);
+                }
+            }
 
-/* ephemeral bubbles */
-function showEphemeralMessage(text){
-    const box = document.getElementById('chatBox');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'message-wrapper';
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar';
-    avatar.textContent = 'T';
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble mine';
-    bubble.textContent = text;
-    wrapper.appendChild(avatar);
-    wrapper.appendChild(bubble);
-    box.appendChild(wrapper);
-    box.scrollTop = box.scrollHeight;
+            // Secuencia de intentos: intento directo, si falla intento WebAudio, si falla usar el fallback de interacción del usuario:
+            tryDirectPlay()
+                .then(() => {
+                    console.log('Audio reproduciendo automáticamente (direct play).');
+                })
+                .catch(() => {
+                    // Si el intento directo falla, intentar WebAudio
+                    tryWebAudioFallback()
+                        .then(() => {
+                            console.log('Audio reproduciendo mediante WebAudio fallback.');
+                        })
+                        .catch(() => {
+                            // Fallback final: esperar la primera interacción del usuario (comportamiento original)
+                            console.log('Autoplay bloqueado, esperando interacción del usuario para reproducir audio.');
+                            const resumeHandler = function() {
+                                // Reintentar reproducir al primer click/tap
+                                try {
+                                    // Intento reanudar context si existe
+                                    if (window.AudioContext || window.webkitAudioContext) {
+                                        const AudioContext = window.AudioContext || window.webkitAudioContext;
+                                        const ctx = new AudioContext();
+                                        try { ctx.resume(); } catch (e) { /* noop */ }
+                                    }
+                                } catch (e) { /* noop */ }
 
-    setTimeout(()=> {
-        wrapper.animate([{opacity:1, transform:'translateY(0)'}, {opacity:0, transform:'translateY(-10px)'}], {duration:300});
-        setTimeout(()=> wrapper.remove(), 320);
-    }, 1400);
-}
+                                audio.play().catch(() => { /* noop */ });
+                                document.body.removeEventListener('click', resumeHandler);
+                                document.body.removeEventListener('touchstart', resumeHandler);
+                            };
+                            document.body.addEventListener('click', resumeHandler, { once: true });
+                            document.body.addEventListener('touchstart', resumeHandler, { once: true });
+                        });
+                });
 
-/* Chat send */
-(function attachChat(){
-    const input = document.getElementById('chatInput');
-    const btn = document.getElementById('sendBtn');
-    const box = document.getElementById('chatBox');
+            // Iniciar contador y funcionalidades UI
+            iniciarContador();
+            enablePromoDrag();
+            setupChat();
+            initVideoAutoplayOnView();
 
-    function sendMessage(){
-        const text = safeTrim(input.value);
-        if(!text){
-            input.animate([{transform:'translateY(-2px)'},{transform:'translateY(0)'}], {duration:160});
-            return;
+            // Observador de scroll para ajustar la opacidad del banner (cuando el usuario comienza a bajar la página)
+            // Si el usuario baja la página (scrollY > 10) el banner pasará a 50% de opacidad; si vuelve arriba, opacidad a 100%.
+            window.addEventListener('scroll', function() {
+                const banner = document.getElementById('promoBanner');
+                if (!banner) return;
+                if (window.scrollY > 10) {
+                    banner.style.opacity = '0.5'; // 50% visibilidad al bajar la página
+                } else {
+                    banner.style.opacity = '1'; // totalmente visible en el tope
+                }
+            }, { passive: true });
+        });
+
+        /* ==================
+           CONTADOR REGRESIVO (OBJETIVO: 23 de Febrero)
+           ==================
+           Nota del usuario: cambiar la fecha objetivo a 23 de febrero.
+           Se mantiene la zona horaria -05:00 (Colombia). No se cambia nada más.
+        */
+        function iniciarContador() {
+            // Fecha objetivo especificada por el usuario: 23 de Febrero.
+            // He establecido el año en 2026 para que la fecha sea próxima respecto a la fecha actual (2026-01-14).
+            // Si deseas otro año, reemplaza '2026' por el año que corresponda.
+            const fechaObjetivo = new Date('2026-02-23T00:00:00-05:00').getTime(); // Zona horaria Colombia
+
+            function actualizarContador() {
+                const ahora = new Date().getTime();
+                const diferencia = fechaObjetivo - ahora;
+
+                if (diferencia < 0) {
+                    // Si ya pasó la fecha, dejamos en ceros (sin borrar nada más)
+                    document.getElementById('dias').textContent = '00';
+                    document.getElementById('horas').textContent = '00';
+                    document.getElementById('minutos').textContent = '00';
+                    document.getElementById('segundos').textContent = '00';
+                    return;
+                }
+
+                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+                document.getElementById('dias').textContent = String(dias).padStart(2, '0');
+                document.getElementById('horas').textContent = String(horas).padStart(2, '0');
+                document.getElementById('minutos').textContent = String(minutos).padStart(2, '0');
+                document.getElementById('segundos').textContent = String(segundos).padStart(2, '0');
+            }
+
+            // Actualizar inmediatamente y cada segundo
+            actualizarContador();
+            setInterval(actualizarContador, 1000);
         }
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'message-wrapper';
-        const avatar = document.createElement('div');
-        avatar.className = 'avatar';
-        avatar.textContent = 'T';
-        const bubble = document.createElement('div');
-        bubble.className = 'bubble mine';
-        bubble.textContent = text;
-        wrapper.appendChild(avatar);
-        wrapper.appendChild(bubble);
-        box.appendChild(wrapper);
+        /* ==================
+           DRAGGABLE PROMO BANNER (soporte mouse + touch)
+           ================== */
+        function enablePromoDrag() {
+            const banner = document.getElementById('promoBanner');
+            if (!banner) return;
 
-        box.scrollTop = box.scrollHeight;
+            let isDown = false;
+            let startX = 0;
+            let startY = 0;
+            let origLeft = 0;
+            let origTop = 0;
 
-        const numero = '573202768182';
-        const url = `https://wa.me/${numero}?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
+            function onPointerDown(e) {
+                isDown = true;
+                const point = e.touches ? e.touches[0] : e;
+                startX = point.clientX;
+                startY = point.clientY;
+                const rect = banner.getBoundingClientRect();
+                origLeft = rect.left;
+                origTop = rect.top;
+                banner.style.transition = 'none';
+                e.preventDefault();
+            }
 
-        input.value = '';
-    }
+            function onPointerMove(e) {
+                if (!isDown) return;
+                const point = e.touches ? e.touches[0] : e;
+                const dx = point.clientX - startX;
+                const dy = point.clientY - startY;
+                banner.style.left = (origLeft + dx) + 'px';
+                banner.style.top = (origTop + dy) + 'px';
+                banner.style.right = 'auto';
+            }
 
-    btn.addEventListener('click', sendMessage);
-    input.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' && !e.shiftKey){
-            e.preventDefault();
-            sendMessage();
+            function onPointerUp() {
+                if (!isDown) return;
+                isDown = false;
+                banner.style.transition = '';
+            }
+
+            // Mouse events
+            banner.addEventListener('mousedown', onPointerDown);
+            window.addEventListener('mousemove', onPointerMove);
+            window.addEventListener('mouseup', onPointerUp);
+
+            // Touch events
+            banner.addEventListener('touchstart', onPointerDown, { passive: false });
+            window.addEventListener('touchmove', onPointerMove, { passive: false });
+            window.addEventListener('touchend', onPointerUp);
         }
-    });
-})();
 
-/* Enter for other forms */
-['inputTatuaje','inputPiercing','inputRutina'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' && !e.shiftKey){
-            e.preventDefault();
-            sendIdeaFromForm(id);
+        /* ==================
+           LIGHTBOX FUNCIONES
+           ================== */
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            if (img) img.src = src;
+            if (lb) lb.style.display = 'flex';
         }
-    });
-});
-</script>
 
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            if (lb) lb.style.display = 'none';
+            if (img) img.src = '';
+        }
+
+        /* ==================
+           SOLICITAR PAGO PARA FOTOS BLOQUEADAS
+           ================== */
+        function solicitarPago() {
+            const wa = 'https://wa.me/016122323100?text=' + encodeURIComponent('Hola, quiero desbloquear contenido premium.');
+            window.open(wa, '_blank', 'noopener');
+        }
+
+        /* ==================
+           ENVIAR IDEAS (formularios)
+           ================== */
+        function sendIdeaFromForm(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const value = (input.value || '').trim();
+            if (!value) {
+                alert('Por favor escribe tu idea antes de enviar.');
+                return;
+            }
+
+            const mensaje = `Hola, envío una idea desde la web: ${value}`;
+            const wa = 'https://wa.me/016122323100?text=' + encodeURIComponent(mensaje);
+            window.open(wa, '_blank', 'noopener');
+
+            // Limpiar campo y dar retroalimentación mínima
+            input.value = '';
+            try {
+                // pequeño feedback visual temporal (no destructivo)
+                const originalPlaceholder = input.placeholder || '';
+                input.placeholder = 'Enviado ✅';
+                setTimeout(() => input.placeholder = originalPlaceholder, 1600);
+            } catch (e) {
+                // noop
+            }
+        }
+
+        /* ==================
+           CHAT BASICO (solo frontend)
+           ================== */
+        function setupChat() {
+            const chatBox = document.getElementById('chatBox');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+
+            if (!chatBox || !chatInput || !sendBtn) return;
+
+            sendBtn.addEventListener('click', function() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                addMessage(text, true);
+                chatInput.value = '';
+
+                // Simular respuesta automática breve (opcional)
+                setTimeout(() => {
+                    addMessage('Mensaje recibido ❤️', false);
+                }, 700);
+            });
+
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            });
+        }
+
+        function addMessage(text, mine) {
+            const chatBox = document.getElementById('chatBox');
+            if (!chatBox) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-wrapper';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.textContent = mine ? 'Tú' : 'U';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble ' + (mine ? 'mine' : 'others');
+            bubble.textContent = text;
+
+            if (mine) {
+                wrapper.appendChild(avatar);
+                wrapper.appendChild(bubble);
+                // Reorder to push to right visually
+                wrapper.style.justifyContent = 'flex-end';
+            } else {
+                wrapper.appendChild(avatar);
+                wrapper.appendChild(bubble);
+            }
+
+            chatBox.appendChild(wrapper);
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        /* ==================
+           VIDEO BEHAVIOR: autoplay cuando están en vista (estilo TikTok)
+           ==================
+           - Usamos IntersectionObserver para reproducir el video visible y pausar los demás.
+           - Los videos están por defecto muteados para mejorar la probabilidad de autoplay en móviles.
+           - Proporcionamos botones para silenciar/activar sonido y compartir.
+        */
+        function initVideoAutoplayOnView() {
+            const videoContainers = document.querySelectorAll('.videos .tiktok-container');
+            if (!videoContainers || videoContainers.length === 0) return;
+
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.6 // 60% visible para considerar como "en vista"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
+                    if (entry.isIntersecting) {
+                        // Intentar reproducir el video en vista
+                        video.play().catch(() => {
+                            // Si falla (autoplay bloqueado), dejamos en mute y reintentamos
+                            try { video.muted = true; video.play(); } catch (e) { /* noop */ }
+                        });
+                    } else {
+                        // Pausar cuando no está en vista
+                        try { video.pause(); } catch (e) { /* noop */ }
+                    }
+                });
+            }, options);
+
+            videoContainers.forEach(container => observer.observe(container));
+        }
+
+        /* ==================
+           UTILIDADES DE VIDEO (botones)
+           ================== */
+        function toggleMute(e) {
+            // evitar propagación para que no afecte el scroll
+            e && e.stopPropagation && e.stopPropagation();
+            const btn = e.currentTarget;
+            const container = btn && btn.closest('.tiktok-container');
+            if (!container) return;
+            const video = container.querySelector('video');
+            if (!video) return;
+            video.muted = !video.muted;
+            btn.textContent = video.muted ? '🔇' : '🔊';
+        }
+
+        function shareVideo(e, src) {
+            e && e.stopPropagation && e.stopPropagation();
+            // Intentar API de compartir nativa, si no, abrir enlace a WA con mensaje
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mira este video',
+                    text: 'Mira este video interesante',
+                    url: src
+                }).catch(() => { /* noop */ });
+            } else {
+                const wa = 'https://wa.me/016122323100?text=' + encodeURIComponent('Mira este video: ' + window.location.origin + '/' + src);
+                window.open(wa, '_blank', 'noopener');
+            }
+        }
+    </script>
 </body>
 </html>
