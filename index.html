@@ -94,6 +94,27 @@
             opacity: 1; /* valor por defecto, JS ajustará a 0.5 cuando el usuario comience a bajar la página */
         }
 
+        /* Close button for promo (X) */
+        .promo-banner .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .12s ease, background .12s;
+            z-index: 1002;
+        }
+        .promo-banner .close-btn:hover { background: rgba(255,255,255,0.12); transform: scale(1.05); }
+
         .promo-banner h2 {
             margin: 0 0 8px 0;
             font-size: 20px;
@@ -397,7 +418,10 @@
     </header>
 
     <!-- CONTADOR REGRESIVO FLOTANTE Y MOVIBLE -->
-    <div class="promo-banner" id="promoBanner">
+    <div class="promo-banner" id="promoBanner" role="dialog" aria-label="Promoción">
+        <!-- Botón X para cerrar el calendario/banner -->
+        <button class="close-btn" id="closePromo" aria-label="Cerrar banner">✕</button>
+
         <h2>🔥 ¡LA PERRA VIENE DE ESTADOS UNIDOS! 🔥</h2>
         <p>Preparate porque llega con todo</p>
         <div class="countdown">
@@ -802,6 +826,27 @@
                     banner.style.opacity = '1'; // totalmente visible en el tope
                 }
             }, { passive: true });
+
+            // --- Manejo del botón X (cerrar promo) ---
+            const closeBtn = document.getElementById('closePromo');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const banner = document.getElementById('promoBanner');
+                    if (!banner) return;
+                    banner.style.display = 'none';
+                    // Guardar preferencia para que no vuelva a aparecer si se recarga
+                    try { localStorage.setItem('promoClosed', '1'); } catch (err) { /* noop */ }
+                });
+            }
+
+            // Si el usuario ya cerró el promo anteriormente, ocultarlo al cargar
+            try {
+                if (localStorage.getItem('promoClosed') === '1') {
+                    const banner = document.getElementById('promoBanner');
+                    if (banner) banner.style.display = 'none';
+                }
+            } catch (e) { /* noop */ }
         });
 
         /* ==================
@@ -859,6 +904,10 @@
             let origTop = 0;
 
             function onPointerDown(e) {
+                // Evitar iniciar drag si el usuario hace click en el botón cerrar
+                const target = e.target || e.srcElement;
+                if (target && (target.id === 'closePromo' || target.classList && target.classList.contains('close-btn'))) return;
+
                 isDown = true;
                 const point = e.touches ? e.touches[0] : e;
                 startX = point.clientX;
