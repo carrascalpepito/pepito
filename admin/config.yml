@@ -3,14 +3,14 @@ backend:
   repo: carrascalpepito/pepito
   branch: main
 
-media_folder: "img/trabajos"
-public_folder: "img/trabajos"
+media_folder: "img"
+public_folder: "img"
 
 collections:
   - name: "galeria"
-    label: "Mis Trabajos"
+    label: "Contenido Nuevo"
     files:
-      - label: "Lista de Galería"
+      - label: "Lista de Fotos y Videos"
         name: "lista"
         file: "data/galeria.json"
         fields:
