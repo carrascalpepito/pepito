@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nadie Es Más Perra Que Yo - Contenido Exclusivo</title>
+
+    <!-- Script para el Panel de Administrador -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <style>
+        /* =========================
+           BASE Y PALETA (mejorada)
+           ========================= */
+        :root {
+            --bg-1: #0b0010;
+            --pink-1: #ff0099;
+            --pink-2: #ff4fc3;
+            --glass-1: rgba(255,255,255,0.06);
+            --muted: #d9c4db;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html,body { height: 100%; margin: 0; font-family: 'Inter', sans-serif; color: #fff; background: linear-gradient(135deg, var(--bg-1), #120018); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        .bg-animation {
+            position: fixed; inset: 0; z-index: -1;
+            background:
+                radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%),
+                radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%),
+                linear-gradient(180deg, #080006, #160018);
+            filter: blur(60px);
+        }
+
+        .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 18px }
+
+        /* MENU */
+        nav.menu {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 14px; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px);
+            border-radius: 14px; margin: 12px; border: 1px solid rgba(255,0,150,0.1);
+            position: sticky; top: 10px; z-index: 1001;
+        }
+        .menu h2 { margin: 0; font-size: 18px; color: var(--pink-2); }
+        .menu ul { list-style: none; display: flex; gap: 8px; margin: 0; padding: 0; }
+        .menu a { color: #ffd6f0; text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 10px; font-size: 14px; transition: 0.2s; }
+        .menu a:hover { background: var(--pink-1); color: white; }
+
+        /* HEADER */
+        .header { text-align: center; padding: 60px 20px 20px; }
+        .header h1 { font-size: 45px; color: var(--pink-1); text-shadow: 0 0 20px rgba(255,0,150,0.3); margin-bottom: 10px; }
+        .header p { max-width: 700px; margin: 0 auto 20px; color: var(--muted); font-size: 18px; line-height: 1.5; }
+
+        /* BOTONES */
+        .btn-premium {
+            display: inline-block; padding: 14px 28px; border-radius: 50px;
+            background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
+            color: white; text-decoration: none; font-weight: 800;
+            box-shadow: 0 10px 25px rgba(255,0,150,0.3); transition: 0.3s;
+        }
+        .btn-premium:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255,0,150,0.5); }
+
+        /* GALERÍA DINÁMICA (Aquí se carga lo del Admin) */
+        .dynamic-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; padding: 20px; max-width: 1180px; margin: 0 auto;
+        }
+        .dynamic-card {
+            background: rgba(255,255,255,0.03); border-radius: 15px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+        }
+        .dynamic-card:hover { transform: scale(1.02); border-color: var(--pink-1); }
+        .dynamic-card img, .dynamic-card video { width: 100%; height: 350px; object-fit: cover; display: block; }
+        .dynamic-info { padding: 15px; }
+
+        /* SECCIONES ESTILO TIKTOK EN MÓVIL */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
+        .card { position: relative; border-radius: 12px; overflow: hidden; background: #000; height: 300px; }
+        .card img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+        
+        /* PROMO BANNER */
+        .promo-banner {
+            position: fixed; bottom: 80px; right: 20px; width: 280px;
+            background: linear-gradient(135deg, #ff0099ee, #7d00ffee);
+            border-radius: 16px; padding: 15px; z-index: 1000; backdrop-filter: blur(10px);
+            border: 1px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* CHAT */
+        .chat-box { height: 300px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px; margin-bottom: 10px; border: 1px solid var(--glass-1); }
+        .message { margin-bottom: 10px; padding: 8px 12px; border-radius: 10px; max-width: 80%; }
+        .mine { background: var(--pink-1); margin-left: auto; }
+        .others { background: rgba(255,255,255,0.1); }
+
+        /* LIGHTBOX */
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 30px; }
+            nav.menu ul { display: none; } /* Ocultar menú largo en móvil */
+            .dynamic-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <!-- AUDIO PLAYER -->
+    <audio id="audioPlayer" loop>
+        <source src="videos/musica.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <nav class="menu">
+        <h2>🔥 PEPITO 🔥</h2>
+        <ul>
+            <li><a href="#fotos">Fotos</a></li>
+            <li><a href="#videos">Videos</a></li>
+            <li><a href="#chat">Chat</a></li>
+            <li><a href="https://wa.me/16122323200" target="_blank">WhatsApp</a></li>
+        </ul>
+    </nav>
+
+    <header class="header">
+        <h1>Me Encanta la Verga</h1>
+        <p>Perra sumisa en celo, ofreciéndose para complacerlo sin límites...</p>
+        <a class="btn-premium" href="https://wa.me/16122323200">📞 Contactarme por WhatsApp</a>
+    </header>
+
+    <!-- SECCIÓN DINÁMICA: LO QUE SUBES DESDE EL ADMIN APARECE AQUÍ -->
+    <h2 class="container" style="color: var(--pink-2)">✨ Contenido Reciente (Admin)</h2>
+    <div id="galeria-dinamica" class="dynamic-grid">
+        <!-- JS cargará aquí los nuevos trabajos -->
+    </div>
+
+    <!-- SECCIÓN FOTOS MANUALES -->
+    <h2 id="fotos" class="container" style="color: var(--pink-2)">Soy Tu Perra (Fija)</h2>
+    <section class="gallery">
+        <div class="card"><img src="img/foto11.jpeg" onclick="openLightbox(this.src)"></div>
+        <div class="card"><img src="img/foto12.jpeg" onclick="openLightbox(this.src)"></div>
+        <div class="card locked" onclick="solicitarPago()"><img src="img/foto17.jpeg" style="filter: blur(10px)"></div>
+    </section>
+
+    <!-- CHAT -->
+    <section class="container">
+        <h2 id="chat">Chat de Usuarios 💬</h2>
+        <div id="chatBox" class="chat-box"></div>
+        <div style="display: flex; gap: 10px;">
+            <input id="chatInput" style="flex:1; padding:12px; border-radius:8px; border:none;" placeholder="Escribe algo...">
+            <button onclick="enviarMensaje()" class="btn-premium" style="padding:10px 20px;">Enviar</button>
+        </div>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <div class="promo-banner" id="promoBanner">
+        <button onclick="this.parentElement.style.display='none'" style="float:right; background:none; border:none; color:white; cursor:pointer;">✕</button>
+        <h3 style="margin:0">🔥 PROMO USA 🔥</h3>
+        <p style="font-size:12px">Llega el 23 de Febrero</p>
+        <div id="timer" style="font-weight:bold; font-size:18px">00:00:00:00</div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" />
+    </div>
+
+    <script>
+        // 1. CARGAR CONTENIDO DESDE EL PANEL ADMIN (JSON)
+        fetch('data/galeria.json')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('galeria-dinamica');
+                if (data.trabajos && data.trabajos.length > 0) {
+                    data.trabajos.forEach(item => {
+                        const isVideo = item.archivo.match(/\.(mp4|webm|ogg)$/i);
+                        const media = isVideo 
+                            ? `<video src="${item.archivo}" controls muted></video>` 
+                            : `<img src="${item.archivo}" loading="lazy" onclick="openLightbox(this.src)">`;
+                        
+                        container.innerHTML += `
+                            <div class="dynamic-card">
+                                ${media}
+                                <div class="dynamic-info">
+                                    <h3 style="margin:0; color:var(--pink-2)">${item.titulo}</h3>
+                                    <p style="font-size:14px; color:var(--muted)">${item.descripcion}</p>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    container.innerHTML = "<p>Subiendo contenido nuevo...</p>";
+                }
+            })
+            .catch(e => console.log("Aún no hay contenido en el JSON"));
+
+        // 2. CONTADOR
+        const targetDate = new Date('2026-02-23T00:00:00').getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+        }, 1000);
+
+        // 3. FUNCIONES DE UI
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function solicitarPago() {
+            window.open('https://wa.me/16122323200?text=Hola, quiero ver el contenido bloqueado', '_blank');
+        }
+
+        function enviarMensaje() {
+            const input = document.getElementById('chatInput');
+            const box = document.getElementById('chatBox');
+            if(input.value.trim() === "") return;
+            box.innerHTML += `<div class="message mine">${input.value}</div>`;
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // 4. LOGIN REDIRECT (Netlify)
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

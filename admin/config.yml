@@ -1,0 +1,23 @@
+backend:
+  name: github
+  repo: carrascalpepito/pepito
+  branch: main
+
+media_folder: "img/trabajos"
+public_folder: "img/trabajos"
+
+collections:
+  - name: "galeria"
+    label: "Mis Trabajos"
+    files:
+      - label: "Lista de Galería"
+        name: "lista"
+        file: "data/galeria.json"
+        fields:
+          - label: "Trabajos"
+            name: "trabajos"
+            widget: "list"
+            fields:
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Archivo (Imagen o Video)", name: "archivo", widget: "file" }
+              - { label: "Descripción", name: "descripcion", widget: "text" }
