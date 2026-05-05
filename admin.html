@@ -153,11 +153,10 @@ function login(){
   const email = prompt("Correo admin:");
   const password = prompt("Contraseña:");
 
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(error => {
-      alert("Error: " + error.message);
-      login();
-    });
+ auth.signInWithEmailAndPassword(email, password)
+.catch(error => {
+  alert("Código: " + error.code + "\nMensaje: " + error.message);
+});
 }
 
 function logout(){
