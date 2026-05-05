@@ -73,13 +73,17 @@ hr{
   border:1px solid rgba(255,255,255,0.1);
   margin:15px 0;
 }
+
+.hidden{
+  display:none;
+}
 </style>
 </head>
 <body>
 
 <header>PANEL ADMINISTRADOR</header>
 
-<div class="container">
+<div class="container hidden" id="adminPanel">
 
 <div class="card">
 <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
@@ -108,7 +112,7 @@ hr{
 
 </div>
 
-<!-- ✅ FIREBASE COMPAT -->
+<!-- FIREBASE COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -116,6 +120,7 @@ hr{
 
 <script>
 
+/* ✅ TU CONFIG REAL */
 const firebaseConfig = {
   apiKey: "AIzaSyB0Hcu8ZF4z2fJQMCLj6zI9l6RwNWW9g54",
   authDomain: "pepito-admin.firebaseapp.com",
@@ -131,26 +136,29 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 const auth = firebase.auth();
 
-/* ================= LOGIN MANUAL ================= */
+/* ================= LOGIN ================= */
 
 auth.onAuthStateChanged(user => {
-  if (!user) {
-    showLogin();
+
+  if(user){
+    document.getElementById("adminPanel").classList.remove("hidden");
+    loadContent();
+  }else{
+    login();
   }
+
 });
 
-function showLogin(){
+function login(){
   const email = prompt("Correo admin:");
   const password = prompt("Contraseña:");
 
   auth.signInWithEmailAndPassword(email, password)
-    .catch(() => {
-      alert("Credenciales incorrectas");
-      showLogin();
+    .catch(error => {
+      alert("Error: " + error.message);
+      login();
     });
 }
-
-/* ================= LOGOUT ================= */
 
 function logout(){
   auth.signOut().then(()=>{
@@ -191,27 +199,31 @@ async function uploadContent(){
 
 /* ================= LISTAR ================= */
 
-db.collection("contenido")
-.orderBy("createdAt","desc")
-.onSnapshot(snapshot=>{
+function loadContent(){
 
-  const list = document.getElementById("contentList");
-  list.innerHTML = "";
+  db.collection("contenido")
+  .orderBy("createdAt","desc")
+  .onSnapshot(snapshot=>{
 
-  snapshot.forEach(doc=>{
+    const list = document.getElementById("contentList");
+    list.innerHTML = "";
 
-    const data = doc.data();
+    snapshot.forEach(doc=>{
 
-    list.innerHTML += `
-      <div>
-        <strong>${data.title}</strong><br>
-        <small>${data.type}</small><br>
-        <button class="delete-btn" onclick="deleteContent('${doc.id}')">Eliminar</button>
-        <hr>
-      </div>
-    `;
+      const data = doc.data();
+
+      list.innerHTML += `
+        <div>
+          <strong>${data.title}</strong><br>
+          <small>${data.type}</small><br>
+          <button class="delete-btn" onclick="deleteContent('${doc.id}')">Eliminar</button>
+          <hr>
+        </div>
+      `;
+    });
   });
-});
+
+}
 
 /* ================= ELIMINAR ================= */
 
