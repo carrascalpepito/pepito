@@ -15,9 +15,10 @@ body {
 
 header {
   background:#111;
-  padding:15px;
+  padding:20px;
   text-align:center;
-  font-size:20px;
+  font-size:22px;
+  letter-spacing:1px;
 }
 
 .container {
@@ -28,17 +29,20 @@ header {
 
 .card {
   background:#1a001f;
-  padding:15px;
+  padding:20px;
   border-radius:10px;
-  margin-bottom:15px;
+  margin-bottom:20px;
+  box-shadow:0 0 15px rgba(255,0,150,0.2);
 }
 
 input, textarea, select {
   width:100%;
   padding:10px;
-  margin:5px 0;
+  margin:8px 0;
   border-radius:6px;
   border:none;
+  background:#2a002f;
+  color:white;
 }
 
 button {
@@ -48,18 +52,26 @@ button {
   background:#ff0099;
   color:white;
   cursor:pointer;
+  font-weight:bold;
 }
 
 button:hover {
-  opacity:0.8;
+  opacity:0.85;
 }
 
-.media-preview {
-  width:100%;
-  max-height:200px;
-  object-fit:cover;
-  border-radius:8px;
-  margin-top:10px;
+.delete-btn{
+  background:red;
+  margin-top:8px;
+}
+
+.logout-btn{
+  background:#444;
+  margin-bottom:15px;
+}
+
+hr{
+  border:1px solid rgba(255,255,255,0.1);
+  margin:15px 0;
 }
 </style>
 </head>
@@ -70,7 +82,11 @@ button:hover {
 <div class="container">
 
 <div class="card">
-<h3>Subir nuevo contenido</h3>
+<button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+</div>
+
+<div class="card">
+<h3>Subir Nuevo Contenido</h3>
 
 <input type="text" id="title" placeholder="Título">
 <textarea id="description" placeholder="Descripción"></textarea>
@@ -81,25 +97,130 @@ button:hover {
 </select>
 
 <input type="file" id="fileInput">
-<button onclick="uploadContent()">Subir</button>
 
+<button onclick="uploadContent()">Subir Contenido</button>
 </div>
 
 <div class="card">
-<h3>Contenido existente</h3>
+<h3>Contenido Existente</h3>
 <div id="contentList"></div>
 </div>
 
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"></script>
+<!-- ✅ FIREBASE COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
 <script>
-/* PEGA AQUÍ TU firebaseConfig */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB0Hcu8ZF4z2fJQMCLj6zI9l6RwNWW9g54",
+  authDomain: "pepito-admin.firebaseapp.com",
+  projectId: "pepito-admin",
+  storageBucket: "pepito-admin.appspot.com",
+  messagingSenderId: "107847700755",
+  appId: "1:107847700755:web:c5ef8552b6a00e44664ae6"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+const storage = firebase.storage();
+const auth = firebase.auth();
+
+/* ================= LOGIN MANUAL ================= */
+
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    showLogin();
+  }
+});
+
+function showLogin(){
+  const email = prompt("Correo admin:");
+  const password = prompt("Contraseña:");
+
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(() => {
+      alert("Credenciales incorrectas");
+      showLogin();
+    });
+}
+
+/* ================= LOGOUT ================= */
+
+function logout(){
+  auth.signOut().then(()=>{
+    location.reload();
+  });
+}
+
+/* ================= SUBIR ================= */
+
+async function uploadContent(){
+
+  const file = document.getElementById("fileInput").files[0];
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const type = document.getElementById("type").value;
+
+  if(!file) return alert("Selecciona un archivo");
+
+  const storageRef = storage.ref("contenido/"+Date.now()+"_"+file.name);
+  await storageRef.put(file);
+
+  const url = await storageRef.getDownloadURL();
+
+  await db.collection("contenido").add({
+    title,
+    description,
+    type,
+    url,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  alert("Contenido subido correctamente ✅");
+
+  document.getElementById("title").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("fileInput").value = "";
+}
+
+/* ================= LISTAR ================= */
+
+db.collection("contenido")
+.orderBy("createdAt","desc")
+.onSnapshot(snapshot=>{
+
+  const list = document.getElementById("contentList");
+  list.innerHTML = "";
+
+  snapshot.forEach(doc=>{
+
+    const data = doc.data();
+
+    list.innerHTML += `
+      <div>
+        <strong>${data.title}</strong><br>
+        <small>${data.type}</small><br>
+        <button class="delete-btn" onclick="deleteContent('${doc.id}')">Eliminar</button>
+        <hr>
+      </div>
+    `;
+  });
+});
+
+/* ================= ELIMINAR ================= */
+
+async function deleteContent(id){
+  if(confirm("¿Eliminar este contenido?")){
+    await db.collection("contenido").doc(id).delete();
+  }
+}
+
 </script>
 
 </body>
