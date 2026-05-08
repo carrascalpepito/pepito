@@ -1,0 +1,25 @@
+# Backups
+*.bak
+*.bak2
+*.bak3
+*.bak4
+*.bak_*
+*.backup
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Sistema
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporales
+*.tmp

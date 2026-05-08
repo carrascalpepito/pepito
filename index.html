@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nadie Es Más Perra Que Yo</title>
-
+    <title id="pageTitle">Nadie Es Más Perra Que Yo</title>
     <style>
-        /* =========================
-           BASE Y PALETA (mejorada)
-           ========================= */
         :root {
             --bg-1: #0b0010;
             --pink-1: #ff0099;
@@ -16,1153 +12,900 @@
             --glass-1: rgba(255,255,255,0.06);
             --muted: #d9c4db;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html,body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: #fff; background: linear-gradient(135deg, var(--bg-1), #120018); -webkit-font-smoothing: antialiased; }
-
-        /* fondo animado sutil */
-        .bg-animation {
-            position: fixed; inset: 0; z-index: -1;
-            background:
-                radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%),
-                radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%),
-                linear-gradient(180deg, #080006, #160018);
-            filter: blur(60px);
-        }
-
-        /* contenedor central ancho */
+        .bg-animation { position: fixed; inset: 0; z-index: -1; background: radial-gradient(400px 200px at 10% 10%, rgba(255,0,150,0.08), transparent 18%), radial-gradient(500px 260px at 85% 85%, rgba(125,0,255,0.06), transparent 18%), linear-gradient(180deg, #080006, #160018); filter: blur(60px); }
         .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 18px }
-
-        /* =========================
-           MENU SUPERIOR (mejor y responsive)
-           ========================= */
-        nav.menu {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 12px 14px;
-            background: rgba(0,0,0,0.45);
-            backdrop-filter: blur(8px);
-            border-radius: 14px;
-            margin: 12px;
-            border: 1px solid rgba(255,0,150,0.08);
-            box-shadow: 0 6px 30px rgba(255,0,150,0.04);
-            flex-wrap: wrap;
-        }
-
+        nav.menu { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); border-radius: 14px; margin: 12px; border: 1px solid rgba(255,0,150,0.08); flex-wrap: wrap; }
         .menu h2 { margin: 0; font-size: 18px; color: var(--pink-2); flex-shrink: 0 }
         .menu ul { list-style: none; display: flex; gap: 10px; margin: 0; padding: 0; align-items: center; flex-wrap: wrap; justify-content: center }
         .menu a { color: #ffd6f0; text-decoration: none; font-weight: 600; padding: 8px 10px; border-radius: 10px; transition: 0.18s; font-size: 14px; white-space: nowrap }
-        .menu a:hover { color: #fff; background: linear-gradient(90deg, var(--pink-1), var(--pink-2)); box-shadow: 0 6px 22px rgba(255,0,150,0.12) }
-
-        /* botón whatsapp top */
-        .btn-whatsapp-header {
-            display: inline-block; padding: 10px 18px; border-radius: 12px;
-            background: linear-gradient(135deg, #25D366, #1ebe5d); color: white; text-decoration: none; font-weight: 700;
-            box-shadow: 0 6px 30px rgba(37,211,102,0.08);
-            font-size: 16px;
-        }
-
-        /* =========================
-           AUDIO OCULTO (reproducción automática)
-           ========================= */
-        #audioPlayer {
-            display: none;
-        }
-
-        /* Floating audio control button */
-        .audio-btn {
-            position: fixed;
-            left: 18px;
-            bottom: 18px;
-            z-index: 1003;
-            background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-weight: 800;
-            box-shadow: 0 10px 30px rgba(255,0,150,0.12);
-            cursor: pointer;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            transform-origin: center;
-        }
+        .menu a:hover { color: #fff; background: linear-gradient(90deg, var(--pink-1), var(--pink-2)); }
+        .btn-whatsapp-header { display: inline-block; padding: 10px 18px; border-radius: 12px; background: linear-gradient(135deg, #25D366, #1ebe5d); color: white; text-decoration: none; font-weight: 700; font-size: 16px; }
+        #audioPlayer { display: none; }
+        .audio-btn { position: fixed; left: 18px; bottom: 18px; z-index: 1003; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: white; border: none; padding: 10px 14px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; gap: 8px; align-items: center; }
         .audio-btn.hidden { display: none !important; }
-        .audio-btn:active { transform: scale(.98); }
-
-        /* =========================
-           CONTADOR REGRESIVO FLOTANTE Y DRAGGABLE
-           ========================= */
-        .promo-banner {
-            position: fixed;
-            top: 120px;
-            right: 20px;
-            width: 320px;
-            background: linear-gradient(135deg, rgba(255,0,150,0.95), rgba(125,0,255,0.95));
-            border: 2px solid var(--pink-1);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 14px 40px rgba(255,0,150,0.3);
-            animation: pulse 2s infinite;
-            z-index: 1000;
-            cursor: move;
-            backdrop-filter: blur(10px);
-            transition: opacity 0.28s ease, left 0.12s ease, top 0.12s ease;
-            opacity: 1;
-        }
-
-        /* Close button for promo (X) */
-        .promo-banner .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255,255,255,0.06);
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform .12s ease, background .12s;
-            z-index: 1002;
-        }
-        .promo-banner .close-btn:hover { background: rgba(255,255,255,0.12); transform: scale(1.05); }
-
-        .promo-banner h2 {
-            margin: 0 0 8px 0;
-            font-size: 20px;
-            color: #fff;
-            text-shadow: 0 0 12px rgba(0,0,0,0.5);
-            line-height: 1.2;
-        }
-
-        .promo-banner p {
-            margin: 8px 0;
-            font-size: 14px;
-            color: #fff;
-        }
-
+        .promo-banner { position: fixed; top: 120px; right: 20px; width: 320px; background: linear-gradient(135deg, rgba(255,0,150,0.95), rgba(125,0,255,0.95)); border: 2px solid var(--pink-1); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 14px 40px rgba(255,0,150,0.3); animation: pulse 2s infinite; z-index: 1000; cursor: move; backdrop-filter: blur(10px); transition: opacity 0.28s ease; }
+        .promo-banner .close-btn { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 8px; border: none; background: rgba(255,255,255,0.06); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1002; }
+        .promo-banner h2 { margin: 0 0 8px 0; font-size: 20px; color: #fff; line-height: 1.2; }
+        .promo-banner p { margin: 8px 0; font-size: 14px; color: #fff; }
         .countdown { display: flex; justify-content: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-
-        .countdown-item {
-            background: rgba(0,0,0,0.4);
-            padding: 12px 14px;
-            border-radius: 10px;
-            min-width: 60px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: background .18s;
-        }
-
-        .countdown-number {
-            font-size: 26px;
-            font-weight: 800;
-            color: #fff;
-            display: block;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .countdown-label {
-            font-size: 10px;
-            color: rgba(255,255,255,0.9);
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 14px 40px rgba(255,0,150,0.3) }
-            50% { box-shadow: 0 14px 50px rgba(255,0,150,0.5) }
-        }
-
-        /* =========================
-           HEADER
-           ========================= */
+        .countdown-item { background: rgba(0,0,0,0.4); padding: 12px 14px; border-radius: 10px; min-width: 60px; border: 1px solid rgba(255,255,255,0.2); }
+        .countdown-number { font-size: 26px; font-weight: 800; color: #fff; display: block; }
+        .countdown-label { font-size: 10px; color: rgba(255,255,255,0.9); text-transform: uppercase; margin-top: 4px; }
+        @keyframes pulse { 0%,100% { box-shadow: 0 14px 40px rgba(255,0,150,0.3) } 50% { box-shadow: 0 14px 50px rgba(255,0,150,0.5) } }
         .header { text-align: center; padding: 40px 16px 10px 16px }
-        .header h1 { font-size: 40px; margin: 6px 0; color: var(--pink-1); text-shadow: 0 0 18px rgba(255,0,150,0.12); line-height: 1.2 }
+        .header h1 { font-size: 40px; margin: 6px 0; color: var(--pink-1); line-height: 1.2 }
         .header p { color: var(--muted); margin: 0 0 16px 0; font-size: 16px }
-
-        /* =========================
-           SECCIONES: TITULOS Y GRID
-           ========================= */
-        .titulo-seccion { text-align: center; font-size: 26px; margin-top: 30px; color: var(--pink-2); text-shadow: 0 0 10px rgba(255,79,195,0.08); padding: 0 16px }
-
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; padding: 16px; max-width: 1180px; margin: 10px auto }
+        .titulo-seccion { text-align: center; font-size: 26px; margin-top: 30px; color: var(--pink-2); padding: 0 16px }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 16px; max-width: 1180px; margin: 10px auto; }
         .card { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; text-align: center; transition: 0.25s; border: 1px solid rgba(255,0,150,0.04); position: relative; overflow: hidden; }
         .card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(255,0,150,0.06) }
-        .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; cursor: pointer; display:block; }
-        .card h3 { font-size: 14px; margin: 8px 0 0 0; color:var(--muted) }
-
-        /* Overlay info for tiktok-like appearance on mobile */
-        .card .overlay {
-            position: absolute;
-            left: 12px;
-            bottom: 18px;
-            right: 12px;
-            color: #fff;
-            text-shadow: 0 6px 18px rgba(0,0,0,0.6);
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 12px;
-            pointer-events: none;
-        }
-        .card .overlay .title { font-weight: 800; font-size: 16px; pointer-events: none; }
-        .card .overlay .meta { font-size: 12px; color: rgba(255,255,255,0.85); pointer-events: none; }
-
-        /* FOTOS BLOQUEADAS */
+        .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; cursor: pointer; display: block; }
+        .card h3 { font-size: 14px; margin: 8px 0 0 0; color: var(--muted) }
+        .card .overlay { position: absolute; left: 12px; bottom: 18px; right: 12px; color: #fff; text-shadow: 0 6px 18px rgba(0,0,0,0.6); display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; pointer-events: none; }
+        .card .overlay .title { font-weight: 800; font-size: 16px; }
+        .card .overlay .meta { font-size: 12px; color: rgba(255,255,255,0.85); }
         .card.locked img { filter: blur(12px) brightness(0.4) }
-        .card.locked::after {
-            content: '🔒';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-            pointer-events: none;
-        }
-        .card.locked:hover { cursor: not-allowed }
-
-        /* videos grid */
-        .videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 16px; max-width: 1180px; margin: auto }
-        .videos .tiktok-container { position: relative; overflow: hidden; border-radius: 12px; background: #000; }
-        .videos video { width: 100%; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); display:block; object-fit: cover; max-height: 480px; }
-
-        /* Small overlay for each video (like, share, title) */
-        .videos .tiktok-container .v-overlay {
-            position: absolute;
-            left: 12px;
-            bottom: 16px;
-            color: #fff;
-            text-shadow: 0 6px 18px rgba(0,0,0,0.6);
-            pointer-events: none;
-            display:flex;
-            flex-direction:column;
-            gap:6px;
-        }
-        .v-overlay .v-title { font-size: 16px; font-weight:800 }
-        .v-overlay .v-desc { font-size: 12px; opacity: .92 }
-
-        /* Controls area (on hover show) */
-        .tiktok-controls {
-            position:absolute;
-            right: 12px;
-            bottom: 16px;
-            display:flex;
-            flex-direction:column;
-            gap:10px;
-            align-items:center;
-        }
-        .tiktok-controls button {
-            background: rgba(0,0,0,0.5);
-            color: #fff;
-            border: none;
-            padding: 8px;
-            border-radius: 10px;
-            cursor:pointer;
-            font-weight:800;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-        }
-
-        /* premium plans */
-        .premium-plans { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; padding: 16px; margin: 10px auto; max-width: 1180px }
-        .plan-card { width: 100%; max-width: 280px; padding: 18px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,0,150,0.04); text-align: center; box-shadow: 0 8px 30px rgba(255,0,150,0.03) }
-        .plan-title { font-size: 20px; margin: 0 0 12px 0 }
-        .price { font-size: 28px; color: var(--pink-2); margin: 12px 0 }
-        .btn-premium { display: inline-block; padding: 10px 20px; border-radius: 12px; text-decoration: none; color: white; font-weight: 800; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); box-shadow: 0 12px 30px rgba(255,0,150,0.08); font-size: 16px }
-
-        /* =========================
-           FORMULARIOS
-           ========================= */
-        form { width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,0,150,0.03) }
-        form label { display: block; margin-bottom: 8px; color: var(--muted); font-weight: 600; font-size: 15px }
-        form input[type="text"], form textarea { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid rgba(255,0,150,0.08); background: rgba(255,255,255,0.02); color: white; outline: none; font-size: 15px }
-        form textarea { min-height: 120px; resize: vertical }
-        form .btn-premium { margin-top: 8px }
-        form button { width: 100%; max-width: 200px }
-
-        /* =========================
-           CHAT
-           ========================= */
-        .chat-box {
-            width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.04);
-            border: 2px solid rgba(255,0,150,0.28); border-radius: 18px; padding: 16px; height: 360px; overflow-y: auto; backdrop-filter: blur(8px);
-            box-shadow: 0 12px 36px rgba(255,0,150,0.06);
-        }
-
-        .message-wrapper { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; animation: fadeIn .28s ease }
-        .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; box-shadow: 0 8px 30px rgba(255,0,150,0.08); flex-shrink: 0 }
-
-        .bubble { padding: 12px 14px; border-radius: 14px; max-width: 70%; font-size: 15px; line-height: 1.35; box-shadow: 0 10px 30px rgba(0,0,0,0.25); word-wrap: break-word }
-        .mine { margin-left: auto; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: white; border-bottom-right-radius: 6px }
-        .others { background: rgba(255,255,255,0.96); color: #222; border-bottom-left-radius: 6px }
-
-        /* improved input area */
-        .chat-input-container { width: calc(100% - 32px); max-width: 720px; margin: 12px auto 40px auto; display: flex; gap: 12px; align-items: center }
-        .chat-input { flex: 1; padding: 14px 18px; border-radius: 12px; background: var(--glass-1); border: 1px solid rgba(255,255,255,0.06); color: white; outline: none; font-size: 16px; transition: .18s; box-shadow: 0 6px 20px rgba(255,0,150,0.04); min-width: 0 }
-        .chat-input:focus { box-shadow: 0 12px 40px rgba(255,0,150,0.12); transform: translateY(-2px) }
-
-        .btn-chat { padding: 12px 18px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(255,0,150,0.12); white-space: nowrap; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: #fff }
-        .btn-chat:hover { transform: scale(1.03) }
-
-        /* smooth scroll behavior */
+        .card.locked::after { content: '🔒'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; pointer-events: none; }
+        .card.locked { cursor: not-allowed }
+        .videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; padding: 16px; max-width: 1180px; margin: auto; }
+        .tiktok-container { position: relative; overflow: hidden; border-radius: 12px; background: #000; }
+        .tiktok-container video { width: 100%; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); display: block; object-fit: cover; max-height: 480px; }
+        .v-overlay { position: absolute; left: 12px; bottom: 16px; color: #fff; text-shadow: 0 6px 18px rgba(0,0,0,0.6); pointer-events: none; display: flex; flex-direction: column; gap: 6px; }
+        .v-overlay .v-title { font-size: 16px; font-weight: 800; }
+        .v-overlay .v-desc { font-size: 12px; opacity: .92; }
+        .tiktok-controls { position: absolute; right: 12px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .tiktok-controls button { background: rgba(0,0,0,0.5); color: #fff; border: none; padding: 8px; border-radius: 10px; cursor: pointer; font-weight: 800; }
+        .video-locked-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; border-radius: 12px; }
+        .video-locked-overlay span { font-size: 48px; }
+        .video-locked-overlay p { color: #fff; font-size: 15px; font-weight: 700; margin: 0; }
+        .video-locked-overlay small { color: var(--muted); font-size: 13px; }
+        .premium-plans { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; padding: 16px; margin: 10px auto; max-width: 1180px; }
+        .plan-card { width: 100%; max-width: 280px; padding: 18px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,0,150,0.04); text-align: center; }
+        .plan-title { font-size: 20px; margin: 0 0 12px 0; }
+        .price { font-size: 28px; color: var(--pink-2); margin: 12px 0; }
+        .btn-premium { display: inline-block; padding: 10px 20px; border-radius: 12px; text-decoration: none; color: white; font-weight: 800; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); font-size: 16px; }
+        form { width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,0,150,0.03); }
+        form label { display: block; margin-bottom: 8px; color: var(--muted); font-weight: 600; font-size: 15px; }
+        form input[type="text"], form textarea { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid rgba(255,0,150,0.08); background: rgba(255,255,255,0.02); color: white; outline: none; font-size: 15px; font-family: inherit; }
+        form textarea { min-height: 120px; resize: vertical; }
+        .chat-box { width: calc(100% - 32px); max-width: 720px; margin: 18px auto; background: rgba(255,255,255,0.04); border: 2px solid rgba(255,0,150,0.28); border-radius: 18px; padding: 16px; height: 360px; overflow-y: auto; backdrop-filter: blur(8px); }
+        .message-wrapper { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; animation: fadeIn .28s ease; }
+        .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; flex-shrink: 0; font-size: 11px; }
+        .bubble { padding: 12px 14px; border-radius: 14px; max-width: 70%; font-size: 15px; line-height: 1.35; word-wrap: break-word; }
+        .mine { margin-left: auto; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: white; border-bottom-right-radius: 6px; }
+        .others { background: rgba(255,255,255,0.96); color: #222; border-bottom-left-radius: 6px; }
+        .chat-input-container { width: calc(100% - 32px); max-width: 720px; margin: 12px auto 40px auto; display: flex; gap: 12px; align-items: center; }
+        .chat-input { flex: 1; padding: 14px 18px; border-radius: 12px; background: var(--glass-1); border: 1px solid rgba(255,255,255,0.06); color: white; outline: none; font-size: 16px; min-width: 0; font-family: inherit; }
+        .btn-chat { padding: 12px 18px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; background: linear-gradient(135deg, var(--pink-1), var(--pink-2)); color: #fff; white-space: nowrap; }
+        .lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); z-index: 9999; padding: 16px; }
+        #lightbox-img { max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain; }
+        .whatsapp-float { position: fixed; right: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; text-decoration: none; z-index: 50; }
+        .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 10px; }
+        .skeleton-card { height: 180px; border-radius: 12px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         html { scroll-behavior: smooth; }
-
-        /* lightbox */
-        .lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); z-index: 9999; padding: 16px }
-        #lightbox-img { max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain }
-
-        /* whatsapp float */
-        .whatsapp-float { position: fixed; right: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; box-shadow: 0 10px 40px rgba(37,211,102,0.14); text-decoration: none; z-index: 50 }
-
-        /* responsive: estilos para dispositivos móviles estilo "TikTok" */
         @media (max-width: 768px) {
-            .header h1 { font-size: 28px; margin-top:12px }
-            .header p { font-size: 14px; padding: 0 12px; }
-
-            .gallery, .videos {
-                height: calc(100vh - 120px);
-                max-width: 100%;
-                padding: 0;
-                margin: 0;
-                overflow-y: auto;
-                scroll-snap-type: y mandatory;
-            }
-
-            .gallery .card, .videos .tiktok-container {
-                min-height: calc(100vh - 120px);
-                height: calc(100vh - 120px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                scroll-snap-align: start;
-                margin: 0;
-                border-radius: 0;
-                padding: 0;
-            }
-
-            .gallery .card img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 0;
-            }
-
-            .card .overlay { display:flex; flex-direction:column; align-items:flex-start; padding-left: 14px; padding-right: 14px; }
-            .card h3 { display:none; }
-            .card .overlay .title { font-size: 18px; line-height:1.1 }
-            .card .overlay .meta { font-size: 13px; opacity: .95 }
-
-            .videos .tiktok-container { width: 100%; height: calc(100vh - 120px); display:block; background:#000; border-radius:0; }
+            .header h1 { font-size: 28px; }
+            .gallery, .videos { height: calc(100vh - 120px); max-width: 100%; padding: 0; margin: 0; overflow-y: auto; scroll-snap-type: y mandatory; }
+            .gallery .card, .videos .tiktok-container { min-height: calc(100vh - 120px); height: calc(100vh - 120px); scroll-snap-align: start; margin: 0; border-radius: 0; padding: 0; display: flex; align-items: center; justify-content: center; }
+            .gallery .card img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+            .card h3 { display: none; }
+            .videos .tiktok-container { width: 100%; display: block; background: #000; }
             .videos video { width: 100%; height: 100%; object-fit: cover; border-radius: 0; max-height: unset; }
-
-            .v-overlay { left: 14px; bottom: 18px; }
-            .tiktok-controls { right: 14px; bottom: 18px; }
-
-            .tiktok-controls button { padding: 12px; border-radius: 14px; font-size: 14px; }
-
-            .menu { padding: 8px 10px; margin: 6px }
-            .menu h2 { font-size: 16px }
-            .menu a { font-size: 13px; padding: 6px 8px }
-            .chat-box { height: 220px; padding: 10px }
-            .chat-input-container { gap: 8px; padding: 0 12px }
-            .btn-chat { padding: 10px 12px; font-size: 14px }
-            .promo-banner { width: 260px; top: 80px; right: 8px }
-            .audio-btn { left: 12px; bottom: 12px; padding: 10px 12px; }
-        }
-
-        @media (max-width: 420px) {
-            .header h1 { font-size: 24px }
-            .card .overlay .title { font-size: 16px }
-            .v-overlay .v-title { font-size: 15px }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px) }
-            to { opacity: 1; transform: translateY(0) }
+            .promo-banner { width: 260px; top: 80px; right: 8px; }
+            .menu { padding: 8px 10px; margin: 6px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"></div>
+<div class="bg-animation"></div>
 
-    <!-- AUDIO OCULTO CON AUTOPLAY
-         - Intentamos autoplay; si no es posible reproducimos muted y ofrecemos botón visible para activar sonido.
-    -->
-    <audio id="audioPlayer" loop playsinline>
-        <source src="videos/musica.mpeg" type="audio/mpeg" />
-    </audio>
+<audio id="audioPlayer" loop playsinline>
+    <source src="videos/musica.mpeg" type="audio/mpeg" />
+</audio>
 
-    <!-- Botón visible para que el usuario active la reproducción con sonido -->
-    <button id="audioToggleBtn" class="audio-btn" aria-label="Reproducir música">
-        <span id="audioIcon">🔊</span>
-        <span id="audioLabel">Reproducir música</span>
-    </button>
+<button id="audioToggleBtn" class="audio-btn">
+    <span id="audioIcon">🔊</span>
+    <span id="audioLabel">Reproducir música</span>
+</button>
 
-    <!-- MENÚ SUPERIOR -->
-    <nav class="menu">
-        <h2>🔥 Mi Contenido 🔥</h2>
-        <ul>
-            <li><a href="#fotos">Fotos</a></li>
-            <li><a href="#videos">Videos</a></li>
-            <li><a href="#premium">Premium 💎</a></li>
-            <li><a href="#chat">Chat</a></li>
-            <li><a href="#rutina">Ejercitando a la Perra</a></li>
-            <!-- Número en formato internacional (EE. UU.): 16122323200 -->
-            <li><a class="whatsapp-top" href="https://wa.me/16122323200" target="_blank" rel="noopener">WhatsApp 📞</a></li>
-        </ul>
-    </nav>
+<nav class="menu">
+    <h2 id="menuTitle">🔥 Mi Contenido 🔥</h2>
+    <ul>
+        <li><a href="#fotos">Fotos</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#premium">Premium 💎</a></li>
+        <li><a href="#chat">Chat</a></li>
+        <li><a href="#rutina">Rutina</a></li>
+        <li><a id="waHeaderLink" href="#" target="_blank" rel="noopener">WhatsApp 📞</a></li>
+    </ul>
+</nav>
 
-    <!-- ENCABEZADO -->
-    <header class="header">
-        <h1>Me Encanta la Verga</h1>
-        <p>Perra sumisa en celo, ofreciéndose para complacerlo sin límites para ser usada y maltratada dispuesta a cumplir órdenes y volver una realidad sus más oscuras fantasías, dese un gusto y déjeme servirle</p>
+<header class="header">
+    <h1 id="headerTitle">Cargando...</h1>
+    <p id="headerDesc"></p>
+    <a id="waHeaderBtn" class="btn-whatsapp-header" href="#" target="_blank" rel="noopener">
+        📞 Contactarme por WhatsApp
+    </a>
+</header>
 
-        <a class="btn-whatsapp-header" href="https://wa.me/16122323200" target="_blank" rel="noopener">
-            📞 Contactarme por WhatsApp
-        </a>
-    </header>
-
-    <!-- CONTADOR REGRESIVO FLOTANTE Y MOVIBLE -->
-    <div class="promo-banner" id="promoBanner" role="dialog" aria-label="Promoción">
-        <!-- Botón X para cerrar el calendario/banner -->
-        <button class="close-btn" id="closePromo" aria-label="Cerrar banner">✕</button>
-
-        <h2>🔥 ¡LA PERRA VIENE DE ESTADOS UNIDOS! 🔥</h2>
-        <p>Preparate porque llega con todo</p>
-        <div class="countdown" aria-hidden="true">
-            <div class="countdown-item">
-                <span class="countdown-number" id="dias">00</span>
-                <span class="countdown-label">Días</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="horas">00</span>
-                <span class="countdown-label">Horas</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutos">00</span>
-                <span class="countdown-label">Minutos</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="segundos">00</span>
-                <span class="countdown-label">Segundos</span>
-            </div>
-        </div>
+<div class="promo-banner" id="promoBanner">
+    <button class="close-btn" id="closePromo">✕</button>
+    <h2 id="bannerTitle">🔥 Cargando... 🔥</h2>
+    <p id="bannerSub">Un momento...</p>
+    <div class="countdown">
+        <div class="countdown-item"><span class="countdown-number" id="dias">00</span><span class="countdown-label">Días</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="horas">00</span><span class="countdown-label">Horas</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="minutos">00</span><span class="countdown-label">Minutos</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="segundos">00</span><span class="countdown-label">Segundos</span></div>
     </div>
+</div>
 
-    <!-- SECCIÓN FOTOS -->
-    <h2 id="fotos" class="titulo-seccion">Soy Tu Perra</h2>
+<h2 id="fotosTitle" class="titulo-seccion">Soy Tu Perra</h2>
+<section class="gallery" id="gallery">
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+</section>
 
-    <section class="gallery" id="gallery">
-        <!-- Fotos libres (1-6) -->
-        <div class="card">
-            <img src="img/foto11.jpeg" alt="Foto 1" onclick="openLightbox(this.src)">
-            <!-- overlay para estilo tiktok (información) -->
-            <div class="overlay">
-                <div class="title">Foto #1</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
+<h2 id="videosTitle" class="titulo-seccion">Videos Exclusivos</h2>
+<section class="videos" id="videosSection">
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+</section>
 
-        <div class="card">
-            <img src="img/foto12.jpeg" alt="Foto 2" onclick="openLightbox(this.src)">
-            <div class="overlay">
-                <div class="title">Foto #2</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
+<h2 id="premiumTitle" class="titulo-seccion">Paquetes Premium 💎</h2>
+<section class="premium-plans" id="planesSection">
+    <div class="skeleton" style="height:200px;width:260px;border-radius:14px;"></div>
+    <div class="skeleton" style="height:200px;width:260px;border-radius:14px;"></div>
+    <div class="skeleton" style="height:200px;width:260px;border-radius:14px;"></div>
+</section>
 
-        <div class="card">
-            <img src="img/foto13.jpeg" alt="Foto 3" onclick="openLightbox(this.src)">
-            <div class="overlay">
-                <div class="title">Foto #3</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
-
-        <div class="card">
-            <img src="img/foto14.jpeg" alt="Foto 4" onclick="openLightbox(this.src)">
-            <div class="overlay">
-                <div class="title">Foto #4</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
-
-        <div class="card">
-            <img src="img/foto15.jpeg" alt="Foto 5" onclick="openLightbox(this.src)">
-            <div class="overlay">
-                <div class="title">Foto #5</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
-
-        <div class="card">
-            <img src="img/foto16.jpeg" alt="Foto 6" onclick="openLightbox(this.src)">
-            <div class="overlay">
-                <div class="title">Foto #6</div>
-                <div class="meta">Galería • Gratis</div>
-            </div>
-            <h3>.</h3>
-        </div>
-
-        <!-- Fotos bloqueadas (7-10) -->
-        <div class="card locked" onclick="solicitarPago()">
-            <img src="img/foto17.jpeg" alt="Foto 7">
-            <div class="overlay">
-                <div class="title">Foto #7</div>
-                <div class="meta">Premium • 🔒</div>
-            </div>
-            <h3>. 🔒</h3>
-        </div>
-
-        <div class="card locked" onclick="solicitarPago()">
-            <img src="img/foto18.jpeg" alt="Foto 8">
-            <div class="overlay">
-                <div class="title">Foto #8</div>
-                <div class="meta">Premium • 🔒</div>
-            </div>
-            <h3>. 🔒</h3>
-        </div>
-
-        <div class="card locked" onclick="solicitarPago()">
-            <img src="img/foto19.jpeg" alt="Foto 9">
-            <div class="overlay">
-                <div class="title">Foto #9</div>
-                <div class="meta">Premium • 🔒</div>
-            </div>
-            <h3>. 🔒</h3>
-        </div>
-
-        <div class="card locked" onclick="solicitarPago()">
-            <img src="img/foto20.jpeg" alt="Foto 10">
-            <div class="overlay">
-                <div class="title">Foto #10</div>
-                <div class="meta">Premium • 🔒</div>
-            </div>
-            <h3>. 🔒</h3>
-        </div>
-    </section>
-
-    <!-- SECCIÓN VIDEOS -->
-    <h2 id="videos" class="titulo-seccion">Videos Exclusivos</h2>
-
-    <section class="videos" id="videosSection">
-        <!-- Videos existentes -->
-        <div class="tiktok-container">
-            <video src="videos/video1.mp4" controls muted playsinline preload="metadata"></video>
-            <div class="v-overlay">
-                <div class="v-title">Video 1</div>
-                <div class="v-desc">Descripción breve • Gratis</div>
-            </div>
-            <div class="tiktok-controls" aria-hidden="true">
-                <button onclick="toggleMute(event)">🔊</button>
-                <button onclick="shareVideo(event, 'videos/video1.mp4')">📤</button>
-            </div>
-        </div>
-
-        <div class="tiktok-container">
-            <video src="videos/video2.mp4" controls muted playsinline preload="metadata"></video>
-            <div class="v-overlay">
-                <div class="v-title">Video 2</div>
-                <div class="v-desc">Descripción breve • Gratis</div>
-            </div>
-            <div class="tiktok-controls" aria-hidden="true">
-                <button onclick="toggleMute(event)">🔊</button>
-                <button onclick="shareVideo(event, 'videos/video2.mp4')">📤</button>
-            </div>
-        </div>
-
-        <div class="tiktok-container">
-            <video src="videos/video3.mp4" controls muted playsinline preload="metadata"></video>
-            <div class="v-overlay">
-                <div class="v-title">Video 3</div>
-                <div class="v-desc">Contenido exclusivo</div>
-            </div>
-            <div class="tiktok-controls" aria-hidden="true">
-                <button onclick="toggleMute(event)">🔊</button>
-                <button onclick="shareVideo(event, 'videos/video3.mp4')">📤</button>
-            </div>
-        </div>
-
-        <div class="tiktok-container">
-            <video src="videos/video4.mp4" controls muted playsinline preload="metadata"></video>
-            <div class="v-overlay">
-                <div class="v-title">Video 4</div>
-                <div class="v-desc">Contenido exclusivo</div>
-            </div>
-            <div class="tiktok-controls" aria-hidden="true">
-                <button onclick="toggleMute(event)">🔊</button>
-                <button onclick="shareVideo(event, 'videos/video4.mp4')">📤</button>
-            </div>
-        </div>
-
-        <div class="tiktok-container">
-            <video src="videos/video5.mp4" controls muted playsinline preload="metadata"></video>
-            <div class="v-overlay">
-                <div class="v-title">Video 5</div>
-                <div class="v-desc">Contenido exclusivo</div>
-            </div>
-            <div class="tiktok-controls" aria-hidden="true">
-                <button onclick="toggleMute(event)">🔊</button>
-                <button onclick="shareVideo(event, 'videos/video5.mp4')">📤</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- PAQUETES PREMIUM -->
-    <h2 id="premium" class="titulo-seccion">Paquetes Premium 💎</h2>
-
-    <section class="premium-plans">
-        <div class="plan-card">
-            <h3 class="plan-title">🔥 Básico</h3>
-            <p>20 fotos exclusivas</p>
-            <p>5 videos</p>
-            <h2 class="price">$5.000 COP</h2>
-
-            <a
-                class="btn-premium"
-                href="https://wa.me/16122323200?text=Hola%20quiero%20comprar%20el%20paquete%20B%C3%A1sico%20%F0%9F%94%A5%20de%20%245.000%20COP"
-                target="_blank" rel="noopener">
-                Comprar
-            </a>
-        </div>
-
-        <div class="plan-card destacado">
-            <h3 class="plan-title">💎 VIP</h3>
-            <p>Todo el contenido</p>
-            <p>Videos diarios</p>
-            <p>Chat privado</p>
-            <h2 class="price">$10.000 COP</h2>
-
-            <a
-                class="btn-premium"
-                href="https://wa.me/16122323200?text=Hola%20quiero%20comprar%20el%20paquete%20VIP%20%F0%9F%92%8E%F0%9F%94%A5%20de%20%2410.000%20COP"
-                target="_blank" rel="noopener">
-                Comprar
-            </a>
-        </div>
-
-        <div class="plan-card">
-            <h3 class="plan-title">👑 Ultra</h3>
-            <p>Contenido ilimitado</p>
-            <p>Videos personalizados</p>
-            <p>Llamadas privadas</p>
-            <h2 class="price">$20.000 COP</h2>
-
-            <a
-                class="btn-premium"
-                href="https://wa.me/16122323200?text=Hola%20quiero%20comprar%20el%20paquete%20ULTRA%20%F0%9F%91%91%F0%9F%94%A5%20de%20%2420.000%20COP"
-                target="_blank" rel="noopener">
-                Comprar
-            </a>
-        </div>
-    </section>
-
-    <!-- PAGOS EXTRA -->
-    <section>
-        <h2 class="titulo-seccion">Sesión en Vivo 🔥</h2>
-
-        <div style="text-align:center; margin-bottom:18px; padding:0 16px">
-            <a
-               class="btn-premium"
-               href="https://wa.me/16122323200?text=Hola%20quiero%20pagar%20una%20Sesi%C3%B3n%20en%20Vivo%20%F0%9F%94%A5"
-               target="_blank" rel="noopener">
-               Pagar Sesión en Vivo
-            </a>
-        </div>
-
-        <h2 class="titulo-seccion">Conócela en Bogotá ✈️</h2>
-        <p style="text-align:center;color:var(--muted); padding:0 16px">Disponible solo por WhatsApp</p>
-        <div style="text-align:center;margin-bottom:18px; padding:0 16px">
-            <a class="btn-premium" href="https://wa.me/16122323200" target="_blank" rel="noopener">Consultar Precio</a>
-        </div>
-    </section>
-
-    <!-- ENCUESTAS -->
-    <section>
-        <h2 class="titulo-seccion">Participa en su Tatuaje 🖋</h2>
-        <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputTatuaje')">
-            <label>¿Qué tatuaje debería hacerse?</label>
-            <input id="inputTatuaje" type="text" placeholder="Escribe tu idea" />
-            <button type="submit" class="btn-premium">Enviar Idea</button>
-        </form>
-
-        <h2 class="titulo-seccion">¿Dónde debería hacerse un piercing? 💍</h2>
-        <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputPiercing')">
-            <label>Tu sugerencia:</label>
-            <input id="inputPiercing" type="text" placeholder="Escribe tu idea" />
-            <button type="submit" class="btn-premium">Enviar</button>
-        </form>
-    </section>
-
-    <!-- CHAT -->
-    <h2 id="chat" class="titulo-seccion">Chat de Usuarios 💬</h2>
-
-    <div id="chatBox" class="chat-box" aria-live="polite" aria-atomic="false"></div>
-
-    <div class="chat-input-container">
-        <input id="chatInput" class="chat-input" placeholder="Dime algo rico..." aria-label="Escribir mensaje" />
-        <button id="sendBtn" class="btn-chat" aria-label="Enviar mensaje">Enviar 💋</button>
+<section>
+    <h2 id="liveTitle" class="titulo-seccion">Sesión en Vivo 🔥</h2>
+    <div style="text-align:center;margin-bottom:18px;padding:0 16px">
+        <a id="waLiveBtn" class="btn-premium" href="#" target="_blank" rel="noopener">Pagar Sesión en Vivo</a>
     </div>
+    <h2 id="bogotaTitle" class="titulo-seccion">Conócela en Bogotá ✈️</h2>
+    <p id="bogotaDesc" style="text-align:center;color:var(--muted);padding:0 16px">Disponible solo por WhatsApp</p>
+    <div style="text-align:center;margin-bottom:18px;padding:0 16px">
+        <a id="waBogotaBtn" class="btn-premium" href="#" target="_blank" rel="noopener">Consultar Precio</a>
+    </div>
+</section>
 
-    <!-- RUTINA -->
-    <h2 id="rutina" class="titulo-seccion">Ejercitando a la Perra 💦</h2>
-
-    <p style="text-align:center;color:var(--muted); padding:0 16px">Escribe la rutina que quieres que haga, pronto la subiremos a la página:</p>
-
-    <form onsubmit="event.preventDefault(); sendIdeaFromForm('inputRutina')">
-        <textarea id="inputRutina" placeholder="Escribe tu rutina aquí..." class="textarea"></textarea>
-        <div style="text-align:center;margin-top:8px;">
-            <button type="submit" class="btn-premium">Enviar Rutina</button>
-        </div>
+<section>
+    <h2 class="titulo-seccion">Participa en su Tatuaje 🖋</h2>
+    <form onsubmit="event.preventDefault();sendIdeaFromForm('inputTatuaje')">
+        <label>¿Qué tatuaje debería hacerse?</label>
+        <input id="inputTatuaje" type="text" placeholder="Escribe tu idea" />
+        <button type="submit" class="btn-premium" style="margin-top:10px;">Enviar Idea</button>
     </form>
+    <h2 class="titulo-seccion">¿Dónde debería hacerse un piercing? 💍</h2>
+    <form onsubmit="event.preventDefault();sendIdeaFromForm('inputPiercing')">
+        <label>Tu sugerencia:</label>
+        <input id="inputPiercing" type="text" placeholder="Escribe tu idea" />
+        <button type="submit" class="btn-premium" style="margin-top:10px;">Enviar</button>
+    </form>
+</section>
 
-    <!-- BOTÓN FLOTANTE WHATSAPP -->
-    <a href="https://wa.me/16122323200" target="_blank" class="whatsapp-float" rel="noopener">💬</a>
+<h2 id="chat" class="titulo-seccion">Chat de Usuarios 💬</h2>
+<div id="chatBox" class="chat-box"></div>
+<div class="chat-input-container">
+    <input id="chatInput" class="chat-input" placeholder="Dime algo rico..." />
+    <button id="sendBtn" class="btn-chat">Enviar 💋</button>
+</div>
 
-    <!-- LIGHTBOX -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <img id="lightbox-img" alt="Imagen ampliada" />
+<h2 id="rutinaTitle" class="titulo-seccion">Ejercitando a la Perra 💦</h2>
+<p id="rutinaDesc" style="text-align:center;color:var(--muted);padding:0 16px">Escribe la rutina que quieres que haga:</p>
+<form onsubmit="event.preventDefault();sendIdeaFromForm('inputRutina')">
+    <textarea id="inputRutina" placeholder="Escribe tu rutina aquí..."></textarea>
+    <div style="text-align:center;margin-top:8px;">
+        <button type="submit" class="btn-premium">Enviar Rutina</button>
     </div>
+</form>
 
-    <!-- SCRIPTS -->
-    <script>
-        /* ==================
-           AUTO-REPRODUCIR AUDIO OCULTO — Mejor manejo con botón visible
-        */
-        window.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('audioPlayer');
-            const audioBtn = document.getElementById('audioToggleBtn');
-            const audioIcon = document.getElementById('audioIcon');
-            const audioLabel = document.getElementById('audioLabel');
+<a id="waFloat" href="#" target="_blank" class="whatsapp-float" rel="noopener">💬</a>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" alt="Imagen ampliada" />
+</div>
 
-            // Inicial: intentar autoplay sin mutear. Si falla, reproducir muteado.
-            function tryPlayUnmuted() {
-                if (!audio) return Promise.reject('audio no encontrado');
-                audio.muted = false;
-                audio.volume = 1;
-                return audio.play();
-            }
+<!-- CONFIG LOCAL FALLBACK -->
+<script src="js/config-local.js"></script>
 
-            function playMutedFallback() {
-                if (!audio) return;
-                audio.muted = true;
-                audio.volume = 1;
-                audio.play().catch(() => { /* noop */ });
-                showAudioButton(); // mostrar botón para que el usuario lo active
-            }
-
-            // Mostrar/ocultar botón de audio según estado
-            function showAudioButton() {
-                if (!audioBtn) return;
-                audioBtn.classList.remove('hidden');
-            }
-            function hideAudioButton() {
-                if (!audioBtn) return;
-                audioBtn.classList.add('hidden');
-            }
-
-            // Acción del botón: desmutear y reproducir con sonido
-            function activateAudioFromButton() {
-                if (!audio) return;
-                // reanudar AudioContext si aplica
-                try {
-                    if (window.AudioContext || window.webkitAudioContext) {
-                        const AudioContext = window.AudioContext || window.webkitAudioContext;
-                        const ctx = new AudioContext();
-                        try { ctx.resume(); } catch (e) { /* noop */ }
-                    }
-                } catch (e) { /* noop */ }
-
-                audio.muted = false;
-                audio.volume = 0.9;
-                audio.play().then(() => {
-                    hideAudioButton();
-                }).catch(() => {
-                    // si falla, dejamos el botón visible para reintentar
-                    showAudioButton();
-                });
-            }
-
-            // Actualiza el texto del botón según estado
-            function updateAudioButtonLabel() {
-                if (!audio || !audioBtn) return;
-                if (audio.muted || audio.paused) {
-                    audioIcon.textContent = '🔊';
-                    audioLabel.textContent = 'Reproducir música';
-                    showAudioButton();
-                } else {
-                    audioIcon.textContent = '🔇';
-                    audioLabel.textContent = 'Música activada';
-                    hideAudioButton();
-                }
-            }
-
-            // Añadir listeners del botón
-            if (audioBtn) {
-                audioBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    activateAudioFromButton();
-                });
-            }
-
-            // Escuchar cambios en el audio para actualizar botón
-            audio.addEventListener('play', updateAudioButtonLabel);
-            audio.addEventListener('pause', updateAudioButtonLabel);
-            audio.addEventListener('volumechange', updateAudioButtonLabel);
-
-            // Intentos iniciales
-            tryPlayUnmuted()
-                .then(() => {
-                    // si logró reproducir con sonido, ocultamos el botón
-                    hideAudioButton();
-                })
-                .catch(() => {
-                    // intentar WebAudio (puede ayudar en algunos navegadores)
-                    try {
-                        const AudioContext = window.AudioContext || window.webkitAudioContext;
-                        if (AudioContext) {
-                            const ctx = new AudioContext();
-                            const source = ctx.createMediaElementSource(audio);
-                            source.connect(ctx.destination);
-                            ctx.resume().then(() => {
-                                audio.muted = false;
-                                audio.volume = 1;
-                                return audio.play();
-                            }).then(() => {
-                                hideAudioButton();
-                            }).catch(() => {
-                                // fallback: reproducir muteado y mostrar botón
-                                playMutedFallback();
-                            });
-                        } else {
-                            // fallback directo
-                            playMutedFallback();
-                        }
-                    } catch (e) {
-                        playMutedFallback();
-                    }
-                });
-
-            // También permitir que la primera interacción global active audio si el usuario toca la pantalla
-            function globalInteractionHandler() {
-                if (!audio) return;
-                if (audio.muted || audio.paused) {
-                    activateAudioFromButton();
-                }
-                document.body.removeEventListener('click', globalInteractionHandler);
-                document.body.removeEventListener('touchstart', globalInteractionHandler);
-            }
-            document.body.addEventListener('click', globalInteractionHandler, { once: true });
-            document.body.addEventListener('touchstart', globalInteractionHandler, { once: true });
-
-            // Iniciar otras funcionalidades
-            iniciarContador();
-            enablePromoDrag();
-            setupChat();
-            initVideoAutoplayOnView();
-
-            // Observador de scroll para ajustar la opacidad del banner
-            window.addEventListener('scroll', function() {
-                const banner = document.getElementById('promoBanner');
-                if (!banner) return;
-                if (window.scrollY > 10) {
-                    banner.style.opacity = '0.5';
-                } else {
-                    banner.style.opacity = '1';
-                }
-            }, { passive: true });
-
-            // --- Manejo del botón X (cerrar promo) ---
-            const closeBtn = document.getElementById('closePromo');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const banner = document.getElementById('promoBanner');
-                    if (!banner) return;
-                    // Ocultar el banner solo en esta sesión; al refrescar volverá a aparecer
-                    banner.style.display = 'none';
-                });
-            }
-
-            // Asegurar que el botón refleje el estado al cargar
-            setTimeout(updateAudioButtonLabel, 300);
-        });
-
-        /* ==================
-           CONTADOR REGRESIVO (OBJETIVO: 23 de Febrero)
-        */
-        function iniciarContador() {
-            const fechaObjetivo = new Date('2026-02-23T00:00:00-05:00').getTime();
-
-            function actualizarContador() {
-                const ahora = new Date().getTime();
-                const diferencia = fechaObjetivo - ahora;
-
-                if (diferencia < 0) {
-                    document.getElementById('dias').textContent = '00';
-                    document.getElementById('horas').textContent = '00';
-                    document.getElementById('minutos').textContent = '00';
-                    document.getElementById('segundos').textContent = '00';
-                    return;
-                }
-
-                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-                const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-                document.getElementById('dias').textContent = String(dias).padStart(2, '0');
-                document.getElementById('horas').textContent = String(horas).padStart(2, '0');
-                document.getElementById('minutos').textContent = String(minutos).padStart(2, '0');
-                document.getElementById('segundos').textContent = String(segundos).padStart(2, '0');
-            }
-
-            actualizarContador();
-            setInterval(actualizarContador, 1000);
-        }
-
-        /* ==================
-           DRAGGABLE PROMO BANNER (soporte mouse + touch)
-        */
-        function enablePromoDrag() {
-            const banner = document.getElementById('promoBanner');
-            if (!banner) return;
-
-            let isDown = false;
-            let startX = 0;
-            let startY = 0;
-            let origLeft = 0;
-            let origTop = 0;
-
-            function onPointerDown(e) {
-                const target = e.target || e.srcElement;
-                if (target && (target.id === 'closePromo' || (target.classList && target.classList.contains('close-btn')))) return;
-
-                isDown = true;
-                const point = e.touches ? e.touches[0] : e;
-                startX = point.clientX;
-                startY = point.clientY;
-                const rect = banner.getBoundingClientRect();
-                origLeft = rect.left;
-                origTop = rect.top;
-                banner.style.transition = 'none';
-                e.preventDefault();
-            }
-
-            function onPointerMove(e) {
-                if (!isDown) return;
-                const point = e.touches ? e.touches[0] : e;
-                const dx = point.clientX - startX;
-                const dy = point.clientY - startY;
-                banner.style.left = (origLeft + dx) + 'px';
-                banner.style.top = (origTop + dy) + 'px';
-                banner.style.right = 'auto';
-            }
-
-            function onPointerUp() {
-                if (!isDown) return;
-                isDown = false;
-                banner.style.transition = '';
-            }
-
-            banner.addEventListener('mousedown', onPointerDown);
-            window.addEventListener('mousemove', onPointerMove);
-            window.addEventListener('mouseup', onPointerUp);
-
-            banner.addEventListener('touchstart', onPointerDown, { passive: false });
-            window.addEventListener('touchmove', onPointerMove, { passive: false });
-            window.addEventListener('touchend', onPointerUp);
-        }
-
-        /* ==================
-           LIGHTBOX FUNCIONES
-        */
-        function openLightbox(src) {
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            if (img) img.src = src;
-            if (lb) lb.style.display = 'flex';
-        }
-
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            if (lb) lb.style.display = 'none';
-            if (img) img.src = '';
-        }
-
-        /* ==================
-           SOLICITAR PAGO PARA FOTOS BLOQUEADAS
-        */
-        function solicitarPago() {
-            const wa = 'https://wa.me/16122323200?text=' + encodeURIComponent('Hola, quiero desbloquear contenido premium.');
-            window.open(wa, '_blank', 'noopener');
-        }
-
-        /* ==================
-           ENVIAR IDEAS (formularios)
-        */
-        function sendIdeaFromForm(inputId) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-            const value = (input.value || '').trim();
-            if (!value) {
-                alert('Por favor escribe tu idea antes de enviar.');
-                return;
-            }
-
-            const mensaje = `Hola, envío una idea desde la web: ${value}`;
-            const wa = 'https://wa.me/16122323200?text=' + encodeURIComponent(mensaje);
-            window.open(wa, '_blank', 'noopener');
-
-            input.value = '';
-            try {
-                const originalPlaceholder = input.placeholder || '';
-                input.placeholder = 'Enviado ✅';
-                setTimeout(() => input.placeholder = originalPlaceholder, 1600);
-            } catch (e) { /* noop */ }
-        }
-
-        /* ==================
-           CHAT BASICO (solo frontend)
-        */
-        function setupChat() {
-            const chatBox = document.getElementById('chatBox');
-            const chatInput = document.getElementById('chatInput');
-            const sendBtn = document.getElementById('sendBtn');
-
-            if (!chatBox || !chatInput || !sendBtn) return;
-
-            sendBtn.addEventListener('click', function() {
-                const text = chatInput.value.trim();
-                if (!text) return;
-                addMessage(text, true);
-                chatInput.value = '';
-
-                setTimeout(() => {
-                    addMessage('Mensaje recibido ❤️', false);
-                }, 700);
-            });
-
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendBtn.click();
-                }
-            });
-        }
-
-        function addMessage(text, mine) {
-            const chatBox = document.getElementById('chatBox');
-            if (!chatBox) return;
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'message-wrapper';
-
-            const avatar = document.createElement('div');
-            avatar.className = 'avatar';
-            avatar.textContent = mine ? 'Tú' : 'U';
-
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble ' + (mine ? 'mine' : 'others');
-            bubble.textContent = text;
-
-            if (mine) {
-                wrapper.appendChild(avatar);
-                wrapper.appendChild(bubble);
-                wrapper.style.justifyContent = 'flex-end';
-            } else {
-                wrapper.appendChild(avatar);
-                wrapper.appendChild(bubble);
-            }
-
-            chatBox.appendChild(wrapper);
-            wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-
-        /* ==================
-           VIDEO BEHAVIOR: autoplay cuando están en vista (estilo TikTok)
-        */
-        function initVideoAutoplayOnView() {
-            const videoContainers = document.querySelectorAll('.videos .tiktok-container');
-            if (!videoContainers || videoContainers.length === 0) return;
-
-            const options = { root: null, rootMargin: '0px', threshold: 0.6 };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (!video) return;
-                    if (entry.isIntersecting) {
-                        video.play().catch(() => {
-                            try { video.muted = true; video.play(); } catch (e) { /* noop */ }
-                        });
-                    } else {
-                        try { video.pause(); } catch (e) { /* noop */ }
-                    }
-                });
-            }, options);
-
-            videoContainers.forEach(container => observer.observe(container));
-        }
-
-        /* ==================
-           UTILIDADES DE VIDEO (botones)
-        */
-        function toggleMute(e) {
-            e && e.stopPropagation && e.stopPropagation();
-            const btn = e.currentTarget;
-            const container = btn && btn.closest('.tiktok-container');
-            if (!container) return;
-            const video = container.querySelector('video');
-            if (!video) return;
-            video.muted = !video.muted;
-            btn.textContent = video.muted ? '🔇' : '🔊';
-        }
-
-        function shareVideo(e, src) {
-            e && e.stopPropagation && e.stopPropagation();
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Mira este video',
-                    text: 'Mira este video interesante',
-                    url: src
-                }).catch(() => { /* noop */ });
-            } else {
-                const wa = 'https://wa.me/16122323200?text=' + encodeURIComponent('Mira este video: ' + window.location.origin + '/' + src);
-                window.open(wa, '_blank', 'noopener');
-            }
-        }
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
 <script>
+/* ══════════════════════════════════
+   FIREBASE INIT
+══════════════════════════════════ */
 const firebaseConfig = {
-  apiKey: "AIzaSyB0Hcu8ZF4z2fJQMCLj6zI9l6RwNWW9g54",
-  authDomain: "pepito-admin.firebaseapp.com",
-  projectId: "pepito-admin",
-  storageBucket: "pepito-admin.appspot.com",
-  messagingSenderId: "107847700755",
-  appId: "1:107847700755:web:c5ef8552b6a00e44664ae6"
+    apiKey: "AIzaSyB0Hcu8ZF4z2fJQMCLj6zI9l6RwNWW9g54",
+    authDomain: "pepito-admin.firebaseapp.com",
+    projectId: "pepito-admin",
+    storageBucket: "pepito-admin.appspot.com",
+    messagingSenderId: "107847700755",
+    appId: "1:107847700755:web:c5ef8552b6a00e44664ae6"
 };
 
 firebase.initializeApp(firebaseConfig);
+
+// Habilitar persistencia offline
 const db = firebase.firestore();
-const storage = firebase.storage();
+
+/* ══════════════════════════════════
+   CONFIG GLOBAL
+══════════════════════════════════ */
+// Empezamos con los defaults locales
+let CONFIG = { ...window.CONFIG_LOCAL.whatsapp };
+
+/* ══════════════════════════════════
+   HELPER: obtener doc con timeout
+══════════════════════════════════ */
+function getDocSafe(path, docId) {
+    return Promise.race([
+        db.collection(path).doc(docId).get(),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), 5000)
+        )
+    ]);
+}
+
+/* ══════════════════════════════════
+   APLICAR TEXTOS AL DOM
+══════════════════════════════════ */
+function applyTextos(data) {
+    const map = {
+        menuTitle:   'menuTitle',
+        headerTitle: 'headerTitle',
+        headerDesc:  'headerDesc',
+        fotosTitle:  'fotosTitle',
+        videosTitle: 'videosTitle',
+        bannerTitle: 'bannerTitle',
+        bannerSub:   'bannerSub',
+        rutinaTitle: 'rutinaTitle',
+        rutinaDesc:  'rutinaDesc',
+        liveTitle:   'liveTitle',
+        bogotaTitle: 'bogotaTitle',
+        bogotaDesc:  'bogotaDesc',
+    };
+    Object.entries(map).forEach(([key, id]) => {
+        if (!data[key]) return;
+        const el = document.getElementById(id);
+        if (el) el.textContent = data[key];
+    });
+    if (data.pageTitle) document.title = data.pageTitle;
+}
+
+/* ══════════════════════════════════
+   APLICAR WHATSAPP AL DOM
+══════════════════════════════════ */
+function applyWhatsApp(cfg) {
+    const wa = cfg.numero || '16122323200';
+    const links = {
+        waHeaderLink: `https://wa.me/${wa}`,
+        waHeaderBtn:  `https://wa.me/${wa}?text=${encodeURIComponent(cfg.msg_header||'')}`,
+        waLiveBtn:    `https://wa.me/${wa}?text=${encodeURIComponent(cfg.msg_live||'')}`,
+        waBogotaBtn:  `https://wa.me/${wa}`,
+        waFloat:      `https://wa.me/${wa}`,
+    };
+    Object.entries(links).forEach(([id, href]) => {
+        const el = document.getElementById(id);
+        if (el) el.href = href;
+    });
+}
+
+/* ══════════════════════════════════
+   INIT PRINCIPAL
+══════════════════════════════════ */
+async function initPage() {
+
+    // 1) Aplicar defaults locales INMEDIATAMENTE (sin esperar Firebase)
+    applyTextos(window.CONFIG_LOCAL.textos);
+    applyWhatsApp(window.CONFIG_LOCAL.whatsapp);
+    iniciarContador(window.CONFIG_LOCAL.contador.fecha);
+
+    // 2) Cargar fotos y videos locales como fallback rápido
+    loadFotosLocales();
+    loadVideosLocales();
+    loadPlanesDefault();
+
+    // 3) Intentar cargar desde Firebase en paralelo (sin bloquear)
+    cargarDesdeFirebase();
+
+    // 4) Iniciar funciones UI
+    initAudio();
+    setupChat();
+    enablePromoDrag();
+
+    document.getElementById('closePromo').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('promoBanner').style.display = 'none';
+    });
+
+    window.addEventListener('scroll', function() {
+        const b = document.getElementById('promoBanner');
+        if (b) b.style.opacity = window.scrollY > 10 ? '0.5' : '1';
+    }, { passive: true });
+}
+
+/* ══════════════════════════════════
+   CARGAR FIREBASE (no bloquea el render)
+══════════════════════════════════ */
+async function cargarDesdeFirebase() {
+    try {
+        // WhatsApp config
+        const waDoc = await getDocSafe('config', 'whatsapp');
+        if (waDoc.exists) {
+            CONFIG = { ...CONFIG, ...waDoc.data() };
+            applyWhatsApp(CONFIG);
+        }
+    } catch(e) { /* usa local */ }
+
+    try {
+        // Textos
+        const txtDoc = await getDocSafe('config', 'textos');
+        if (txtDoc.exists) applyTextos(txtDoc.data());
+    } catch(e) { /* usa local */ }
+
+    try {
+        // Contador
+        const cDoc = await getDocSafe('config', 'contador');
+        if (cDoc.exists && cDoc.data().fecha) {
+            iniciarContador(cDoc.data().fecha);
+        }
+    } catch(e) { /* usa local */ }
+
+    try {
+        // Audio
+        const aDoc = await getDocSafe('config', 'audio');
+        if (aDoc.exists && aDoc.data().url) {
+            const audio = document.getElementById('audioPlayer');
+            if (audio) { audio.src = aDoc.data().url; audio.load(); }
+        }
+    } catch(e) { /* usa local */ }
+
+    try {
+        // Fotos: AGREGAR las de Firebase a las locales (no reemplazar)
+        const fotosSnap = await Promise.race([
+            db.collection('fotos').orderBy('createdAt','desc').get(),
+            new Promise((_,r) => setTimeout(()=>r(new Error('timeout')),6000))
+        ]);
+        if (!fotosSnap.empty) appendFotosFirebase(fotosSnap);
+    } catch(e) { /* ya tenemos locales */ }
+
+    try {
+        // Videos: AGREGAR los de Firebase a los locales (no reemplazar)
+        const videosSnap = await Promise.race([
+            db.collection('videos').orderBy('createdAt','desc').get(),
+            new Promise((_,r) => setTimeout(()=>r(new Error('timeout')),6000))
+        ]);
+        if (!videosSnap.empty) appendVideosFirebase(videosSnap);
+    } catch(e) { /* ya tenemos locales */ }
+
+    try {
+        // Planes
+        const planDoc = await getDocSafe('config', 'planes');
+        if (planDoc.exists && planDoc.data().planes) {
+            renderPlanes(planDoc.data().planes);
+        }
+    } catch(e) { /* usa default */ }
+}
+
+/* ══════════════════════════════════
+   AGREGAR FOTOS DE FIREBASE (sin borrar las locales)
+══════════════════════════════════ */
+function appendFotosFirebase(snap) {
+    const gallery = document.getElementById('gallery');
+    // NO limpiamos el gallery — mantenemos las locales
+    snap.forEach(doc => {
+        const d   = doc.data();
+        const div = document.createElement('div');
+        div.className = 'card' + (d.locked ? ' locked' : '');
+        if (d.locked) {
+            div.onclick = () => solicitarPago();
+            div.innerHTML = `
+                <img src="${d.url}" alt="${d.title||'Foto'}" loading="lazy"/>
+                <div class="overlay">
+                    <div class="title">${d.title||'Foto'}</div>
+                    <div class="meta">Premium • 🔒</div>
+                </div>
+                <h3>${d.title||'.'} 🔒</h3>`;
+        } else {
+            div.innerHTML = `
+                <img src="${d.url}" alt="${d.title||'Foto'}" onclick="openLightbox(this.src)" loading="lazy"/>
+                <div class="overlay">
+                    <div class="title">${d.title||'Foto'}</div>
+                    <div class="meta">${d.cat||'Galería'} • Gratis</div>
+                </div>
+                <h3>${d.title||'.'}</h3>`;
+        }
+        // Insertar al PRINCIPIO de la galería (las nuevas primero)
+        gallery.insertBefore(div, gallery.firstChild);
+    });
+}
+
+/* ══════════════════════════════════
+   AGREGAR VIDEOS DE FIREBASE (sin borrar los locales)
+══════════════════════════════════ */
+function appendVideosFirebase(snap) {
+    const section = document.getElementById('videosSection');
+    // NO limpiamos — mantenemos los locales
+    snap.forEach(doc => {
+        const d   = doc.data();
+        const div = document.createElement('div');
+        div.className = 'tiktok-container';
+        if (d.locked) {
+            div.innerHTML = `
+                <video src="${d.url}" muted playsinline preload="metadata"></video>
+                <div class="video-locked-overlay" onclick="solicitarPago()">
+                    <span>🔒</span>
+                    <p>${d.title||'Video Premium'}</p>
+                    <small>Toca para desbloquear</small>
+                </div>`;
+        } else {
+            div.innerHTML = `
+                <video src="${d.url}" controls muted playsinline preload="metadata"></video>
+                <div class="v-overlay">
+                    <div class="v-title">${d.title||'Video'}</div>
+                    <div class="v-desc">${d.desc||'Contenido exclusivo'}</div>
+                </div>
+                <div class="tiktok-controls">
+                    <button onclick="toggleMute(event)">🔊</button>
+                    <button onclick="shareVideo(event,'${d.url}')">📤</button>
+                </div>`;
+        }
+        // Insertar al principio (los nuevos primero)
+        section.insertBefore(div, section.firstChild);
+    });
+    initVideoAutoplayOnView();
+}
+
+/* ══════════════════════════════════
+   RENDER PLANES (Firebase)
+══════════════════════════════════ */
+function renderPlanes(planes) {
+    const section = document.getElementById('planesSection');
+    const msgs    = [CONFIG.msg_basico, CONFIG.msg_vip, CONFIG.msg_ultra];
+    const wa      = CONFIG.numero || '16122323200';
+    section.innerHTML = '';
+    planes.forEach((plan, i) => {
+        const msg   = msgs[i] || `Hola quiero el plan ${plan.nombre}`;
+        const items = (plan.items||'').split('\n').filter(Boolean);
+        section.innerHTML += `
+            <div class="plan-card">
+                <h3 class="plan-title">${plan.emoji||'💎'} ${plan.nombre||'Plan'}</h3>
+                ${items.map(it=>`<p>${it}</p>`).join('')}
+                <h2 class="price">${plan.precio||''}</h2>
+                <a class="btn-premium"
+                   href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}"
+                   target="_blank" rel="noopener">Comprar</a>
+            </div>`;
+    });
+}
+
+/* ══════════════════════════════════
+   FALLBACKS LOCALES
+══════════════════════════════════ */
+function loadFotosLocales() {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
+    [11,12,13,14,15,16].forEach((n,i) => {
+        gallery.innerHTML += `
+            <div class="card">
+                <img src="img/foto${n}.jpeg" alt="Foto ${i+1}" onclick="openLightbox(this.src)" loading="lazy"/>
+                <div class="overlay"><div class="title">Foto #${i+1}</div><div class="meta">Galería • Gratis</div></div>
+                <h3>.</h3>
+            </div>`;
+    });
+    [17,18,19,20].forEach((n,i) => {
+        gallery.innerHTML += `
+            <div class="card locked" onclick="solicitarPago()">
+                <img src="img/foto${n}.jpeg" alt="Foto ${7+i}"/>
+                <div class="overlay"><div class="title">Foto #${7+i}</div><div class="meta">Premium • 🔒</div></div>
+                <h3>. 🔒</h3>
+            </div>`;
+    });
+}
+
+function loadVideosLocales() {
+    const section = document.getElementById('videosSection');
+    section.innerHTML = '';
+    [1,2,3,4,5].forEach(n => {
+        section.innerHTML += `
+            <div class="tiktok-container">
+                <video src="videos/video${n}.mp4" controls muted playsinline preload="metadata"></video>
+                <div class="v-overlay">
+                    <div class="v-title">Video ${n}</div>
+                    <div class="v-desc">Contenido exclusivo</div>
+                </div>
+                <div class="tiktok-controls">
+                    <button onclick="toggleMute(event)">🔊</button>
+                    <button onclick="shareVideo(event,'videos/video${n}.mp4')">📤</button>
+                </div>
+            </div>`;
+    });
+    initVideoAutoplayOnView();
+}
+
+function loadPlanesDefault() {
+    renderPlanes(window.CONFIG_LOCAL.planes.planes);
+}
+
+/* ══════════════════════════════════
+   CONTADOR
+══════════════════════════════════ */
+let _countdownInterval = null;
+function iniciarContador(fechaISO) {
+    if (_countdownInterval) clearInterval(_countdownInterval);
+    const objetivo = new Date(fechaISO).getTime();
+    function tick() {
+        const diff = objetivo - Date.now();
+        if (diff < 0) {
+            ['dias','horas','minutos','segundos'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '00';
+            });
+            return;
+        }
+        const el = (id) => document.getElementById(id);
+        if(el('dias'))     el('dias').textContent     = String(Math.floor(diff/86400000)).padStart(2,'0');
+        if(el('horas'))    el('horas').textContent    = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+        if(el('minutos'))  el('minutos').textContent  = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+        if(el('segundos')) el('segundos').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    }
+    tick();
+    _countdownInterval = setInterval(tick, 1000);
+}
+
+/* ══════════════════════════════════
+   AUDIO
+══════════════════════════════════ */
+function initAudio() {
+    const audio = document.getElementById('audioPlayer');
+    const btn   = document.getElementById('audioToggleBtn');
+    if (!audio || !btn) return;
+
+    audio.muted  = false;
+    audio.volume = 0.9;
+
+    audio.play()
+        .then(() => btn.classList.add('hidden'))
+        .catch(() => {
+            audio.muted = true;
+            audio.play().catch(() => {});
+            btn.classList.remove('hidden');
+        });
+
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        audio.muted  = false;
+        audio.volume = 0.9;
+        audio.play()
+            .then(() => btn.classList.add('hidden'))
+            .catch(() => {});
+    });
+
+    document.body.addEventListener('click', function handler() {
+        if (audio.paused || audio.muted) {
+            audio.muted  = false;
+            audio.volume = 0.9;
+            audio.play().then(() => btn.classList.add('hidden')).catch(()=>{});
+        }
+        document.body.removeEventListener('click', handler);
+    }, { once: true });
+}
+
+/* ══════════════════════════════════
+   DRAG BANNER
+══════════════════════════════════ */
+function enablePromoDrag() {
+    const banner = document.getElementById('promoBanner');
+    if (!banner) return;
+    let down=false, sx,sy,ol,ot;
+    banner.addEventListener('mousedown', e => {
+        if(e.target.id==='closePromo') return;
+        down=true; sx=e.clientX; sy=e.clientY;
+        const r=banner.getBoundingClientRect(); ol=r.left; ot=r.top;
+        banner.style.transition='none';
+    });
+    window.addEventListener('mousemove', e => {
+        if(!down) return;
+        banner.style.left=(ol+e.clientX-sx)+'px';
+        banner.style.top=(ot+e.clientY-sy)+'px';
+        banner.style.right='auto';
+    });
+    window.addEventListener('mouseup', ()=>{ down=false; banner.style.transition=''; });
+    banner.addEventListener('touchstart', e=>{
+        if(e.target.id==='closePromo') return;
+        down=true; const t=e.touches[0]; sx=t.clientX; sy=t.clientY;
+        const r=banner.getBoundingClientRect(); ol=r.left; ot=r.top;
+    },{passive:true});
+    window.addEventListener('touchmove', e=>{
+        if(!down) return;
+        const t=e.touches[0];
+        banner.style.left=(ol+t.clientX-sx)+'px';
+        banner.style.top=(ot+t.clientY-sy)+'px';
+        banner.style.right='auto';
+    },{passive:true});
+    window.addEventListener('touchend', ()=>{ down=false; });
+}
+
+/* ══════════════════════════════════
+   LIGHTBOX
+══════════════════════════════════ */
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.getElementById('lightbox-img').src = '';
+}
+
+/* ══════════════════════════════════
+   PAGO
+══════════════════════════════════ */
+function solicitarPago() {
+    const wa  = CONFIG.numero || '16122323200';
+    const msg = CONFIG.msg_locked || 'Hola, quiero desbloquear contenido premium.';
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+}
+
+/* ══════════════════════════════════
+   IDEAS / FORMS
+══════════════════════════════════ */
+function sendIdeaFromForm(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) { alert('Por favor escribe tu idea antes de enviar.'); return; }
+    const wa  = CONFIG.numero || '16122323200';
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent('Idea desde la web: '+value)}`, '_blank', 'noopener');
+    input.value = '';
+    const orig = input.placeholder;
+    input.placeholder = 'Enviado ✅';
+    setTimeout(() => input.placeholder = orig, 1600);
+}
+
+/* ══════════════════════════════════
+   CHAT
+══════════════════════════════════ */
+function setupChat() {
+    const box   = document.getElementById('chatBox');
+    const input = document.getElementById('chatInput');
+    const btn   = document.getElementById('sendBtn');
+    if (!box||!input||!btn) return;
+    btn.addEventListener('click', () => {
+        const txt = input.value.trim();
+        if (!txt) return;
+        addMessage(txt, true);
+        input.value = '';
+        setTimeout(() => addMessage('Mensaje recibido ❤️', false), 700);
+    });
+    input.addEventListener('keydown', e => {
+        if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); btn.click(); }
+    });
+}
+function addMessage(text, mine) {
+    const box = document.getElementById('chatBox');
+    if (!box) return;
+    const w = document.createElement('div');
+    w.className = 'message-wrapper';
+    if (mine) w.style.justifyContent = 'flex-end';
+    const av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = mine ? 'Tú' : 'U';
+    const b = document.createElement('div');
+    b.className = 'bubble ' + (mine ? 'mine' : 'others');
+    b.textContent = text;
+    w.appendChild(av); w.appendChild(b);
+    box.appendChild(w);
+    w.scrollIntoView({ behavior:'smooth', block:'end' });
+}
+
+/* ══════════════════════════════════
+   VIDEO AUTOPLAY
+══════════════════════════════════ */
+function initVideoAutoplayOnView() {
+    const containers = document.querySelectorAll('.videos .tiktok-container');
+    if (!containers.length) return;
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const v = entry.target.querySelector('video');
+            if (!v) return;
+            if (entry.isIntersecting) {
+                v.play().catch(() => { v.muted=true; v.play().catch(()=>{}); });
+            } else {
+                v.pause();
+            }
+        });
+    }, { threshold: 0.6 });
+    containers.forEach(c => obs.observe(c));
+}
+function toggleMute(e) {
+    e&&e.stopPropagation();
+    const v = e.currentTarget.closest('.tiktok-container')?.querySelector('video');
+    if (!v) return;
+    v.muted = !v.muted;
+    e.currentTarget.textContent = v.muted ? '🔇' : '🔊';
+}
+function shareVideo(e, src) {
+    e&&e.stopPropagation();
+    if (navigator.share) {
+        navigator.share({ title:'Mira este video', url:src }).catch(()=>{});
+    } else {
+        const wa = CONFIG.numero||'16122323200';
+        window.open(`https://wa.me/${wa}?text=${encodeURIComponent('Video: '+src)}`, '_blank','noopener');
+    }
+}
+
+/* ══════════════════════════════════
+   ARRANCAR
+══════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', initPage);
+
+/* ══════════════════════════════════════════════════
+   ACCESO OCULTO AL ADMIN — SEGURIDAD MEJORADA
+   - Triple clic en título / Ctrl+Shift+A / ?admin=true
+   - Bloqueo progresivo: 10s → 30s → 1min → 5min → 15min → 1h
+   - El bloqueo persiste aunque cierres el navegador
+══════════════════════════════════════════════════ */
+(function setupHiddenAdminAccess() {
+    const ADMIN_CODE = "1234";
+    const ADMIN_URL  = "admin.html";
+
+    // Tiempos de bloqueo en segundos: tras 2 intentos fallidos
+    const TIEMPOS_BLOQUEO = [10, 30, 60, 300, 900, 3600, 7200];
+    //                       10s  30s  1m  5m   15m  1h    2h
+
+    const STORAGE_KEY = '_secAdmin';
+
+    let clickCount = 0;
+    let clickTimer = null;
+
+    /* ─── Estado guardado en localStorage ─── */
+    function getEstado() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return { intentos: 0, bloqueoHasta: 0, nivelBloqueo: 0 };
+            return JSON.parse(raw);
+        } catch (e) {
+            return { intentos: 0, bloqueoHasta: 0, nivelBloqueo: 0 };
+        }
+    }
+
+    function setEstado(estado) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+        } catch (e) {}
+    }
+
+    function resetEstado() {
+        localStorage.removeItem(STORAGE_KEY);
+    }
+
+    /* ─── Formatear tiempo restante ─── */
+    function formatearTiempo(segundos) {
+        if (segundos < 60) return segundos + ' segundos';
+        if (segundos < 3600) return Math.ceil(segundos / 60) + ' minutos';
+        return Math.ceil(segundos / 3600) + ' horas';
+    }
+
+    /* ─── Verificar si está bloqueado ─── */
+    function estaBloqueado() {
+        const estado = getEstado();
+        const ahora  = Date.now();
+        if (estado.bloqueoHasta > ahora) {
+            const restante = Math.ceil((estado.bloqueoHasta - ahora) / 1000);
+            return { bloqueado: true, restante };
+        }
+        return { bloqueado: false };
+    }
+
+    /* ─── Aplicar bloqueo progresivo ─── */
+    function aplicarBloqueo() {
+        const estado = getEstado();
+        const tiempo = TIEMPOS_BLOQUEO[Math.min(estado.nivelBloqueo, TIEMPOS_BLOQUEO.length - 1)];
+
+        estado.bloqueoHasta = Date.now() + (tiempo * 1000);
+        estado.nivelBloqueo += 1;
+        estado.intentos = 0;
+
+        setEstado(estado);
+        return tiempo;
+    }
+
+    /* ─── Pedir código con seguridad ─── */
+    function pedirCodigoYAbrir() {
+        // Verificar bloqueo activo
+        const bloqueo = estaBloqueado();
+        if (bloqueo.bloqueado) {
+            alert('🔒 Acceso bloqueado por seguridad.\n\nDebes esperar ' +
+                  formatearTiempo(bloqueo.restante) + ' antes de volver a intentar.');
+            return;
+        }
+
+        const code = prompt('🔐 Código de acceso:');
+        if (code === null) return;
+
+        if (code === ADMIN_CODE) {
+            // Éxito → reset total
+            resetEstado();
+            window.location.href = ADMIN_URL;
+            return;
+        }
+
+        // Intento fallido
+        const estado = getEstado();
+        estado.intentos = (estado.intentos || 0) + 1;
+
+        // Tras 2 intentos → bloquear progresivamente
+        if (estado.intentos >= 2) {
+            setEstado(estado);
+            const tiempo = aplicarBloqueo();
+            alert('❌ Código incorrecto.\n\n🔒 Acceso bloqueado por ' +
+                  formatearTiempo(tiempo) + ' por seguridad.');
+        } else {
+            setEstado(estado);
+            const restantes = 2 - estado.intentos;
+            alert('❌ Código incorrecto.\n\nTe queda ' + restantes +
+                  ' intento antes del bloqueo.');
+        }
+    }
+
+    /* ─── Triple clic en el título ─── */
+    function attachTripleClick() {
+        const titulo = document.getElementById('headerTitle');
+        if (!titulo) {
+            setTimeout(attachTripleClick, 500);
+            return;
+        }
+        titulo.style.cursor = 'pointer';
+        titulo.addEventListener('click', function() {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount === 3) {
+                clickCount = 0;
+                pedirCodigoYAbrir();
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 600);
+            }
+        });
+    }
+
+    /* ─── Atajo de teclado Ctrl+Shift+A ─── */
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+            e.preventDefault();
+            pedirCodigoYAbrir();
+        }
+    });
+
+    /* ─── URL secreta ─── */
+    if (window.location.search.includes('admin=true')) {
+        setTimeout(pedirCodigoYAbrir, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachTripleClick);
+    } else {
+        attachTripleClick();
+    }
+})();
+
+
+
+
 </script>
 </body>
 </html>

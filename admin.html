@@ -1,126 +1,1004 @@
+cat > ~/Documents/pagina-fotos/admin.html << 'ENDOFFILE'
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>Panel Administrador</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body {
-  margin:0;
-  font-family: Arial;
-  background:#0b0010;
-  color:white;
-}
+  :root {
+    --bg:       #0b0010;
+    --bg2:      #130018;
+    --card:     #1a001f;
+    --card2:    #220028;
+    --pink:     #ff0099;
+    --pink2:    #ff4fc3;
+    --green:    #25D366;
+    --red:      #e53935;
+    --muted:    #d9c4db;
+    --border:   rgba(255,0,150,0.18);
+  }
 
-header {
-  background:#111;
-  padding:20px;
-  text-align:center;
-  font-size:22px;
-  letter-spacing:1px;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.container {
-  max-width:900px;
-  margin:20px auto;
-  padding:20px;
-}
+  body {
+    font-family: Inter, system-ui, Arial, sans-serif;
+    background: var(--bg);
+    color: #fff;
+    min-height: 100vh;
+  }
 
-.card {
-  background:#1a001f;
-  padding:20px;
-  border-radius:10px;
-  margin-bottom:20px;
-  box-shadow:0 0 15px rgba(255,0,150,0.2);
-}
+  /* ── LOGIN ── */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 30% 30%, rgba(255,0,150,0.08), transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(120,0,255,0.06), transparent 60%),
+                var(--bg);
+  }
 
-input, textarea, select {
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:6px;
-  border:none;
-  background:#2a002f;
-  color:white;
-}
+  .login-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(255,0,150,0.1);
+    text-align: center;
+  }
 
-button {
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  background:#ff0099;
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-}
+  .login-box h1 { font-size: 22px; color: var(--pink2); margin-bottom: 8px; }
+  .login-box p  { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
 
-button:hover {
-  opacity:0.85;
-}
+  .input-group { margin-bottom: 16px; text-align: left; }
+  .input-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
 
-.delete-btn{
-  background:red;
-  margin-top:8px;
-}
+  .input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: border .2s;
+  }
 
-.logout-btn{
-  background:#444;
-  margin-bottom:15px;
-}
+  .input-group input:focus { border-color: var(--pink); }
 
-hr{
-  border:1px solid rgba(255,255,255,0.1);
-  margin:15px 0;
-}
+  .btn-login {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity .2s;
+  }
 
-.hidden{
-  display:none;
-}
+  .btn-login:hover { opacity: .88; }
+
+  #loginError {
+    color: #ff6b6b;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* ── LAYOUT ADMIN ── */
+  #adminPanel { display: none; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 230px;
+    height: 100vh;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 22px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo h2 { font-size: 15px; color: var(--pink2); }
+  .sidebar-logo p  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .sidebar-nav { flex: 1; padding: 14px 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--muted);
+    border-radius: 0;
+    transition: background .15s, color .15s;
+    border-left: 3px solid transparent;
+    font-weight: 500;
+  }
+
+  .nav-item:hover { background: rgba(255,0,150,0.06); color: #fff; }
+  .nav-item.active { background: rgba(255,0,150,0.1); color: var(--pink2); border-left-color: var(--pink); }
+
+  .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-logout {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s;
+  }
+
+  .btn-logout:hover { background: rgba(255,0,0,0.1); color: #ff6b6b; border-color: rgba(255,0,0,0.3); }
+
+  /* MAIN */
+  .main {
+    margin-left: 230px;
+    padding: 28px;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 { font-size: 22px; color: var(--pink2); }
+  .page-header p  { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+  /* TABS */
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    color: var(--pink2);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* GRID 2 cols */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* INPUTS */
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border .2s;
+    font-family: inherit;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus { border-color: var(--pink); }
+
+  .field textarea { min-height: 90px; resize: vertical; }
+
+  /* BOTONES */
+  .btn {
+    padding: 10px 20px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: opacity .2s, transform .1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .btn:hover { opacity: .88; }
+  .btn:active { transform: scale(.97); }
+
+  .btn-primary { background: linear-gradient(135deg, var(--pink), var(--pink2)); color: #fff; }
+  .btn-success { background: linear-gradient(135deg, #25D366, #1ebe5d); color: #fff; }
+  .btn-danger  { background: var(--red); color: #fff; }
+  .btn-secondary { background: rgba(255,255,255,0.08); color: var(--muted); border: 1px solid var(--border); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 7px; }
+
+  /* TOGGLE SWITCH */
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .toggle-wrap label { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+  .toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+  }
+
+  .toggle input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: .2s;
+    border: 1px solid var(--border);
+  }
+
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 2px; top: 2px;
+    background: var(--muted);
+    border-radius: 50%;
+    transition: .2s;
+  }
+
+  .toggle input:checked + .toggle-slider { background: var(--pink); border-color: var(--pink); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(20px); background: #fff; }
+
+  /* MEDIA GRID */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .media-item {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: transform .2s;
+  }
+
+  .media-item:hover { transform: translateY(-3px); }
+
+  .media-item img,
+  .media-item video {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-item .media-info {
+    padding: 10px;
+  }
+
+  .media-item .media-title {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .media-item .media-type {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .media-item .media-actions {
+    display: flex;
+    gap: 6px;
+    padding: 0 10px 10px;
+    flex-wrap: wrap;
+  }
+
+  .media-item .badge-locked {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--pink);
+  }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .stat-num { font-size: 30px; font-weight: 800; color: var(--pink2); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ALERT */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .alert-success { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #4ade80; }
+  .alert-error   { background: rgba(229,57,53,0.12); border: 1px solid rgba(229,57,53,0.3); color: #f87171; }
+  .alert-info    { background: rgba(255,0,150,0.08); border: 1px solid var(--border); color: var(--pink2); }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--pink2));
+    border-radius: 6px;
+    width: 0%;
+    transition: width .3s;
+  }
+
+  /* PLAN CARDS */
+  .plan-editor {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .plan-editor-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .plan-editor-card h4 {
+    color: var(--pink2);
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+  th { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* FILE UPLOAD */
+  .file-drop {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    background: var(--card2);
+  }
+
+  .file-drop:hover { border-color: var(--pink); background: rgba(255,0,150,0.04); }
+  .file-drop .drop-icon { font-size: 36px; margin-bottom: 10px; }
+  .file-drop p { color: var(--muted); font-size: 14px; }
+  .file-drop input { display: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .sidebar { width: 200px; }
+    .main { margin-left: 200px; padding: 16px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .sidebar {
+      position: fixed;
+      bottom: 0; top: auto;
+      left: 0; right: 0;
+      width: 100%;
+      height: 60px;
+      flex-direction: row;
+      border-right: none;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar-logo, .sidebar-footer { display: none; }
+    .sidebar-nav { display: flex; flex-direction: row; padding: 0; overflow-x: auto; }
+    .nav-item { flex-direction: column; gap: 2px; padding: 8px 14px; font-size: 10px; border-left: none; border-top: 3px solid transparent; }
+    .nav-item.active { border-top-color: var(--pink); border-left-color: transparent; }
+    .main { margin-left: 0; padding: 14px; padding-bottom: 80px; }
+  }
+
+  /* SPINNER */
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text { color: var(--muted); font-size: 14px; text-align: center; padding: 20px; }
 </style>
 </head>
 <body>
 
-<header>PANEL ADMINISTRADOR</header>
+<!-- ═══════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 Panel Admin</h1>
+    <p>Acceso restringido — solo administradores</p>
 
-<div class="container hidden" id="adminPanel">
+    <div class="input-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="loginEmail" placeholder="admin@ejemplo.com" />
+    </div>
 
-<div class="card">
-<button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+    <div class="input-group">
+      <label>Contraseña</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" />
+    </div>
+
+    <button class="btn-login" onclick="doLogin()">Entrar al Panel</button>
+    <p id="loginError">❌ Correo o contraseña incorrectos</p>
+  </div>
 </div>
 
-<div class="card">
-<h3>Subir Nuevo Contenido</h3>
+<!-- ═══════════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════════ -->
+<div id="adminPanel">
 
-<input type="text" id="title" placeholder="Título">
-<textarea id="description" placeholder="Descripción"></textarea>
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <h2>🔥 Admin Panel</h2>
+      <p id="userEmail" style="font-size:11px;color:var(--muted)"></p>
+    </div>
 
-<select id="type">
-<option value="foto">Foto</option>
-<option value="video">Video</option>
-</select>
+    <div class="sidebar-nav">
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage('fotos')">
+        <span class="icon">📸</span> Fotos
+      </div>
+      <div class="nav-item" onclick="showPage('videos')">
+        <span class="icon">🎬</span> Videos
+      </div>
+      <div class="nav-item" onclick="showPage('audio')">
+        <span class="icon">🎵</span> Audio
+      </div>
+      <div class="nav-item" onclick="showPage('textos')">
+        <span class="icon">✏️</span> Textos
+      </div>
+      <div class="nav-item" onclick="showPage('planes')">
+        <span class="icon">💎</span> Planes
+      </div>
+      <div class="nav-item" onclick="showPage('contador')">
+        <span class="icon">⏱️</span> Contador
+      </div>
+      <div class="nav-item" onclick="showPage('whatsapp')">
+        <span class="icon">📞</span> WhatsApp
+      </div>
+    </div>
 
-<input type="file" id="fileInput">
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
+    </div>
+  </nav>
 
-<button onclick="uploadContent()">Subir Contenido</button>
-</div>
+  <!-- MAIN CONTENT -->
+  <main class="main">
 
-<div class="card">
-<h3>Contenido Existente</h3>
-<div id="contentList"></div>
-</div>
+    <!-- ── DASHBOARD ── -->
+    <div id="page-dashboard" class="section-page active">
+      <div class="page-header">
+        <h1>📊 Dashboard</h1>
+        <p>Resumen de tu contenido</p>
+      </div>
 
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-num" id="statFotos">—</div>
+          <div class="stat-label">📸 Fotos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statVideos">—</div>
+          <div class="stat-label">🎬 Videos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statLocked">—</div>
+          <div class="stat-label">🔒 Bloqueadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statFree">—</div>
+          <div class="stat-label">✅ Gratis</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 Accesos Rápidos</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="showPage('fotos')">📸 Subir Foto</button>
+          <button class="btn btn-primary" onclick="showPage('videos')">🎬 Subir Video</button>
+          <button class="btn btn-secondary" onclick="showPage('textos')">✏️ Editar Textos</button>
+          <button class="btn btn-secondary" onclick="window.open('index.html','_blank')">👁️ Ver Página</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Últimas subidas</h3>
+        <div id="recentContent">
+          <p class="loading-text"><span class="spinner"></span> Cargando...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOTOS ── -->
+    <div id="page-fotos" class="section-page">
+      <div class="page-header">
+        <h1>📸 Gestión de Fotos</h1>
+        <p>Sube, edita y elimina fotos de la galería</p>
+      </div>
+
+      <div class="alert alert-success" id="alertFoto"></div>
+
+      <div class="card">
+        <h3>📤 Subir Nueva Foto</h3>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Título</label>
+            <input type="text" id="fotoTitle" placeholder="Ej: Foto Exclusiva #1" />
+          </div>
+          <div class="field">
+            <label>Categoría</label>
+            <select id="fotoCategoria">
+              <option value="galeria">Galería General</option>
+              <option value="premium">Premium 💎</option>
+              <option value="exclusiva">Exclusiva 🔥</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Descripción</label>
+          <textarea id="fotoDesc" placeholder="Descripción de la foto..."></textarea>
+        </div>
+
+        <div class="toggle-wrap">
+          <label>Contenido Premium (bloqueado)</label>
+          <label class="toggle">
+            <input type="checkbox" id="fotoLocked" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="file-drop" onclick="document.getElementById('fotoFile').click()">
+          <div class="drop-icon">📸</div>
+          <p>Haz clic para seleccionar imagen</p>
+          <p style="font-size:12px;margin-top:6px;">JPG, PNG, WEBP — Máx 10MB</p>
+          <input type="file" id="fotoFile" accept="image/*" onchange="previewFoto(this)" />
+        </div>
+
+        <div id="fotoPreviewWrap" style="margin-top:14px;display:none;">
+          <img id="fotoPreview" style="max-height:200px;border-radius:10px;border:1px solid var(--border);" />
+        </div>
+
+        <div class="progress-bar" id="fotoProgress">
+          <div class="progress-fill" id="fotoProgressFill"></div>
+        </div>
+
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="uploadFoto()">
+          📤 Subir Foto
+        </button>
+      </div>
+
+      <div class="card">
+        <h3>🖼️ Fotos en la Galería</h3>
+        <div class="media-grid" id="fotosGrid">
+          <p class="loading-text"><span class="spinner"></span> Cargando fotos...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIDEOS ── -->
+    <div id="page-videos" class="section-page">
+      <div class="page-header">
+        <h1>🎬 Gestión de Videos</h1>
+        <p>Sube y administra videos</p>
+      </div>
+
+      <div class="alert alert-success" id="alertVideo"></div>
+
+      <div class="card">
+        <h3>📤 Subir Nuevo Video</h3>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Título</label>
+            <input type="text" id="videoTitle" placeholder="Ej: Video Exclusivo #1" />
+          </div>
+          <div class="field">
+            <label>Categoría</label>
+            <select id="videoCategoria">
+              <option value="gratis">Gratis</option>
+              <option value="premium">Premium 💎</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Descripción</label>
+          <textarea id="videoDesc" placeholder="Descripción del video..."></textarea>
+        </div>
+
+        <div class="toggle-wrap">
+          <label>Contenido Premium (bloqueado)</label>
+          <label class="toggle">
+            <input type="checkbox" id="videoLocked" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="file-drop" onclick="document.getElementById('videoFile').click()">
+          <div class="drop-icon">🎬</div>
+          <p>Haz clic para seleccionar video</p>
+          <p style="font-size:12px;margin-top:6px;">MP4, MOV, WEBM — Máx 500MB</p>
+          <input type="file" id="videoFile" accept="video/*" onchange="previewVideo(this)" />
+        </div>
+
+        <div id="videoPreviewWrap" style="margin-top:14px;display:none;">
+          <video id="videoPreview" controls style="max-height:200px;border-radius:10px;border:1px solid var(--border);max-width:100%;"></video>
+        </div>
+
+        <div class="progress-bar" id="videoProgress">
+          <div class="progress-fill" id="videoProgressFill"></div>
+        </div>
+
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="uploadVideo()">
+          📤 Subir Video
+        </button>
+      </div>
+
+      <div class="card">
+        <h3>🎬 Videos en la Página</h3>
+        <div class="media-grid" id="videosGrid">
+          <p class="loading-text"><span class="spinner"></span> Cargando videos...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AUDIO ── -->
+    <div id="page-audio" class="section-page">
+      <div class="page-header">
+        <h1>🎵 Audio de Fondo</h1>
+        <p>Cambia la música que suena en la página</p>
+      </div>
+
+      <div class="alert alert-success" id="alertAudio"></div>
+
+      <div class="card">
+        <h3>🎵 Audio Actual</h3>
+        <div id="audioActual" style="margin-bottom:16px;">
+          <p class="loading-text"><span class="spinner"></span> Cargando...</p>
+        </div>
+
+        <h3 style="margin-bottom:16px;">📤 Cambiar Audio</h3>
+
+        <div class="field">
+          <label>Nombre del audio</label>
+          <input type="text" id="audioNombre" placeholder="Ej: Música de fondo" />
+        </div>
+
+        <div class="file-drop" onclick="document.getElementById('audioFile').click()">
+          <div class="drop-icon">🎵</div>
+          <p>Haz clic para seleccionar audio</p>
+          <p style="font-size:12px;margin-top:6px;">MP3, MPEG, WAV, OGG — Máx 50MB</p>
+          <input type="file" id="audioFile" accept="audio/*" onchange="previewAudio(this)" />
+        </div>
+
+        <div id="audioPreviewWrap" style="margin-top:14px;display:none;">
+          <audio id="audioPreview" controls style="width:100%;margin-top:8px;"></audio>
+        </div>
+
+        <div class="progress-bar" id="audioProgress">
+          <div class="progress-fill" id="audioProgressFill"></div>
+        </div>
+
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="uploadAudio()">
+          🎵 Actualizar Audio
+        </button>
+      </div>
+    </div>
+
+    <!-- ── TEXTOS ── -->
+    <div id="page-textos" class="section-page">
+      <div class="page-header">
+        <h1>✏️ Editar Textos</h1>
+        <p>Modifica todos los textos visibles en la página principal</p>
+      </div>
+
+      <div class="alert alert-success" id="alertTextos"></div>
+
+      <div class="card">
+        <h3>🏠 Encabezado Principal</h3>
+        <div class="field">
+          <label>Título de la página (tag &lt;title&gt;)</label>
+          <input type="text" id="txt_pageTitle" placeholder="Nadie Es Más Perra Que Yo" />
+        </div>
+        <div class="field">
+          <label>Título del menú (h2 nav)</label>
+          <input type="text" id="txt_menuTitle" placeholder="🔥 Mi Contenido 🔥" />
+        </div>
+        <div class="field">
+          <label>Título principal (h1 header)</label>
+          <input type="text" id="txt_headerTitle" placeholder="Me Encanta la Verga" />
+        </div>
+        <div class="field">
+          <label>Descripción / subtítulo</label>
+          <textarea id="txt_headerDesc" placeholder="Descripción de la página..."></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📸 Sección Fotos</h3>
+        <div class="field">
+          <label>Título sección fotos</label>
+          <input type="text" id="txt_fotosTitle" placeholder="Soy Tu Perra" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎬 Sección Videos</h3>
+        <div class="field">
+          <label>Título sección videos</label>
+          <input type="text" id="txt_videosTitle" placeholder="Videos Exclusivos" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔥 Banner / Promo Flotante</h3>
+        <div class="field">
+          <label>Título del banner</label>
+          <input type="text" id="txt_bannerTitle" placeholder="🔥 ¡LA PERRA VIENE DE ESTADOS UNIDOS! 🔥" />
+        </div>
+        <div class="field">
+          <label>Subtítulo del banner</label>
+          <input type="text" id="txt_bannerSub" placeholder="Preparate porque llega con todo" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💪 Sección Rutina</h3>
+        <div class="field">
+          <label>Título sección rutina</label>
+          <input type="text" id="txt_rutinaTitle" placeholder="Ejercitando a la Perra 💦" />
+        </div>
+        <div class="field">
+          <label>Descripción rutina</label>
+          <input type="text" id="txt_rutinaDesc" placeholder="Escribe la rutina que quieres que haga..." />
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✈️ Sección Bogotá</h3>
+        <div class="field">
+          <label>Título sesión en vivo</label>
+          <input type="text" id="txt_liveTitle" placeholder="Sesión en Vivo 🔥" />
+        </div>
+        <div class="field">
+          <label>Título conocerla</label>
+          <input type="text" id="txt_bogotaTitle" placeholder="Conócela en Bogotá ✈️" />
+        </div>
+        <div class="field">
+          <label>Descripción bogotá</label>
+          <input type="text" id="txt_bogotaDesc" placeholder="Disponible solo por WhatsApp" />
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveTextos()">💾 Guardar Todos los Textos</button>
+    </div>
+
+    <!-- ── PLANES ── -->
+    <div id="page-planes" class="section-page">
+      <div class="page-header">
+        <h1>💎 Planes Premium</h1>
+        <p>Edita los precios y descripción de cada plan</p>
+      </div>
+
+      <div class="alert alert-success" id="alertPlanes"></div>
+
+      <div class="plan-editor" id="planesEditor">
+        <p class="loading-text"><span class="spinner"></span> Cargando planes...</p>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:4px;" onclick="savePlanes()">💾 Guardar Planes</button>
+    </div>
+
+    <!-- ── CONTADOR ── -->
+    <div id="page-contador" class="section-page">
+      <div class="page-header">
+        <h1>⏱️ Contador Regresivo</h1>
+        <p>Cambia la fecha objetivo del contador</p>
+      </div>
+
+      <div class="alert alert-success" id="alertContador"></div>
+
+      <div class="card">
+        <h3>📅 Fecha Objetivo</h3>
+        <div class="field">
+          <label>Fecha y hora de llegada</label>
+          <input type="datetime-local" id="contadorFecha" />
+        </div>
+        <div class="field">
+          <label>Zona horaria</label>
+          <select id="contadorZona">
+            <option value="-05:00">Colombia (UTC-5)</option>
+            <option value="-06:00">México (UTC-6)</option>
+            <option value="-03:00">Argentina (UTC-3)</option>
+            <option value="+00:00">UTC</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="saveContador()">💾 Guardar Fecha</button>
+      </div>
+
+      <div class="card">
+        <h3>👁️ Vista Previa</h3>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;" id="contadorPreview">
+          <div style="background:rgba(0,0,0,0.4);padding:14px 18px;border-radius:10px;text-align:center;min-width:70px;">
+            <span style="font-size:28px;font-weight:800;" id="previewDias">00</span>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Días</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:14px 18px;border-radius:10px;text-align:center;min-width:70px;">
+            <span style="font-size:28px;font-weight:800;" id="previewHoras">00</span>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Horas</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:14px 18px;border-radius:10px;text-align:center;min-width:70px;">
+            <span style="font-size:28px;font-weight:800;" id="previewMin">00</span>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Minutos</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:14px 18px;border-radius:10px;text-align:center;min-width:70px;">
+            <span style="font-size:28px;font-weight:800;" id="previewSeg">00</span>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Segundos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WHATSAPP ── -->
+    <div id="page-whatsapp" class="section-page">
+      <div class="page-header">
+        <h1>📞 Configuración WhatsApp</h1>
+        <p>Cambia el número de WhatsApp y los mensajes</p>
+      </div>
+
+      <div class="alert alert-success" id="alertWA"></div>
+
+      <div class="card">
+        <h3>📱 Número de WhatsApp</h3>
+        <div class="field">
+          <label>Número (formato internacional sin + ni espacios)</label>
+          <input type="text" id="waNumero" placeholder="16122323200" />
+        </div>
+        <p style="color:var(--muted);font-size:12px;margin-bottom:16px;">
+          Ejemplo: 16122323200 (EE.UU.) o 573001234567 (Colombia)
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>💬 Mensajes Predefinidos</h3>
+
+        <div class="field">
+          <label>Botón "Contactarme por WhatsApp" (header)</label>
+          <input type="text" id="waMsg_header" placeholder="Hola, quiero contactarme contigo" />
+        </div>
+
+        <div class="field">
+          <label>Plan Básico — mensaje al hacer clic</label>
+          <input type="text" id="waMsg_basico" placeholder="Hola quiero comprar el paquete Básico..." />
+        </div>
+
+        <div class="field">
+          <label>Plan VIP — mensaje</label>
+          <input type="text" id="waMsg_vip" placeholder="Hola quiero comprar el paquete VIP..." />
+        </div>
+
+        <div class="field">
+          <label>Plan Ultra — mensaje</label>
+          <input type="text" id="waMsg_ultra" placeholder="Hola quiero comprar el paquete Ultra..." />
+        </div>
+
+        <div class="field">
+          <label>Contenido bloqueado — mensaje al hacer clic</label>
+          <input type="text" id="waMsg_locked" placeholder="Hola, quiero desbloquear contenido premium." />
+        </div>
+
+        <div class="field">
+          <label>Sesión en vivo — mensaje</label>
+          <input type="text" id="waMsg_live" placeholder="Hola quiero pagar una Sesión en Vivo..." />
+        </div>
+
+        <button class="btn btn-success" onclick="saveWhatsApp()">💾 Guardar WhatsApp</button>
+      </div>
+    </div>
+
+  </main>
 </div>
 
 <!-- FIREBASE COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
 <script>
-
-/* ✅ TU CONFIG REAL */
+/* ═══════════════════════════════════════════
+   FIREBASE CONFIG
+═══════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyB0Hcu8ZF4z2fJQMCLj6zI9l6RwNWW9g54",
   authDomain: "pepito-admin.firebaseapp.com",
@@ -132,107 +1010,952 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
-const storage = firebase.storage();
-const auth = firebase.auth();
+/* ═══════════════════════════════════════════
+   CLOUDINARY CONFIG (almacenamiento gratis)
+═══════════════════════════════════════════ */
+const CLOUDINARY = {
+  cloudName:    'dbldla8ng',
+  uploadPreset: 'pepito_upload'
+};
 
-/* ================= LOGIN ================= */
+async function uploadToCloudinary(file, folder, onProgress) {
+  const formData = new FormData();
+  formData.append('file',          file);
+  formData.append('upload_preset', CLOUDINARY.uploadPreset);
+  formData.append('folder',        'pepito/' + folder);
 
+  const resourceType = file.type.startsWith('video/') ? 'video' :
+                       file.type.startsWith('audio/') ? 'video' : 'image';
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener('progress', (e) => {
+      if (e.lengthComputable && onProgress) {
+        onProgress(Math.round((e.loaded / e.total) * 100));
+      }
+    });
+
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        const r = JSON.parse(xhr.responseText);
+        resolve({ url: r.secure_url, publicId: r.public_id, bytes: r.bytes });
+      } else {
+        reject(new Error('Cloudinary error ' + xhr.status + ': ' + xhr.responseText));
+      }
+    });
+
+    xhr.addEventListener('error', () => reject(new Error('Error de red')));
+
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/${resourceType}/upload`);
+    xhr.send(formData);
+  });
+}
+
+
+const db      = firebase.firestore();
+const auth    = firebase.auth();
+
+/* ═══════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════ */
 auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display  = 'block';
+    document.getElementById('userEmail').textContent     = user.email;
+    initAdmin();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminPanel').style.display  = 'none';
+  }
+});
 
-  if(user){
-    document.getElementById("adminPanel").classList.remove("hidden");
-    loadContent();
-  }else{
-    login();
+/* ─── Sistema de bloqueo progresivo del login ─── */
+const LOGIN_LOCK_KEY = '_loginLock';
+const TIEMPOS_LOGIN  = [10, 30, 60, 300, 900, 3600, 7200];
+
+function getLoginLock() {
+  try {
+    const raw = localStorage.getItem(LOGIN_LOCK_KEY);
+    return raw ? JSON.parse(raw) : { intentos: 0, bloqueoHasta: 0, nivel: 0 };
+  } catch(e) { return { intentos: 0, bloqueoHasta: 0, nivel: 0 }; }
+}
+
+function setLoginLock(data) {
+  try { localStorage.setItem(LOGIN_LOCK_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function resetLoginLock() {
+  localStorage.removeItem(LOGIN_LOCK_KEY);
+}
+
+function formatLockTime(seg) {
+  if (seg < 60)   return seg + ' segundos';
+  if (seg < 3600) return Math.ceil(seg/60) + ' minutos';
+  return Math.ceil(seg/3600) + ' horas';
+}
+
+let _lockCountdownInt = null;
+
+function mostrarBloqueoLogin(segRestantes) {
+  const errEl = document.getElementById('loginError');
+  const btn   = document.querySelector('.btn-login');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+
+  function tick() {
+    if (segRestantes <= 0) {
+      clearInterval(_lockCountdownInt);
+      errEl.style.display = 'none';
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+      return;
+    }
+    errEl.innerHTML = '🔒 Bloqueado por seguridad<br>' +
+                      'Espera <strong>' + formatLockTime(segRestantes) + '</strong>';
+    errEl.style.display = 'block';
+    errEl.style.color = '#ff6b6b';
+    segRestantes--;
   }
 
+  if (_lockCountdownInt) clearInterval(_lockCountdownInt);
+  tick();
+  _lockCountdownInt = setInterval(tick, 1000);
+}
+
+function checkLoginLock() {
+  const lock = getLoginLock();
+  const ahora = Date.now();
+  if (lock.bloqueoHasta > ahora) {
+    const seg = Math.ceil((lock.bloqueoHasta - ahora) / 1000);
+    mostrarBloqueoLogin(seg);
+    return true;
+  }
+  return false;
+}
+
+function doLogin() {
+  // ─── Verificar bloqueo activo ───
+  if (checkLoginLock()) return;
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  errEl.style.color = '#ff6b6b';
+
+  if (!email || !pass) {
+    errEl.textContent = '❌ Completa todos los campos';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      // ─── Login exitoso → reset bloqueo ───
+      resetLoginLock();
+    })
+    .catch(err => {
+      // ─── Login fallido → contar intento ───
+      const lock = getLoginLock();
+      lock.intentos = (lock.intentos || 0) + 1;
+
+      let mensaje;
+      if (err.code === 'auth/wrong-password' ||
+          err.code === 'auth/user-not-found' ||
+          err.code === 'auth/invalid-email' ||
+          err.code === 'auth/invalid-credential') {
+        mensaje = '❌ Correo o contraseña incorrectos';
+      } else {
+        mensaje = '❌ ' + err.message;
+      }
+
+      // Tras 2 intentos → bloquear progresivamente
+      if (lock.intentos >= 2) {
+        const tiempo = TIEMPOS_LOGIN[Math.min(lock.nivel, TIEMPOS_LOGIN.length - 1)];
+        lock.bloqueoHasta = Date.now() + (tiempo * 1000);
+        lock.nivel += 1;
+        lock.intentos = 0;
+        setLoginLock(lock);
+        mostrarBloqueoLogin(tiempo);
+      } else {
+        setLoginLock(lock);
+        const restantes = 2 - lock.intentos;
+        errEl.innerHTML = mensaje + '<br><small>Te queda ' + restantes +
+                          ' intento antes del bloqueo</small>';
+        errEl.style.display = 'block';
+      }
+    });
+}
+
+// Verificar bloqueo al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(checkLoginLock, 100);
 });
 
-function login(){
-  const email = prompt("Correo admin:");
-  const password = prompt("Contraseña:");
-
- auth.signInWithEmailAndPassword(email, password)
-.catch(error => {
-  alert("Código: " + error.code + "\nMensaje: " + error.message);
-});
+function doLogout() {
+  auth.signOut();
 }
 
-function logout(){
-  auth.signOut().then(()=>{
-    location.reload();
-  });
-}
+/* ═══════════════════════════════════════════
+   NAVEGACIÓN
+═══════════════════════════════════════════ */
+function showPage(name) {
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-/* ================= SUBIR ================= */
+  document.getElementById('page-' + name).classList.add('active');
 
-async function uploadContent(){
-
-  const file = document.getElementById("fileInput").files[0];
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const type = document.getElementById("type").value;
-
-  if(!file) return alert("Selecciona un archivo");
-
-  const storageRef = storage.ref("contenido/"+Date.now()+"_"+file.name);
-  await storageRef.put(file);
-
-  const url = await storageRef.getDownloadURL();
-
-  await db.collection("contenido").add({
-    title,
-    description,
-    type,
-    url,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + name + "'")) {
+      n.classList.add('active');
+    }
   });
 
-  alert("Contenido subido correctamente ✅");
-
-  document.getElementById("title").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("fileInput").value = "";
+  if (name === 'planes')   loadPlanes();
+  if (name === 'textos')   loadTextos();
+  if (name === 'whatsapp') loadWhatsApp();
+  if (name === 'contador') loadContador();
+  if (name === 'audio')    loadAudio();
 }
 
-/* ================= LISTAR ================= */
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+function initAdmin() {
+  loadStats();
+  loadFotos();
+  loadVideos();
+  loadRecent();
+}
 
-function loadContent(){
+/* ─── STATS ─── */
+async function loadStats() {
+  try {
+    const fotos  = await db.collection('fotos').get();
+    const videos = await db.collection('videos').get();
 
-  db.collection("contenido")
-  .orderBy("createdAt","desc")
-  .onSnapshot(snapshot=>{
+    let locked = 0, free = 0;
+    fotos.forEach(d => { if (d.data().locked) locked++; else free++; });
 
-    const list = document.getElementById("contentList");
-    list.innerHTML = "";
+    document.getElementById('statFotos').textContent  = fotos.size;
+    document.getElementById('statVideos').textContent = videos.size;
+    document.getElementById('statLocked').textContent = locked;
+    document.getElementById('statFree').textContent   = free;
+  } catch(e) {
+    console.error('Stats error:', e);
+  }
+}
 
-    snapshot.forEach(doc=>{
+/* ─── RECENT ─── */
+async function loadRecent() {
+  const el = document.getElementById('recentContent');
+  try {
+    const snap = await db.collection('fotos').orderBy('createdAt','desc').limit(5).get();
+    if (snap.empty) { el.innerHTML = '<p class="loading-text">Sin contenido aún</p>'; return; }
 
-      const data = doc.data();
+    let html = '<table><thead><tr><th>Título</th><th>Tipo</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+    snap.forEach(doc => {
+      const d = doc.data();
+      html += `<tr>
+        <td>${d.title || 'Sin título'}</td>
+        <td>📸 Foto</td>
+        <td>${d.locked ? '🔒 Premium' : '✅ Gratis'}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem('fotos','${doc.id}')">🗑️</button>
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<p class="loading-text">Error al cargar</p>';
+  }
+}
 
-      list.innerHTML += `
-        <div>
-          <strong>${data.title}</strong><br>
-          <small>${data.type}</small><br>
-          <button class="delete-btn" onclick="deleteContent('${doc.id}')">Eliminar</button>
-          <hr>
+/* ═══════════════════════════════════════════
+   FOTOS
+═══════════════════════════════════════════ */
+function previewFoto(input) {
+  if (!input.files[0]) return;
+  const url = URL.createObjectURL(input.files[0]);
+  document.getElementById('fotoPreview').src = url;
+  document.getElementById('fotoPreviewWrap').style.display = 'block';
+}
+
+async function uploadFoto() {
+  const file   = document.getElementById('fotoFile').files[0];
+  const title  = document.getElementById('fotoTitle').value.trim();
+  const desc   = document.getElementById('fotoDesc').value.trim();
+  const locked = document.getElementById('fotoLocked').checked;
+  const cat    = document.getElementById('fotoCategoria').value;
+
+  if (!file)  return showAlert('alertFoto', '❌ Selecciona una imagen', 'error');
+  if (!title) return showAlert('alertFoto', '❌ Escribe un título', 'error');
+
+  const prog = document.getElementById('fotoProgress');
+  const fill = document.getElementById('fotoProgressFill');
+  prog.style.display = 'block';
+
+  try {
+    const result = await uploadToCloudinary(file, 'fotos', (pct) => {
+      fill.style.width = pct + '%';
+    });
+
+    await db.collection('fotos').add({
+      title, desc, locked, cat,
+      url:      result.url,
+      publicId: result.publicId,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showAlert('alertFoto', '✅ Foto subida correctamente', 'success');
+    document.getElementById('fotoFile').value  = '';
+    document.getElementById('fotoTitle').value = '';
+    document.getElementById('fotoDesc').value  = '';
+    document.getElementById('fotoPreviewWrap').style.display = 'none';
+    prog.style.display = 'none';
+    fill.style.width   = '0%';
+
+    loadFotos();
+    loadStats();
+  } catch(e) {
+    showAlert('alertFoto', '❌ Error: ' + e.message, 'error');
+    prog.style.display = 'none';
+  }
+}
+
+async function loadFotos() {
+  const grid = document.getElementById('fotosGrid');
+  grid.innerHTML = '<p class="loading-text"><span class="spinner"></span> Cargando...</p>';
+
+  try {
+    const snap = await db.collection('fotos').orderBy('createdAt','desc').get();
+
+    if (snap.empty) {
+      grid.innerHTML = '<p class="loading-text">Sin fotos aún. ¡Sube la primera!</p>';
+      return;
+    }
+
+    let html = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      html += `
+        <div class="media-item">
+          <img src="${d.url}" alt="${d.title || ''}" loading="lazy" />
+          ${d.locked ? '<span class="badge-locked">🔒 Premium</span>' : ''}
+          <div class="media-info">
+            <div class="media-title">${d.title || 'Sin título'}</div>
+            <div class="media-type">${d.cat || 'galeria'}</div>
+          </div>
+          <div class="media-actions">
+            <button class="btn btn-secondary btn-sm" onclick="toggleLockFoto('${doc.id}',${d.locked})">
+              ${d.locked ? '🔓 Desbloquear' : '🔒 Bloquear'}
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteItem('fotos','${doc.id}')">🗑️</button>
+          </div>
         </div>
       `;
     });
-  });
 
-}
-
-/* ================= ELIMINAR ================= */
-
-async function deleteContent(id){
-  if(confirm("¿Eliminar este contenido?")){
-    await db.collection("contenido").doc(id).delete();
+    grid.innerHTML = html;
+  } catch(e) {
+    grid.innerHTML = '<p class="loading-text">Error al cargar fotos</p>';
+    console.error(e);
   }
 }
 
-</script>
+async function toggleLockFoto(id, current) {
+  await db.collection('fotos').doc(id).update({ locked: !current });
+  loadFotos();
+  loadStats();
+}
 
+/* ═══════════════════════════════════════════
+   VIDEOS
+═══════════════════════════════════════════ */
+function previewVideo(input) {
+  if (!input.files[0]) return;
+  const url = URL.createObjectURL(input.files[0]);
+  const vid  = document.getElementById('videoPreview');
+  vid.src    = url;
+  document.getElementById('videoPreviewWrap').style.display = 'block';
+}
+
+async function uploadVideo() {
+  const file   = document.getElementById('videoFile').files[0];
+  const title  = document.getElementById('videoTitle').value.trim();
+  const desc   = document.getElementById('videoDesc').value.trim();
+  const locked = document.getElementById('videoLocked').checked;
+  const cat    = document.getElementById('videoCategoria').value;
+
+  if (!file)  return showAlert('alertVideo', '❌ Selecciona un video', 'error');
+  if (!title) return showAlert('alertVideo', '❌ Escribe un título', 'error');
+
+  const prog = document.getElementById('videoProgress');
+  const fill = document.getElementById('videoProgressFill');
+  prog.style.display = 'block';
+
+  try {
+    const result = await uploadToCloudinary(file, 'videos', (pct) => {
+      fill.style.width = pct + '%';
+    });
+
+    await db.collection('videos').add({
+      title, desc, locked, cat,
+      url:      result.url,
+      publicId: result.publicId,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showAlert('alertVideo', '✅ Video subido correctamente', 'success');
+    document.getElementById('videoFile').value  = '';
+    document.getElementById('videoTitle').value = '';
+    document.getElementById('videoDesc').value  = '';
+    document.getElementById('videoPreviewWrap').style.display = 'none';
+    prog.style.display = 'none';
+    fill.style.width   = '0%';
+
+    loadVideos();
+    loadStats();
+  } catch(e) {
+    showAlert('alertVideo', '❌ Error: ' + e.message, 'error');
+    prog.style.display = 'none';
+  }
+}
+
+async function loadVideos() {
+  const grid = document.getElementById('videosGrid');
+  grid.innerHTML = '<p class="loading-text"><span class="spinner"></span> Cargando...</p>';
+
+  try {
+    const snap = await db.collection('videos').orderBy('createdAt','desc').get();
+
+    if (snap.empty) {
+      grid.innerHTML = '<p class="loading-text">Sin videos aún. ¡Sube el primero!</p>';
+      return;
+    }
+
+    let html = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      html += `
+        <div class="media-item">
+          <video src="${d.url}" muted preload="metadata"></video>
+          ${d.locked ? '<span class="badge-locked">🔒 Premium</span>' : ''}
+          <div class="media-info">
+            <div class="media-title">${d.title || 'Sin título'}</div>
+            <div class="media-type">${d.cat || 'gratis'}</div>
+          </div>
+          <div class="media-actions">
+            <button class="btn btn-secondary btn-sm" onclick="toggleLockVideo('${doc.id}',${d.locked})">
+              ${d.locked ? '🔓 Desbloquear' : '🔒 Bloquear'}
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteItem('videos','${doc.id}')">🗑️</button>
+          </div>
+        </div>
+      `;
+    });
+
+    grid.innerHTML = html;
+  } catch(e) {
+    grid.innerHTML = '<p class="loading-text">Error al cargar videos</p>';
+  }
+}
+
+async function toggleLockVideo(id, current) {
+  await db.collection('videos').doc(id).update({ locked: !current });
+  loadVideos();
+}
+
+/* ═══════════════════════════════════════════
+   AUDIO
+═══════════════════════════════════════════ */
+function previewAudio(input) {
+  if (!input.files[0]) return;
+  const url = URL.createObjectURL(input.files[0]);
+  document.getElementById('audioPreview').src = url;
+  document.getElementById('audioPreviewWrap').style.display = 'block';
+}
+
+async function loadAudio() {
+  const el = document.getElementById('audioActual');
+  try {
+    const doc = await db.collection('config').doc('audio').get();
+    if (doc.exists && doc.data().url) {
+      const d = doc.data();
+      el.innerHTML = `
+        <p style="color:var(--muted);font-size:13px;margin-bottom:8px;">Audio actual: <strong style="color:var(--pink2)">${d.nombre || 'musica.mpeg'}</strong></p>
+        <audio controls src="${d.url}" style="width:100%;"></audio>
+      `;
+    } else {
+      el.innerHTML = '<p style="color:var(--muted);font-size:13px;">Usando audio local: <strong>videos/musica.mpeg</strong></p>';
+    }
+  } catch(e) {
+    el.innerHTML = '<p style="color:var(--muted);font-size:13px;">Sin audio configurado</p>';
+  }
+}
+
+async function uploadAudio() {
+  const file   = document.getElementById('audioFile').files[0];
+  const nombre = document.getElementById('audioNombre').value.trim() || 'Música de fondo';
+
+  if (!file) return showAlert('alertAudio', '❌ Selecciona un archivo de audio', 'error');
+
+  const prog = document.getElementById('audioProgress');
+  const fill = document.getElementById('audioProgressFill');
+  prog.style.display = 'block';
+
+  try {
+    const result = await uploadToCloudinary(file, 'audio', (pct) => {
+      fill.style.width = pct + '%';
+    });
+
+    await db.collection('config').doc('audio').set({
+      url:      result.url,
+      publicId: result.publicId,
+      nombre,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showAlert('alertAudio', '✅ Audio actualizado correctamente', 'success');
+    prog.style.display = 'none';
+    fill.style.width   = '0%';
+    loadAudio();
+  } catch(e) {
+    showAlert('alertAudio', '❌ Error: ' + e.message, 'error');
+    prog.style.display = 'none';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   TEXTOS
+═══════════════════════════════════════════ */
+const TEXTO_DEFAULTS = {
+  pageTitle:   'Nadie Es Más Perra Que Yo',
+  menuTitle:   '🔥 Mi Contenido 🔥',
+  headerTitle: 'Me Encanta la Verga',
+  headerDesc:  'Perra sumisa en celo, ofreciéndose para complacerlo sin límites...',
+  fotosTitle:  'Soy Tu Perra',
+  videosTitle: 'Videos Exclusivos',
+  bannerTitle: '🔥 ¡LA PERRA VIENE DE ESTADOS UNIDOS! 🔥',
+  bannerSub:   'Preparate porque llega con todo',
+  rutinaTitle: 'Ejercitando a la Perra 💦',
+  rutinaDesc:  'Escribe la rutina que quieres que haga, pronto la subiremos a la página:',
+  liveTitle:   'Sesión en Vivo 🔥',
+  bogotaTitle: 'Conócela en Bogotá ✈️',
+  bogotaDesc:  'Disponible solo por WhatsApp',
+};
+
+async function loadTextos() {
+  try {
+    const doc = await db.collection('config').doc('textos').get();
+    const data = doc.exists ? { ...TEXTO_DEFAULTS, ...doc.data() } : TEXTO_DEFAULTS;
+
+    Object.keys(TEXTO_DEFAULTS).forEach(key => {
+      const el = document.getElementById('txt_' + key);
+      if (el) el.value = data[key] || '';
+    });
+  } catch(e) {
+    Object.keys(TEXTO_DEFAULTS).forEach(key => {
+      const el = document.getElementById('txt_' + key);
+      if (el) el.value = TEXTO_DEFAULTS[key] || '';
+    });
+  }
+}
+
+async function saveTextos() {
+  const data = {};
+  Object.keys(TEXTO_DEFAULTS).forEach(key => {
+    const el = document.getElementById('txt_' + key);
+    if (el) data[key] = el.value.trim() || TEXTO_DEFAULTS[key];
+  });
+
+  try {
+    await db.collection('config').doc('textos').set({
+      ...data,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('alertTextos', '✅ Textos guardados correctamente', 'success');
+  } catch(e) {
+    showAlert('alertTextos', '❌ Error: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   PLANES
+═══════════════════════════════════════════ */
+const PLANES_DEFAULTS = [
+  { id:'basico', emoji:'🔥', nombre:'Básico', items:'20 fotos exclusivas\n5 videos', precio:'$5.000 COP' },
+  { id:'vip',    emoji:'💎', nombre:'VIP',    items:'Todo el contenido\nVideos diarios\nChat privado', precio:'$10.000 COP' },
+  { id:'ultra',  emoji:'👑', nombre:'Ultra',  items:'Contenido ilimitado\nVideos personalizados\nLlamadas privadas', precio:'$20.000 COP' },
+];
+
+async function loadPlanes() {
+  const el = document.getElementById('planesEditor');
+
+  try {
+    const doc  = await db.collection('config').doc('planes').get();
+    const data = doc.exists ? doc.data().planes : PLANES_DEFAULTS;
+
+    let html = '';
+    (data || PLANES_DEFAULTS).forEach((plan, i) => {
+      html += `
+        <div class="plan-editor-card">
+          <h4>${plan.emoji || '💎'} Plan ${plan.nombre}</h4>
+          <div class="field">
+            <label>Emoji</label>
+            <input type="text" id="plan_emoji_${i}" value="${plan.emoji || ''}" style="max-width:80px;" />
+          </div>
+          <div class="field">
+            <label>Nombre</label>
+            <input type="text" id="plan_nombre_${i}" value="${plan.nombre || ''}" />
+          </div>
+          <div class="field">
+            <label>Descripción (una por línea)</label>
+            <textarea id="plan_items_${i}" rows="3">${plan.items || ''}</textarea>
+          </div>
+          <div class="field">
+            <label>Precio</label>
+            <input type="text" id="plan_precio_${i}" value="${plan.precio || ''}" placeholder="$5.000 COP" />
+          </div>
+        </div>
+      `;
+    });
+
+    el.innerHTML = html;
+    el.dataset.count = (data || PLANES_DEFAULTS).length;
+
+  } catch(e) {
+    el.innerHTML = '<p class="loading-text">Error al cargar planes</p>';
+  }
+}
+
+async function savePlanes() {
+  const count = parseInt(document.getElementById('planesEditor').dataset.count || 3);
+  const planes = [];
+
+  for (let i = 0; i < count; i++) {
+    planes.push({
+      id:     PLANES_DEFAULTS[i]?.id || 'plan' + i,
+      emoji:  document.getElementById('plan_emoji_'  + i)?.value.trim() || '',
+      nombre: document.getElementById('plan_nombre_' + i)?.value.trim() || '',
+      items:  document.getElementById('plan_items_'  + i)?.value.trim() || '',
+      precio: document.getElementById('plan_precio_' + i)?.value.trim() || '',
+    });
+  }
+
+  try {
+    await db.collection('config').doc('planes').set({
+      planes,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('alertPlanes', '✅ Planes guardados correctamente', 'success');
+  } catch(e) {
+    showAlert('alertPlanes', '❌ Error: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CONTADOR
+═══════════════════════════════════════════ */
+let previewInterval = null;
+
+async function loadContador() {
+  try {
+    const doc = await db.collection('config').doc('contador').get();
+    if (doc.exists && doc.data().fecha) {
+      const fecha = doc.data().fecha;
+      // Convertir a formato datetime-local
+      const d = new Date(fecha);
+      const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+        .toISOString().slice(0,16);
+      document.getElementById('contadorFecha').value = local;
+      document.getElementById('contadorZona').value  = doc.data().zona || '-05:00';
+      startPreview(fecha);
+    } else {
+      // default: 23 Feb 2026
+      document.getElementById('contadorFecha').value = '2026-02-23T00:00';
+      startPreview('2026-02-23T00:00:00-05:00');
+    }
+  } catch(e) {
+    document.getElementById('contadorFecha').value = '2026-02-23T00:00';
+  }
+}
+
+function startPreview(fechaISO) {
+  if (previewInterval) clearInterval(previewInterval);
+
+  function update() {
+    const diff = new Date(fechaISO).getTime() - Date.now();
+    if (diff < 0) {
+      ['previewDias','previewHoras','previewMin','previewSeg'].forEach(id => {
+        document.getElementById(id).textContent = '00';
+      });
+      return;
+    }
+    document.getElementById('previewDias').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('previewHoras').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('previewMin').textContent   = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('previewSeg').textContent   = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+
+  update();
+  previewInterval = setInterval(update, 1000);
+}
+
+async function saveContador() {
+  const val  = document.getElementById('contadorFecha').value;
+  const zona = document.getElementById('contadorZona').value;
+
+  if (!val) return showAlert('alertContador', '❌ Selecciona una fecha', 'error');
+
+  const fecha = val + ':00' + zona;
+
+  try {
+    await db.collection('config').doc('contador').set({
+      fecha, zona,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('alertContador', '✅ Fecha guardada correctamente', 'success');
+    startPreview(fecha);
+  } catch(e) {
+    showAlert('alertContador', '❌ Error: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   WHATSAPP
+═══════════════════════════════════════════ */
+const WA_DEFAULTS = {
+  numero:     '16122323200',
+  msg_header: 'Hola, quiero contactarme contigo',
+  msg_basico: 'Hola quiero comprar el paquete Básico 🔥 de $5.000 COP',
+  msg_vip:    'Hola quiero comprar el paquete VIP 💎🔥 de $10.000 COP',
+  msg_ultra:  'Hola quiero comprar el paquete ULTRA 👑🔥 de $20.000 COP',
+  msg_locked: 'Hola, quiero desbloquear contenido premium.',
+  msg_live:   'Hola quiero pagar una Sesión en Vivo 🔥',
+};
+
+async function loadWhatsApp() {
+  try {
+    const doc  = await db.collection('config').doc('whatsapp').get();
+    const data = doc.exists ? { ...WA_DEFAULTS, ...doc.data() } : WA_DEFAULTS;
+
+    document.getElementById('waNumero').value    = data.numero    || '';
+    document.getElementById('waMsg_header').value= data.msg_header|| '';
+    document.getElementById('waMsg_basico').value= data.msg_basico|| '';
+    document.getElementById('waMsg_vip').value   = data.msg_vip   || '';
+    document.getElementById('waMsg_ultra').value = data.msg_ultra || '';
+    document.getElementById('waMsg_locked').value= data.msg_locked|| '';
+    document.getElementById('waMsg_live').value  = data.msg_live  || '';
+  } catch(e) {
+    Object.keys(WA_DEFAULTS).forEach(k => {
+      const el = document.getElementById('wa' + k.charAt(0).toUpperCase() + k.slice(1).replace(/_/g,'_'));
+    });
+  }
+}
+
+async function saveWhatsApp() {
+  const data = {
+    numero:     document.getElementById('waNumero').value.trim(),
+    msg_header: document.getElementById('waMsg_header').value.trim(),
+    msg_basico: document.getElementById('waMsg_basico').value.trim(),
+    msg_vip:    document.getElementById('waMsg_vip').value.trim(),
+    msg_ultra:  document.getElementById('waMsg_ultra').value.trim(),
+    msg_locked: document.getElementById('waMsg_locked').value.trim(),
+    msg_live:   document.getElementById('waMsg_live').value.trim(),
+    updatedAt:  firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  try {
+    await db.collection('config').doc('whatsapp').set(data);
+    showAlert('alertWA', '✅ Configuración de WhatsApp guardada', 'success');
+  } catch(e) {
+    showAlert('alertWA', '❌ Error: ' + e.message, 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   ELIMINAR
+═══════════════════════════════════════════ */
+async function deleteItem(collection, id) {
+  if (!confirm('¿Eliminar este elemento? Esta acción no se puede deshacer.')) return;
+
+  try {
+    const docSnap = await db.collection(collection).doc(id).get();
+    const publicId = docSnap.exists ? docSnap.data().publicId : null;
+
+    await db.collection(collection).doc(id).delete();
+
+    if (publicId) {
+      console.log('Para borrar de Cloudinary, usa este publicId:', publicId);
+    }
+
+    if (collection === 'fotos')  { loadFotos();  loadStats(); loadRecent(); }
+    if (collection === 'videos') { loadVideos(); loadStats(); }
+
+    showAlert(
+      collection === 'fotos' ? 'alertFoto' : 'alertVideo',
+      '✅ Eliminado correctamente',
+      'success'
+    );
+
+  } catch(e) {
+    alert('Error al eliminar: ' + e.message);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   UTILIDADES
+═══════════════════════════════════════════ */
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent    = msg;
+  el.className      = 'alert alert-' + (type || 'success');
+  el.style.display  = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+// Enter para login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const loginScreen = document.getElementById('loginScreen');
+    if (loginScreen && loginScreen.style.display !== 'none') doLogin();
+  }
+});
+
+/* ══════════════════════════════════════════════════
+   AUTO-LOGOUT POR INACTIVIDAD
+   - Cierra sesión tras 10 minutos sin actividad
+   - Aviso 1 minuto antes
+   - Detecta: mouse, teclado, click, scroll, touch
+══════════════════════════════════════════════════ */
+(function setupAutoLogout() {
+    const TIMEOUT_MS  = 10 * 60 * 1000;  // 10 minutos
+    const WARNING_MS  = 1 * 60 * 1000;   // aviso 1 min antes
+
+    let timeoutId  = null;
+    let warningId  = null;
+    let warningEl  = null;
+    let countdownInt = null;
+
+    function crearWarning() {
+        if (warningEl) return;
+        warningEl = document.createElement('div');
+        warningEl.id = 'autoLogoutWarning';
+        warningEl.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #e53935, #ff0099);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 12px;
+            box-shadow: 0 14px 40px rgba(229,57,53,0.4);
+            z-index: 99999;
+            font-weight: 700;
+            font-size: 14px;
+            max-width: 320px;
+            display: none;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.2);
+            animation: pulse 1.5s infinite;
+        `;
+        warningEl.innerHTML = `
+            ⚠️ <strong>Sesión por expirar</strong><br>
+            <span id="autoLogoutSec">60</span>s para cierre automático<br>
+            <small style="opacity:.85">Toca aquí para mantener sesión</small>
+        `;
+        warningEl.addEventListener('click', function(e) {
+            e.stopPropagation();
+            ocultarWarning();
+            resetTimer();
+        });
+        document.body.appendChild(warningEl);
+    }
+
+    function mostrarWarning() {
+        crearWarning();
+        warningEl.style.display = 'block';
+        let segundos = Math.floor(WARNING_MS / 1000);
+        const span = document.getElementById('autoLogoutSec');
+        if (span) span.textContent = segundos;
+
+        if (countdownInt) clearInterval(countdownInt);
+        countdownInt = setInterval(() => {
+            segundos--;
+            if (span) span.textContent = segundos;
+            if (segundos <= 0) clearInterval(countdownInt);
+        }, 1000);
+    }
+
+    function ocultarWarning() {
+        if (warningEl) warningEl.style.display = 'none';
+        if (countdownInt) { clearInterval(countdownInt); countdownInt = null; }
+    }
+
+    function hacerLogout() {
+        ocultarWarning();
+        try {
+            if (typeof auth !== 'undefined' && auth.signOut) {
+                auth.signOut().then(() => {
+                    alert('🔒 Sesión cerrada por inactividad.');
+                    location.reload();
+                });
+            } else {
+                location.reload();
+            }
+        } catch (e) {
+            location.reload();
+        }
+    }
+
+    function resetTimer() {
+        if (timeoutId) clearTimeout(timeoutId);
+        if (warningId) clearTimeout(warningId);
+
+        // Si el usuario no está logueado, no activar
+        if (typeof auth === 'undefined' || !auth.currentUser) return;
+
+        // Programar warning
+        warningId = setTimeout(mostrarWarning, TIMEOUT_MS - WARNING_MS);
+
+        // Programar logout
+        timeoutId = setTimeout(hacerLogout, TIMEOUT_MS);
+    }
+
+    // Eventos que cuentan como actividad
+    const eventos = ['mousedown','mousemove','keydown','scroll','touchstart','click'];
+    eventos.forEach(evt => {
+        document.addEventListener(evt, function() {
+            if (warningEl && warningEl.style.display === 'block') return; // no resetear si está advirtiendo
+            resetTimer();
+        }, { passive: true });
+    });
+
+    // Esperar a que Firebase esté listo y el usuario logueado
+    function init() {
+        if (typeof auth === 'undefined') {
+            setTimeout(init, 500);
+            return;
+        }
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                resetTimer();
+                console.log('🔒 Auto-logout activado: 10 min de inactividad');
+            } else {
+                if (timeoutId) clearTimeout(timeoutId);
+                if (warningId) clearTimeout(warningId);
+                ocultarWarning();
+            }
+        });
+    }
+
+    init();
+})();
+
+</script>
 </body>
 </html>
+ENDOFFILE
